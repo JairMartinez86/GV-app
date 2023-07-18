@@ -4,7 +4,6 @@
 @import "bootstrap/scss/bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
-
 /*
 m - for classes that set margin, like this :
 
@@ -42,7 +41,6 @@ auto - for classes that set the margin to auto, like mx-auto
 }
 
 $breakpoints: (
-
   s: 0px,
 
   sm: 576px,
@@ -53,7 +51,6 @@ $breakpoints: (
 
   xl: 1200px,
 );
-
 
 html,
 body {
@@ -69,7 +66,6 @@ a {
   color: initial;
 }
 
-
 i {
   color: var(--escan-secundario);
 }
@@ -78,15 +74,10 @@ i {
   border-bottom: 2px solid var(--escan-primario);
 }
 
-
-
 //████████████████████████████████████████████CARD████████████████████████████████████████████████████████████████████████
 
-.card-escasan {
-  .card {
-    height: 100%;
-  }
-}
+
+
 .card-escasan-header {
   background-color: var(--escan-secundario);
   color: white;
@@ -95,7 +86,6 @@ i {
 }
 
 //████████████████████████████████████████████CHECBOX TOGGE████████████████████████████████████████████████████████████████
-
 
 .check-escasan:checked {
   background-color: var(--escan-primario);
@@ -173,22 +163,14 @@ input::-webkit-inner-spin-button {
   box-shadow: 0px 5px 10px 0px var(--escan-secundario-sombra);
 }
 
-
-
-
-
-
 //████████████████████████████████████████████DIALOG██████████████████████████████████████████████████████████████████████
 
-
-.escasan-dialog-full{
+.escasan-dialog-full {
   max-width: 100% !important;
-max-height: 100% !important;
-width: 100%;
-height: 100%;
+  max-height: 100% !important;
+  width: 100%;
+  height: 100%;
 }
-
-
 
 .escasan-dialog {
   h1 {
@@ -222,12 +204,7 @@ height: 100%;
   }
 }
 
-
-
-
-
 //████████████████████████████████████████████FOOTER██████████████████████████████████████████████████████████████████████
-
 
 .escan-footer {
   position: fixed;
@@ -235,7 +212,7 @@ height: 100%;
   bottom: 0;
   width: 100%;
 
- /* @include Tamano(lg) {
+  /* @include Tamano(lg) {
     position: initial;
     text-align: right;
   }*/
@@ -256,9 +233,4 @@ height: 100%;
       border: 0;
     }*/
   }
-
-
-
-
 }
-
