@@ -1,0 +1,307 @@
+<div id="frmConfirmarFactura" style="display:none;">
+    <form class="mx-2">
+        <div class="row">
+            <div class="mb-3">
+                <div class="col-12 card-escasan">
+                    <div class="card">
+                        <div class="card-header card-escasan-header">VISTA PREVIA DE LA FACTURA</div>
+                        <div class="card-body">
+
+                            <div class="row linea">
+
+                                <div class="col-md-12 col-lg-8 offset-lg-4">
+
+                                    <div class="row">
+
+
+                                        <div class="col-md-12 col-lg-6 mb-1">
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <input type="checkbox" id="chkEsPedido_Confirmar"
+                                                        data-toggle="toggle" data-style="on" data-onstyle="on"
+                                                        data-offstyle="off" data-onlabel="Factura"
+                                                        data-offlabel="Pedido" data-width="120" data-height="100%"
+                                                        (change)="v_TipoFactura($event)">
+                                                </span>
+                                                <div class="form-floating">
+                                                    <input type="text" id="chkEsFactura_Confirmar" class="form-control"
+                                                        placeholder="No" aria-label="No">
+                                                    <label for="chkEsFactura_Confirmar">No {{TipoFactura}}</label>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="col-md-12 col-lg-6">
+
+
+
+
+                                            <div class="row mb-1 g-1">
+                                                <div class="col-4">
+
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i
+                                                                class="bi bi-calendar"></i></span>
+                                                        <div class="form-floating">
+                                                            <input type="text" id="txtDia_Confirmar"
+                                                                class="form-control" placeholder="Dia" aria-label="Dia">
+                                                            <label for="txtDia_Confirmar">Dia</label>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-4">
+
+
+
+                                                    <div class="input-group">
+                                                        <div class="form-floating">
+                                                            <input type="text" id="txtMes_Confirmar"
+                                                                class="form-control" placeholder="Mes" aria-label="Mes">
+                                                            <label for="txtMes_Confirmar">Mes</label>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-4">
+
+                                                    <div class="input-group">
+                                                        <div class="form-floating">
+                                                            <input type="text" id="txtAnio_Confirmar"
+                                                                class="form-control" placeholder="Año" aria-label="Año">
+                                                            <label for="txtAnio_Confirmar">Año</label>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+
+                                    </div>
+
+
+                                </div>
+
+
+
+
+
+
+                            </div>
+
+
+                            <div class="row mt-1">
+                                <div class="col-12 col-sm-12 col-md-6 mb-1">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
+                                        <div class="form-floating">
+                                            <textarea type="text" id="txtCliente_Confirmar" class="form-control"
+                                                placeholder="Cliente" aria-label="Cliente"> </textarea>
+                                            <label for="txtCliente_Confirmar">Cod. Cliente</label>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-12 col-sm-12 col-md-6 mb-1">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                                        <div class="form-floating">
+                                            <textarea type="text" id="txtVendedor_Confirmar" class="form-control"
+                                                placeholder="Vendedor" aria-label="Vendedor"></textarea>
+                                            <label for="txtVendedor_Confirmar">Vendedor</label>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-12 col-sm-12 col-md-6 mb-1">
+                                    <div class="input-group">
+                                        <div class="form-floating">
+                                            <textarea type="text" id="txtNombre_Confirmar" class="form-control"
+                                                placeholder="Cliente" aria-label="Nombre"> </textarea>
+                                            <label for="txtNombre_Confirmar">Nombre</label>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-12 col-md-6 mb-1">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-shop"></i></span>
+                                        <div class="form-floating">
+                                            <input type="text" id="txtBodega_Confirmar" class="form-control"
+                                                placeholder="Bodega" aria-label="Bodega">
+                                            <label for="txtBodega_Confirmar">Bodega</label>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+                            <div class="row">
+
+
+
+                                <div class="col-12 col-sm-12 col-md-6">
+
+                                    <div class="row">
+
+                                        <div class="col-md-12 col-lg-8 mb-1">
+                                            <div class="check-button-escasan">
+                                                <input type="checkbox" id="chkTipoFactura_Confirmar"
+                                                    data-toggle="toggle" data-style="on" data-onstyle="on"
+                                                    data-offstyle="off" data-onlabel="Crédito" data-offlabel="Contado"
+                                                    data-width="120" data-height="100%" (change)="v_TipoPago($event)">
+
+                                                <input type="checkbox" id="chkImpuesto_Confirmar" data-toggle="toggle"
+                                                    data-style="on" data-onstyle="on" data-offstyle="off"
+                                                    data-onlabel="Iva" data-offlabel="Sin Iva" data-width="120"
+                                                    data-height="100%" checked (change)="v_TipoImpuesto($event)">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 col-lg-4 mb-1">
+                                            <div class="input-group">
+                                                <div class="form-floating">
+                                                    <input type="text" id="txtMoneda_Confirmar" class="form-control"
+                                                        placeholder="Moneda" aria-label="Moneda">
+                                                    <label for="txtMoneda_Confirmar">Moneda</label>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+
+
+                                </div>
+
+
+                                <div class="col-12 col-sm-12 col-md-6">
+
+                                    <div class="row mb-1">
+
+
+                                        <div class="input-group">
+                                            <span class="check-button-escasan">
+                                                <input type="checkbox" id="txtExoneracion_Confirmar"
+                                                    data-toggle="toggle" data-style="on" data-onstyle="on"
+                                                    data-offstyle="off" data-onlabel="Con Exoneración"
+                                                    data-offlabel="Sin Exoneración" data-width="130" data-height="100%"
+                                                    (change)="v_TipoExoneracion($event)">
+                                            </span>
+                                            <div class="form-floating">
+                                                <input type="text" id="txtNoExoneracion_Confirmar" class="form-control"
+                                                    placeholder="No Exoneracion" aria-label="No Exoneracion">
+                                                <label for="txtNoExoneracion_Confirmar">No Exoneración</label>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-12 col-sm-12 col-md-6 mb-1">
+                                    <div class="input-group">
+                                        <div class="form-floating">
+                                            <textarea type="text" id="txtObservaciones_Confirmar" class="form-control"
+                                                placeholder="Observaciones" aria-label="Observacion"></textarea>
+                                            <label for="txtObservaciones_Confirmar">Observaciones</label>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-12 col-md-6 mb-1">
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <input id="chkDelivery" class="form-check-input check-escasan"
+                                                type="checkbox">
+                                            <label for="chkDelivery" class="form-check-label"></label>
+                                        </span>
+                                        <span class="input-group-text"><button type="button" class="btn">
+                                                <i class="fa-solid fa-truck-fast fa-beat-fade fa-lg"
+                                                    (click)="v_Delivery();"></i></button></span>
+
+                                        <div class="form-floating">
+                                            <textarea type="text" id="txtDelivery_Confirmar" class="form-control"
+                                                placeholder="Dirección" aria-label="Direccion"></textarea>
+                                            <label for="txtDelivery_Confirmar">Dirección</label>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+    <div class="escan-footer">
+
+        <div class="flechas">
+
+            <div class="row">
+
+                <div class="col-6 flechas-atras">
+                    <button type="button" class="btn btn-success" (click)="v_FichaPanel('Producto')"><i
+                            class="bi bi-plus-circle-fill"></i>Atras</button>
+                </div>
+                <div class="col-6 flechas-siguiente contenedor-siguiente">
+                    <button type="button" class="btn btn-success" (click)="v_FichaPanel('Ver Factura')"><i
+                            class="bi bi-cart-plus-fill"></i>Facturar</button>
+                </div>
+
+
+            </div>
+
+
+
+
+        </div>
+
+
+
+
+    </div>
+</div>

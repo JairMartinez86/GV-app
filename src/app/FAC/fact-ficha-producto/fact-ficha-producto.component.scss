@@ -1,0 +1,140 @@
+@mixin Tamano($points) {
+  @media screen and (min-width: map-get($breakpoints, $points)) {
+    @content;
+  }
+}
+
+$breakpoints: (
+  s: 0px,
+
+  sm: 576px,
+
+  md: 768px,
+
+  lg: 992px,
+
+  xl: 1200px,
+);
+
+.btn-contenedor{
+
+  text-align: right;
+
+  @include Tamano(s) {
+    button{
+      display: block;
+      width: 100%;
+    }
+  }
+
+  @include Tamano(lg) {
+    button{
+      display: initial;
+      width: auto;
+    }
+  }
+ 
+  
+}
+
+//████████████████████████████████████████████TEXT NUMBER████████████████████████████████████████████████████████████████████████
+
+.input-group-simbolo {
+  padding: 0;
+}
+.number-simbolo {
+  .simbolo {
+    &-mas,
+    &-minus {
+      display: block;
+      background: transparent;
+      border: 0;
+      color: black;
+      :hover {
+        color: var(--escan-primario);
+        transform: scale(1.2);
+      }
+    }
+
+    &-minus {
+      margin-top: 2px;
+    }
+  }
+
+  /* overflow: hidden; 
+    text-align: center;
+    span i{
+      display: block;
+      margin: 5px 5% 0 0;
+  
+    }*/
+}
+
+
+.i-bonif{
+  padding: 0;
+}
+
+.flechas {
+  i {
+    color: var(--escan-fondo);
+  }
+
+  &-siguiente {
+    button:after {
+      content: "";
+      border-style: solid;
+      border-width: 24px 24px 24px 24px;
+      border-color: var(--escan-fondo) var(--escan-fondo) var(--escan-fondo)
+        var(--escan-primario);
+      position: absolute;
+      top: 0;
+      right: -24px;
+    }
+
+    @include Tamano(s) {
+      button:before {
+        position: absolute;
+        top: 0;
+        left: calc((50% + 12px));
+      }
+    }
+
+    @include Tamano(lg) {
+      button:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+  }
+
+  &-atras {
+    button:before {
+      content: "";
+      border-style: solid;
+      border-width: 24px 24px 24px 24px;
+      border-color: var(--escan-fondo) var(--escan-primario) var(--escan-fondo)
+        var(--escan-fondo);
+      position: absolute;
+      top: 0;
+      left: -24px;
+    }
+
+    @include Tamano(s) {
+      button:after {
+        position: absolute;
+        top: 0;
+        right: 50%;
+      }
+    }
+
+    @include Tamano(lg) {
+      button:after {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+    }
+  }
+}

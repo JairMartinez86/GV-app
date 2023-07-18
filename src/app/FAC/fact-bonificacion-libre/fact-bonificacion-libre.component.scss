@@ -1,0 +1,59 @@
+p{
+    font-size: 1.1em;
+    font-weight: bold;
+}
+.btn-contenedor button{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+//████████████████████████████████████████████TEXT NUMBER████████████████████████████████████████████████████████████████████████
+
+.input-group-simbolo {
+  padding: 0;
+}
+.number-simbolo {
+  .simbolo {
+    &-mas,
+    &-minus {
+      display: block;
+      background: transparent;
+      border: 0;
+      color: black;
+      :hover {
+        color: var(--escan-primario);
+        transform: scale(1.2);
+      }
+    }
+
+    &-minus {
+      margin-top: 2px;
+    }
+  }
+}
+
+//████████████████████████████████████████████TABLA████████████████████████████████████████████████████████████████████████
+
+table {
+  margin-bottom: 60px;
+}
+
+.header-contenedor {
+    max-width:850px;
+    min-width:850px;
+
+  .header-table {
+    position: fixed;
+    top: 0px;
+    min-width: inherit;
+    max-width: inherit;
+  }
+}
+
+.text-ajustar {
+  float: left;
+  display: flex;
+  align-items: center;
+  word-break: break-all;
+  margin: 0 0 1em 1em;
+}

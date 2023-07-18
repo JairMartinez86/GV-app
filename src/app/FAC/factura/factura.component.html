@@ -1,0 +1,252 @@
+<!--████████████████████████████████████████████DATOS DE DEL CLIENTE Y FACTURA██████████████████████████████████████████████████████████████████████-->
+
+<div id="frmFichaFactura">
+
+    <form class="mx-2">
+
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 mb-3 card-escasan">
+                <div class="card">
+                    <div class="card-header card-escasan-header">DATOS DEL CLIENTE</div>
+
+                    <div class="card-body">
+                        <div class="row mb-1">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
+                                <div class="form-floating">
+                                    <textarea type="text" id="txtCliente" class="form-control"
+                                        placeholder="Seleccione un cliente." aria-label="Cliente" matInput
+                                        [formControl]="myControl" [matAutocomplete]="auto"> </textarea>
+                                    <label for="txtCliente">Cliente</label>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input type="text" id="txtNombre" class="form-control" placeholder="Nombre"
+                                        aria-label="Nombre">
+                                    <label for="txtNombre">Nombre</label>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-6 mb-1">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
+                                    <div class="form-floating">
+                                        <input type="text" id="txtIdentificacion" class="form-control"
+                                            placeholder="Ruc/Cedula" aria-label="Ruc_Cedula">
+                                        <label for="txtIdentificacion">Ruc/Cedula</label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 mb-1">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-wallet"></i></span>
+                                    <div class="form-floating">
+                                        <input type="text" id="txtLimite" class="form-control" placeholder="Limite"
+                                            aria-label="Limite">
+                                        <label for="txtLimite">Limite</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-6 mb-1">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
+                                    <div class="form-floating">
+                                        <input type="text" id="txtContacto" class="form-control" placeholder="Contacto"
+                                            aria-label="Contacto">
+                                        <label for="txtContacto">Contacto</label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
+                                    <div class="form-floating">
+                                        <input type="text" id="txtDisponible" class="form-control"
+                                            placeholder="Disponible" aria-label="Disponible">
+                                        <label for="txtDisponible">Disponible</label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-6 mb-3 card-escasan">
+                <div class="card">
+                    <div class="card-header card-escasan-header">DATOS DE LA FACTURA</div>
+                    <div class="card-body">
+                        <div class="row mb-1">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-shop"></i></span>
+                                <div class="form-floating">
+                                    <input type="text" id="txtBodega" class="form-control"
+                                        placeholder="Seleccione una bodega." aria-label="Bodega" matInput
+                                        [formControl]="myControl" [matAutocomplete]="auto">
+                                    <label for="txtBodega">Bodega</label>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="row mb-1">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                                <div class="form-floating">
+                                    <textarea type="text" id="txtVendedor" class="form-control"
+                                        placeholder="Seleccione un vendedor." aria-label="Vendedor" matInput
+                                        [formControl]="myControl" [matAutocomplete]="auto"></textarea>
+                                    <label for="txtVendedor">Vendedor</label>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="row mb-1">
+                            <div class="col-12 check-button-escasan">
+                                <!--<div class="form-check form-switch form-control-lg">
+                                    <input id="txtTipoVenta" class="form-check-input check-escasan" type="checkbox"
+                                        role="switch" (change)="v_TipoPago($event)" />
+                                    <label for="txtTipoVenta" class="form-check-label">{{TipoFactura}}</label>
+                                </div>-->
+
+                                <input type="checkbox" id="chkTipoFactura" data-toggle="toggle" data-style="on"
+                                    data-onstyle="on" data-offstyle="off" data-onlabel="Crédito" data-offlabel="Contado"
+                                    data-width="120" checked (change)="v_TipoPago($event)">
+
+
+                                <input type="checkbox" id="chkImpuesto" data-toggle="toggle" data-style="on"
+                                    data-onstyle="on" data-offstyle="off" data-onlabel="Iva" data-offlabel="Sin Iva"
+                                    data-width="120" checked (change)="v_TipoImpuesto($event)">
+
+                            </div>
+
+
+
+
+
+
+                        </div>
+
+
+
+
+                        <div class="row">
+
+                            <div class="col-6">
+                                <div class="form-check form-control-lg">
+                                    <input id="chkContraEntrega" class="form-check-input check-escasan" type="checkbox">
+                                    <label for="chkContraEntrega" class="form-check-label">Contra Entrega?</label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-check form-control-lg">
+                                    <input id="chkExportacion" class="form-check-input check-escasan" type="checkbox">
+                                    <label for="chkExportacion" class="form-check-label">Exportación?</label>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="input-group">
+                                    <div class="form-floating">
+                                        <input type="text" id="txtOC" class="form-control" placeholder="OC"
+                                            aria-label="OC">
+                                        <label for="txtOC">Orden de Compra</label>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                {{option}}
+            </mat-option>
+        </mat-autocomplete>
+
+    </form>
+
+
+    <div class="escan-footer">
+        <div class="footer-cliente">
+            <div class="flechas">
+                <div class="flechas-siguiente">
+                    <button type="button" class="btn btn-success" (click)="v_FichaPanel('Producto')"><i
+                            class="bi bi-plus-circle-fill"></i>Producto</button>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+<!--████████████████████████████████████████████FICHA PRODUCTO██████████████████████████████████████████████████████████████████████████████████████-->
+
+
+<app-fact-ficha-producto></app-fact-ficha-producto>
+
+<!--████████████████████████████████████████████REVISION DE FACTURA██████████████████████████████████████████████████████████████████████████████████████-->
+
+
+<app-fact-revision></app-fact-revision>
+
+
+
+<!--████████████████████████████████████████████CONFIRMAR FACTURA█████████████████████████████████████████████████████████████████████████████████████████-->
+
+<app-fact-confirmar></app-fact-confirmar>

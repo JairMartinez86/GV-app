@@ -1,0 +1,15 @@
+//████████████████████████████████████████████TABLA██████████████████████████████████████████████████████████████████████
+
+.escan-table table {
+  overflow-y: auto;
+  height: 100vh;
+}
+
+thead,
+th {
+  background: #eee;
+}
+thead th {
+  position: sticky;
+  top: 0;
+}

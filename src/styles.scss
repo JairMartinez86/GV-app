@@ -1,0 +1,264 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+
+/*
+m - for classes that set margin, like this :
+
+mt - for classes that set margin-top
+mb - for classes that set margin-bottom
+ml - for classes that set margin-left
+mr - for classes that set margin-right
+mx - for classes that set both margin-left and margin-right
+my - for classes that set both margin-top and margin-bottom
+Where size is one of margin :
+
+0 - for classes that eliminate the margin by setting it to 0, like mt-0
+1 - (by default) for classes that set the margin to $spacer * .25, like mt-1
+2 - (by default) for classes that set the margin to $spacer * .5, like mt-2
+3 - (by default) for classes that set the margin to $spacer, like mt-3
+4 - (by default) for classes that set the margin to $spacer * 1.5, like mt-4
+5 - (by default) for classes that set the margin to $spacer * 3, like mt-5
+auto - for classes that set the margin to auto, like mx-auto
+*/
+
+:root {
+  --escan-secundario: #ff4500;
+  --escan-secundario-sombra: rgba(255, 69, 0, 0.5);
+
+  --escan-primario: #009d43;
+  --escan-primario-sombra: rgba(0, 157, 67, 0.5);
+
+  --escan-fondo: white;
+}
+
+@mixin Tamano($points) {
+  @media screen and (min-width: map-get($breakpoints, $points)) {
+    @content;
+  }
+}
+
+$breakpoints: (
+
+  s: 0px,
+
+  sm: 576px,
+
+  md: 768px,
+
+  lg: 992px,
+
+  xl: 1200px,
+);
+
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: initial;
+}
+
+
+i {
+  color: var(--escan-secundario);
+}
+
+.linea {
+  border-bottom: 2px solid var(--escan-primario);
+}
+
+
+
+//████████████████████████████████████████████CARD████████████████████████████████████████████████████████████████████████
+
+.card-escasan {
+  .card {
+    height: 100%;
+  }
+}
+.card-escasan-header {
+  background-color: var(--escan-secundario);
+  color: white;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+//████████████████████████████████████████████CHECBOX TOGGE████████████████████████████████████████████████████████████████
+
+
+.check-escasan:checked {
+  background-color: var(--escan-primario);
+}
+
+.toggle-check-escasan:checked {
+  background-color: var(--escan-primario);
+  border-color: var(--escan-primario);
+}
+
+//TOGGLET BOTON
+
+.on {
+  background-color: var(--escan-primario);
+  color: white;
+}
+
+.off {
+  background-color: var(--escan-secundario);
+  color: white;
+}
+.on:hover {
+  background-color: var(--escan-primario);
+  color: white;
+}
+
+.off:hover {
+  background-color: var(--escan-secundario);
+  color: white;
+}
+
+.toggle {
+  span {
+    color: white;
+  }
+}
+//FIN TOGGLET BOTON
+
+//████████████████████████████████████████████TEXT████████████████████████████████████████████████████████████████████████
+
+textarea::-webkit-resizer {
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent var(--escan-primario) var(--escan-primario)
+    transparent;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+//████████████████████████████████████████████BOTONES██████████████████████████████████████████████████████████████████████
+
+.btn-primario {
+  background-color: var(--escan-primario);
+  color: var(--escan-fondo);
+}
+
+.btn-primario:hover {
+  background-color: var(--escan-primario);
+  color: var(--escan-fondo);
+  box-shadow: 0px 5px 10px 0px var(--escan-primario-sombra);
+}
+
+.btn-secundario {
+  background-color: var(--escan-secundario);
+  color: var(--escan-fondo);
+}
+
+.btn-secundario:hover {
+  background-color: var(--escan-secundario);
+  color: var(--escan-fondo);
+  box-shadow: 0px 5px 10px 0px var(--escan-secundario-sombra);
+}
+
+
+
+
+
+
+//████████████████████████████████████████████DIALOG██████████████████████████████████████████████████████████████████████
+
+
+.escasan-dialog-full{
+  max-width: 100% !important;
+max-height: 100% !important;
+width: 100%;
+height: 100%;
+}
+
+
+
+.escasan-dialog {
+  h1 {
+    text-align: center;
+  }
+
+  .custom-cerrar {
+    border: 0;
+    background-color: transparent;
+
+    .close-icon {
+      font-size: 1.8em;
+    }
+
+    .close-icon:hover {
+      font-size: 2em;
+    }
+  }
+
+  .btn-contenedor {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  th {
+    text-align: center;
+  }
+
+  .aling-number {
+    text-align: right;
+  }
+}
+
+
+
+
+
+//████████████████████████████████████████████FOOTER██████████████████████████████████████████████████████████████████████
+
+
+.escan-footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+
+ /* @include Tamano(lg) {
+    position: initial;
+    text-align: right;
+  }*/
+
+  button {
+    width: 100%;
+    margin-right: 5px;
+    background-color: var(--escan-primario);
+
+    i {
+      font-size: 1.5rem;
+      margin-right: 10px;
+    }
+
+    /*@include Tamano(lg) {
+      position: relative;
+      //width: 200px;
+      border: 0;
+    }*/
+  }
+
+
+
+
+}
+
