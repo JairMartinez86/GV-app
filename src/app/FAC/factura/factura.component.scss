@@ -20,7 +20,9 @@
 
 
 .flechas {
-  z-index: 1;
+  z-index: 3;
+  min-width: var(--min-width);
+
   i {
     color: var(--escan-fondo);
   }
