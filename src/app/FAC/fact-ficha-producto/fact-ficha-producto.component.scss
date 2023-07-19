@@ -1,5 +1,11 @@
 @import '/src/assets/scss/media.scss';
 
+
+#frmFichaProducto{
+  min-width: var(--min-width);
+}
+
+
 .btn-contenedor{
 
   text-align: right;

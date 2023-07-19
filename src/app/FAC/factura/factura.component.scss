@@ -2,6 +2,7 @@
 #frmFichaFactura {
   padding-bottom: 50px;
   overflow: hidden;
+  min-width: var(--min-width);
 }
 
 .i-bonif{
@@ -19,6 +20,7 @@
 
 
 .flechas {
+  z-index: 1;
   i {
     color: var(--escan-fondo);
   }

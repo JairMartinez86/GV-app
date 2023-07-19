@@ -33,6 +33,8 @@ auto - for classes that set the margin to auto, like mx-auto
 
   --escan-fondo: white;
 
+  --min-width: 300px;
+
 }
 
 
@@ -154,6 +156,7 @@ input::-webkit-inner-spin-button {
 .escasan-dialog-full {
   max-width: 100% !important;
   max-height: 100% !important;
+  min-width: var(--min-width);
   width: 100%;
   height: 100%;
 }
@@ -197,6 +200,7 @@ input::-webkit-inner-spin-button {
   left: 0;
   bottom: 0;
   width: 100%;
+  z-index: 1;
 
   /* @include Tamano(lg) {
     position: initial;

@@ -3,6 +3,10 @@
 
 //████████████████████████████████████████████TABLE██████████████████████████████████████████████████████████████████████
 
+.frmRevision{
+  min-width: var(--min-width);
+}
+
 table {
   margin-bottom: 60px;
   position: relative;
