@@ -19,6 +19,8 @@ export class FacturaComponent {
   
   public TipoPago: String = 'Contado';
   public TipoImpuesto: String = 'Iva';
+  public EsContraEntrega : Boolean = false;
+  public EsExportacion : Boolean = false;
   
   public SimboloMonedaCliente: String = 'C$';
 
@@ -64,6 +66,17 @@ export class FacturaComponent {
       this.TipoImpuesto = 'Iva';
       return;
     }
+  }
+
+  public v_ContraEntrega(event: any): void {
+
+    this.EsContraEntrega = event.target.checked;
+  }
+
+  
+  public v_Exportacion(event: any): void {
+
+    this.EsExportacion = event.target.checked;
   }
 
   //████████████████████████████████████████████FICHA PRODUCTO████████████████████████████████████████████████████████████████████████

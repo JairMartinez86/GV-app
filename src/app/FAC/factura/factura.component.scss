@@ -117,5 +117,32 @@ $breakpoints: (
 .check-button-escasan {
   display: flex;
   justify-content:space-between;
+
+ 
 }
 
+
+
+.contra{
+  display: flex;
+  justify-content:left;
+ 
+}
+.export{
+  display: flex;
+  justify-content:right;
+}
+
+.contra,
+.export{
+  label{
+    margin-right: 10px;
+    font-weight: bold;
+  }
+}
+
+.export{
+  label{
+    margin-left: 10px;
+  }
+}
