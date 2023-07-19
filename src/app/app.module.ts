@@ -21,6 +21,7 @@ import { FactFichaProductoComponent } from './FAC/fact-ficha-producto/fact-ficha
 import { FactConfirmarComponent } from './FAC/fact-confirmar/fact-confirmar.component';
 import { FactRevisionComponent } from './FAC/fact-revision/fact-revision.component';
 import { FactBonificacionLibreComponent } from './FAC/fact-bonificacion-libre/fact-bonificacion-libre.component';
+import { WaitComponent } from './SHARED/wait/wait.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { FactBonificacionLibreComponent } from './FAC/fact-bonificacion-libre/fa
     FactConfirmarComponent,
     FactRevisionComponent,
     FactBonificacionLibreComponent,
+    WaitComponent,
   ],
   imports: [
     BrowserModule,

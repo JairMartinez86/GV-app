@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FactDeliveryComponent } from '../fact-delivery/fact-delivery.component';
+import { WaitComponent } from 'src/app/SHARED/wait/wait.component';
 
 @Component({
   selector: 'app-fact-confirmar',
@@ -26,6 +27,17 @@ export class FactConfirmarComponent {
           'style',
           'display:initial;'
         );
+        break;
+      
+      case "Facturar":
+        let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+          WaitComponent,
+          {
+            panelClass: "escasan-dialog-full",
+            data: ""
+          }
+        );
+    
         break;
     }
   }
@@ -80,6 +92,8 @@ export class FactConfirmarComponent {
       return;
     }
   }
+
+
 
   public v_Delivery(): void {
     let a = 1 == 1 ? 1 : 0;
