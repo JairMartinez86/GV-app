@@ -32,25 +32,11 @@ auto - for classes that set the margin to auto, like mx-auto
   --escan-primario-sombra: rgba(0, 157, 67, 0.5);
 
   --escan-fondo: white;
+
 }
 
-@mixin Tamano($points) {
-  @media screen and (min-width: map-get($breakpoints, $points)) {
-    @content;
-  }
-}
 
-$breakpoints: (
-  s: 0px,
 
-  sm: 576px,
-
-  md: 768px,
-
-  lg: 992px,
-
-  xl: 1200px,
-);
 
 html,
 body {

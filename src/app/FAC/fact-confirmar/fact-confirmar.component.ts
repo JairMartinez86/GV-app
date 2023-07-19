@@ -16,31 +16,6 @@ export class FactConfirmarComponent {
 
   public constructor(public dialog: MatDialog) {}
 
-  public v_FichaPanel(Panel: String): void {
-    switch (Panel) {
-      case 'Producto':
-        (
-          document.querySelector('#frmConfirmarFactura') as HTMLElement
-        ).setAttribute('style', 'display:none;');
-
-        (document.querySelector('#frmRevision') as HTMLElement).setAttribute(
-          'style',
-          'display:initial;'
-        );
-        break;
-      
-      case "Facturar":
-        let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
-          WaitComponent,
-          {
-            panelClass: "escasan-dialog-full",
-            data: ""
-          }
-        );
-    
-        break;
-    }
-  }
 
   //████████████████████████████████████████████FICHA FACTURA████████████████████████████████████████████████████████████████████████
   public v_TipoPago(event: any): void {

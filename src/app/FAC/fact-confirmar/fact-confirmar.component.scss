@@ -1,21 +1,17 @@
-@mixin Tamano($points) {
-  @media screen and (min-width: map-get($breakpoints, $points)) {
-    @content;
+@import '/src/assets/scss/media.scss';
+
+
+.direcciones-delivery{
+
+  margin-bottom: 0;
+
+
+  @include Tamano_Menor(lg) {
+    margin-bottom: 50px;
   }
+
+
 }
-
-$breakpoints: (
-  s: 0px,
-
-  sm: 576px,
-
-  md: 768px,
-
-  lg: 992px,
-
-  xl: 1200px,
-);
-
 
 
 .flechas {
@@ -34,7 +30,7 @@ $breakpoints: (
       top: 0;
       right: -24px;
     }
-
+/*
     @include Tamano(s) {
       button:before {
         position: absolute;
@@ -49,7 +45,7 @@ $breakpoints: (
         top: 0;
         left: 0;
       }
-    }
+    }*/
   }
 
   &-atras {
@@ -63,7 +59,7 @@ $breakpoints: (
       top: 0;
       left: -24px;
     }
-
+/*
     @include Tamano(s) {
       button:after {
         position: absolute;
@@ -78,7 +74,7 @@ $breakpoints: (
         top: 0;
         right: 0;
       }
-    }
+    }*/
   }
 }
 

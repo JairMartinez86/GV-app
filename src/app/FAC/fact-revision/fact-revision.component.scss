@@ -1,30 +1,25 @@
-@mixin Tamano($points) {
-  @media screen and (min-width: map-get($breakpoints, $points)) {
-    @content;
-  }
-}
+@import '/src/assets/scss/media.scss';
 
-$breakpoints: (
-  s: 0px,
-
-  sm: 576px,
-
-  md: 768px,
-
-  lg: 992px,
-
-  xl: 1200px,
-);
 
 //████████████████████████████████████████████TABLE██████████████████████████████████████████████████████████████████████
 
 table {
   margin-bottom: 60px;
+  position: relative;
+}
+
+thead {
+  position: absolute;
 }
 .header-table {
   position: fixed;
   z-index: 1;
   overflow-x: hidden;
+  top: 0;
+}
+
+tbody tr:first-child {
+  margin-top: 30px;
 }
 
 .text-ajustar {
@@ -74,16 +69,14 @@ td i {
 }
 
 @include Tamano(lg) {
-    .etiqueta {
-      width: 80%;
-    }
-
-    .valores {
-      width: 20%;
-    }
+  .etiqueta {
+    width: 80%;
   }
 
-
+  .valores {
+    width: 20%;
+  }
+}
 
 .linea {
   border-bottom: 2px dashed var(--escan-secundario);
@@ -91,21 +84,16 @@ td i {
 
 //████████████████████████████████████████████TOTALES██████████████████████████████████████████████████████████████████████
 
-
-.total-panel-1
-{
-    background-color: #D47C3B;
+.total-panel-1 {
+  background-color: #d47c3b;
 }
 
-.total-panel-2
-{
-    background-color: #1B364C;
+.total-panel-2 {
+  background-color: #1b364c;
 }
 
-.total-panel-3
-{
-   
-    background-color: var(--escan-primario);
+.total-panel-3 {
+  background-color: var(--escan-primario);
 }
 
 .contenedor {
@@ -173,8 +161,6 @@ td i {
       top: 0;
       right: -24px;
     }
-
-    
 
     @include Tamano(s) {
       button:before {

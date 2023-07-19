@@ -21,35 +21,7 @@ export class FactFichaProductoComponent {
 
     //████████████████████████████████████████████FICHA PRODUCTO████████████████████████████████████████████████████████████████████████
 
-    public v_FichaPanel(Panel: String): void {
 
-      (document.querySelector('#frmFichaProducto') as HTMLElement).setAttribute(
-        'style',
-        'display:none;'
-      );
-      (document.querySelector('#frmRevision') as HTMLElement).setAttribute(
-        'style',
-        'display:none;'
-      );
-  
-      switch (Panel) {
-
-  
-        case 'Cliente':
-          (
-            document.querySelector('#frmFichaFactura') as HTMLElement
-          ).setAttribute('style', 'display:initial;');
-          break;
-  
-        case 'Ver Productos':
-          (document.querySelector('#frmRevision') as HTMLElement).setAttribute(
-            'style',
-            'display:initial;'
-          );
-          break;
-      }
-    }
-  
     public v_Datos_Producto(p: String): void {
       let dialogRef: MatDialogRef<TablaDatosComponent> = this.dialog.open(
         TablaDatosComponent,

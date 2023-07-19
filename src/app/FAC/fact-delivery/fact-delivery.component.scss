@@ -1,5 +1,6 @@
 
-.escan-table          { overflow: auto; height: 300px; }
+//.escan-table          { overflow: auto; height: 300px; }
+.escan-table          { overflow: auto;  }
 .escan-table thead th { position: sticky; top: 0; z-index: 1; }
 
 /* Just common table stuff. Really. */
@@ -11,3 +12,33 @@ th     { background:#eee; }
     margin-left: 10px;
     margin-right: 10px;
   }
+
+  .text-ajustar {
+    float: left;
+    display: flex;
+    align-items: center;
+    word-break: break-all;
+    margin: 0 0 1em 1em;
+  }
+  
+  .linea {
+    border-bottom: 2px dashed var(--escan-secundario);
+  }
+  
+  .depto-muni{
+    text-align: right;
+    font-weight: bold;
+  }
+
+
+  .contenedor-depto-muni {
+    display: flex;
+    justify-content:space-between;
+    width: 100%;
+
+    input{
+      margin-right: 5px;
+    }
+
+  
+  }  
