@@ -63,6 +63,17 @@ td i {
   width: 20%;
   font-weight: initial;
   padding-right: 10px;
+
+
+}
+
+.valores-descuento{
+  display: flex;
+  justify-content:space-between;
+  .porc{
+    margin-left: 5px;
+    color: blue;
+  }
 }
 
 @include Tamano(s) {
