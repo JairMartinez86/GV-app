@@ -162,7 +162,7 @@ export class FacturaComponent {
         let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
           WaitComponent,
           {
-            panelClass: "escasan-dialog-full",
+            panelClass: "escasan-dialog-full-blur",
             data: ""
           }
         );
