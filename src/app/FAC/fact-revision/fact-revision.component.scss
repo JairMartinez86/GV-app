@@ -77,9 +77,12 @@ td i {
 }
 
 @include Tamano(s) {
-  .etiqueta,
+  .etiqueta {
+    width: 40%;
+  }
+
   .valores {
-    width: 50%;
+    width: 60%;
   }
 }
 
