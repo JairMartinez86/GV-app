@@ -1,4 +1,4 @@
-
+@import '/src/assets/scss/media.scss';
 .wait {
     height: 100%;
   }
@@ -21,8 +21,8 @@
   }
 
   .app-loading .spinner {
-    height: 200px;
-    width: 200px;
+    height: 500px;
+    width: 500px;
     animation: rotate 2s linear infinite;
     transform-origin: center center;
     position: absolute;
@@ -31,6 +31,25 @@
     left: 0;
     right: 0;
     margin: auto;
+
+    @include Tamano_Menor(lg) {
+     height: 250px;
+    width: 250px;
+    }
+  
+
+
+  }
+  
+  img{
+    height: 500px;
+    width: 500px;
+
+    @include Tamano_Menor(lg) {
+      height: 250px;
+     width: 250px;
+     }
+   
   }
 
   .app-loading .spinner .path {
