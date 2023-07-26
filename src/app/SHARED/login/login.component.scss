@@ -1,0 +1,66 @@
+
+#frmlogin{
+    background-color: var(--escan-primario);
+}
+
+#frmlogin {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  font-size: 1.2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-signin {
+  background-color: var(--escan-fondo);
+  box-shadow: 3px 4px 14px 6px rgba(0, 0, 0, 0.76);
+  border: 5px solid var(--escan-primario);
+  color: var(--escan-verde);
+  text-align: center;
+  min-width: 350px;
+  max-width: 450px;
+}
+
+.form-signin {
+    border-radius: 20px;
+  }
+
+  
+#lblTitulo1 {
+  margin: 0;
+  padding: 0;
+  color: var(--escan-primario);
+  font-size: 3.5em;
+  text-align: center;
+}
+
+#lblTitulo2 {
+  margin: 0;
+  padding: 0;
+  color: var(--escan-secundario);
+  font-size: 1em;
+  text-align: center;
+}
+
+.form-signin input {
+  color: var(--escan-primario);
+  font-family: "SavingsBond";
+  text-align: center;
+}
+
+#btnIniciar {
+  background-color: var(--escan-primario);
+  font-family: "SavingsBond";
+  height: 60px;
+}
+
+input{
+    color: var(--escan-primario);
+    font-family: 'SavingsBond';
+    text-align: center;
+  }
