@@ -1,5 +1,5 @@
-<div class="offcanvas offcanvas-start w-25 kk" tabindex="-1" id="offcanvas" data-bs-keyboard="false"
-    data-bs-backdrop="false">
+<div class="offcanvas offcanvas-start w-25" tabindex="-1" id="offcanvas" data-bs-keyboard="true" 
+    data-bs-backdrop="true">
     <div class="offcanvas-header">
         <h6 class="offcanvas-title d-none d-sm-block" id="offcanvas">Menu</h6>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -17,7 +17,7 @@
                     <i class="fa-solid fa-shop fa-lg"></i><span class="ms-1 d-none d-sm-inline">Facturación</span>
                 </a>
                 <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdown">
-                    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-cash-register"></i> Nueva Factura</a></li>
+                    <li><a class="dropdown-item" href="#" id="aNuevaFactura"><i class="fa-solid fa-cash-register"></i> Nueva Factura</a></li>
                     <li><a class="dropdown-item" href="#"><i class="fa-solid fa-table-cells"></i> Registros</a></li>
                 </ul>
             </li>
@@ -46,11 +46,12 @@
 </div>
 <div class="p-4 contenedor">
     <!-- toggler -->
-    <button class="btn float-end contenedor-boton" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button">
+    <button class="btn float-end contenedor-boton" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button" id="btnMenu">
         <i class="bi bi-arrow-right-square-fill fs-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"></i>
     </button>
 
 </div>
-<div class="contenido-maestro">
-    <app-factura></app-factura>
+<div class="contenido-maestro" DynamicFrom="">
+
+    
 </div>

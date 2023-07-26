@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'GV-app';
+
+  public constructor(private _Router: Router){
+    this._Router.navigate(['/Login'], { skipLocationChange: false });
+  }
 }

@@ -24,6 +24,7 @@ import { FactBonificacionLibreComponent } from './FAC/componente/fact-bonificaci
 import { WaitComponent } from './SHARED/componente/wait/wait.component';
 import { SidebarComponent } from './SHARED/componente/sidebar/sidebar.component';
 import { LoginComponent } from './SHARED/login/login.component';
+import { DynamicFormDirective } from './SHARED/directive/dynamic-form.directive';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { LoginComponent } from './SHARED/login/login.component';
     WaitComponent,
     SidebarComponent,
     LoginComponent,
+    DynamicFormDirective,
   ],
   imports: [
     BrowserModule,
