@@ -9,92 +9,121 @@
 
                             <div class="row linea">
 
-                                <div class="col-md-12 col-lg-8 offset-lg-4">
-
-                                    <div class="row">
-
-
-                                        <div class="col-md-12 col-lg-6 mb-1">
+                               
+                                <div class="col-md-12 col-lg-4 mb-1">
                                             
-                                            <div class="input-group">
-                                                <span class="input-group-text">
-                                                    <input type="checkbox" id="chkEsPedido_Confirmar"
-                                                        data-toggle="toggle" data-style="on" data-onstyle="on"
-                                                        data-offstyle="off" data-onlabel="Factura"
-                                                        data-offlabel="Pedido" data-width="120" data-height="100%"
-                                                        (change)="v_TipoFactura($event)">
-                                                </span>
-                                                <div class="form-floating">
-                                                    <input type="text" id="chkEsFactura_Confirmar" class="form-control"
-                                                        placeholder="No" aria-label="No">
-                                                    <label for="chkEsFactura_Confirmar">No {{TipoFactura}}</label>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-
-
-                                        <div class="col-md-12 col-lg-6">
-
-
-
-
-                                            <div class="row mb-1 g-1">
-                                                <div class="col-4">
-
-                                                    <div class="input-group">
-                                                        <span class="input-group-text"><i
-                                                                class="bi bi-calendar"></i></span>
-                                                        <div class="form-floating">
-                                                            <input type="text" id="txtDia_Confirmar"
-                                                                class="form-control" placeholder="Dia" aria-label="Dia">
-                                                            <label for="txtDia_Confirmar">Dia</label>
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-4">
-
-
-
-                                                    <div class="input-group">
-                                                        <div class="form-floating">
-                                                            <input type="text" id="txtMes_Confirmar"
-                                                                class="form-control" placeholder="Mes" aria-label="Mes">
-                                                            <label for="txtMes_Confirmar">Mes</label>
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-4">
-
-                                                    <div class="input-group">
-                                                        <div class="form-floating">
-                                                            <input type="text" id="txtAnio_Confirmar"
-                                                                class="form-control" placeholder="Año" aria-label="Año">
-                                                            <label for="txtAnio_Confirmar">Año</label>
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <input type="checkbox" id="chkEsPedido_Confirmar"
+                                                data-toggle="toggle" data-style="on" data-onstyle="on"
+                                                data-offstyle="off" data-onlabel="Factura"
+                                                data-offlabel="Pedido" data-width="120" data-height="100%"
+                                                (change)="v_TipoFactura($event)">
+                                        </span>
+                                        <div class="form-floating">
+                                            <input type="text" id="chkEsFactura_Confirmar" class="form-control"
+                                                placeholder="No" aria-label="No">
+                                            <label for="chkEsFactura_Confirmar">No {{TipoFactura}}</label>
 
                                         </div>
-
-
 
                                     </div>
+                                </div>
 
+
+
+                                <div class="col-md-12 col-lg-4">
+
+
+
+
+                                    <div class="row mb-1 g-1">
+                                        <div class="col-4">
+
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i
+                                                        class="bi bi-calendar"></i></span>
+                                                <div class="form-floating">
+                                                    <input type="text" id="txtDia_Confirmar"
+                                                        class="form-control" placeholder="Dia" aria-label="Dia">
+                                                    <label for="txtDia_Confirmar">Dia</label>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4">
+
+
+
+                                            <div class="input-group">
+                                                <div class="form-floating">
+                                                    <input type="text" id="txtMes_Confirmar"
+                                                        class="form-control" placeholder="Mes" aria-label="Mes">
+                                                    <label for="txtMes_Confirmar">Mes</label>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4">
+
+                                            <div class="input-group">
+                                                <div class="form-floating">
+                                                    <input type="text" id="txtAnio_Confirmar"
+                                                        class="form-control" placeholder="Año" aria-label="Año">
+                                                    <label for="txtAnio_Confirmar">Año</label>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
 
+                                <div class="col-md-12 col-lg-4">
+
+
+
+
+                                    <div class="row mb-1 g-1">
+                                        <div class="col-6">
+
+                                            <div class="input-group">
+                                                
+                                                <div class="form-floating">
+                                                    <input type="text" id="txtPazo_Confirmar"
+                                                        class="form-control" placeholder="Plazo" aria-label="Plazo">
+                                                    <label for="txtPazo_Confirmar">Plazo</label>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+
+
+
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i
+                                                    class="bi bi-calendar"></i></span>
+                                                <div class="form-floating">
+                                                    <input type="date" id="txtVence_Confirmar"
+                                                        class="form-control" placeholder="Vence" aria-label="Vence">
+                                                    <label for="txtVence_Confirmar">Vence</label>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
 
 
 
