@@ -1,0 +1,28 @@
+@import '/src/assets/scss/media.scss';
+
+.contenedor{
+    position: relative;
+    z-index: 2;
+}
+
+.contenedor-boton{
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding-top: 0;
+}
+
+
+.kk{
+
+
+       @include Tamano_Menor(lg) {
+        width: 40% !important;
+        }
+
+        @include Tamano(lg) {
+            width: 15% !important;
+            }
+     
+
+}

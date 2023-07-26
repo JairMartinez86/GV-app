@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FacturaComponent } from './FAC/factura/factura.component';
+import { FacturaComponent } from './FAC/componente/factura/factura.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -15,13 +15,14 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 
 import { faCoffee, fas, faWarehouse } from '@fortawesome/free-solid-svg-icons';
-import { TablaDatosComponent } from './FAC/tabla-datos/tabla-datos.component';
-import { FactDeliveryComponent } from './FAC/fact-delivery/fact-delivery.component';
-import { FactFichaProductoComponent } from './FAC/fact-ficha-producto/fact-ficha-producto.component';
-import { FactConfirmarComponent } from './FAC/fact-confirmar/fact-confirmar.component';
-import { FactRevisionComponent } from './FAC/fact-revision/fact-revision.component';
-import { FactBonificacionLibreComponent } from './FAC/fact-bonificacion-libre/fact-bonificacion-libre.component';
-import { WaitComponent } from './SHARED/wait/wait.component';
+import { TablaDatosComponent } from './FAC/componente/tabla-datos/tabla-datos.component';
+import { FactDeliveryComponent } from './FAC/componente/fact-delivery/fact-delivery.component';
+import { FactFichaProductoComponent } from './FAC/componente/fact-ficha-producto/fact-ficha-producto.component';
+import { FactConfirmarComponent } from './FAC/componente/fact-confirmar/fact-confirmar.component';
+import { FactRevisionComponent } from './FAC/componente/fact-revision/fact-revision.component';
+import { FactBonificacionLibreComponent } from './FAC/componente/fact-bonificacion-libre/fact-bonificacion-libre.component';
+import { WaitComponent } from './SHARED/componente/wait/wait.component';
+import { SidebarComponent } from './SHARED/componente/sidebar/sidebar.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { WaitComponent } from './SHARED/wait/wait.component';
     FactRevisionComponent,
     FactBonificacionLibreComponent,
     WaitComponent,
+    SidebarComponent,
   ],
   imports: [
     BrowserModule,

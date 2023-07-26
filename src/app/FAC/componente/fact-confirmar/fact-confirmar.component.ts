@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FactDeliveryComponent } from '../fact-delivery/fact-delivery.component';
-import { WaitComponent } from 'src/app/SHARED/wait/wait.component';
+import { WaitComponent } from 'src/app/SHARED/componente/wait/wait.component';
 
 @Component({
   selector: 'app-fact-confirmar',

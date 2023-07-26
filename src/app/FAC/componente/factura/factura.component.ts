@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { TablaDatosComponent } from '../tabla-datos/tabla-datos.component';
 import { FactDeliveryComponent } from '../fact-delivery/fact-delivery.component';
-import { WaitComponent } from 'src/app/SHARED/wait/wait.component';
+import { WaitComponent } from 'src/app/SHARED/componente/wait/wait.component';
 
 @Component({
   selector: 'app-factura',

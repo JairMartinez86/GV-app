@@ -1,0 +1,56 @@
+<div class="offcanvas offcanvas-start w-25 kk" tabindex="-1" id="offcanvas" data-bs-keyboard="false"
+    data-bs-backdrop="false">
+    <div class="offcanvas-header">
+        <h6 class="offcanvas-title d-none d-sm-block" id="offcanvas">Menu</h6>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body px-0">
+        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link text-truncate">
+                    <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Inicio</span>
+                </a>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="fa-solid fa-shop fa-lg"></i><span class="ms-1 d-none d-sm-inline">Facturación</span>
+                </a>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdown">
+                    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-cash-register"></i> Nueva Factura</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-table-cells"></i> Registros</a></li>
+                </ul>
+            </li>
+            <!--
+            <li>
+                <a href="#" class="nav-link text-truncate">
+                    <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">Orders</span></a>
+            </li>
+        -->
+            <li class="dropdown">
+                <a href="#" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="fa-solid fa-gear fa-lg"></i><span class="ms-1 d-none d-sm-inline">Usuario</span>
+                </a>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdown">
+                    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-screwdriver-wrench"></i> Configuración</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-user"></i> Perfil</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="p-4 contenedor">
+    <!-- toggler -->
+    <button class="btn float-end contenedor-boton" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button">
+        <i class="bi bi-arrow-right-square-fill fs-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"></i>
+    </button>
+
+</div>
+<div class="contenido-maestro">
+    <app-factura></app-factura>
+</div>
