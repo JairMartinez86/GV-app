@@ -198,7 +198,10 @@ export class FacturaComponent {
     //HABILITANDO CHECKBOK POR PROBLEMAS DE VIZUALIZACION
     const lstcheckbox : any = document.querySelectorAll("input[type='checkbox']")
     lstcheckbox.forEach((f : any) => {
-      f.bootstrapToggle();
+
+      if(f.id != "chkDelivery"){
+        f.bootstrapToggle();
+      }
     });
 
 
