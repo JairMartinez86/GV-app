@@ -23,7 +23,7 @@ import { FactRevisionComponent } from './FAC/componente/fact-revision/fact-revis
 import { FactBonificacionLibreComponent } from './FAC/componente/fact-bonificacion-libre/fact-bonificacion-libre.component';
 import { WaitComponent } from './SHARED/componente/wait/wait.component';
 import { SidebarComponent } from './SHARED/componente/sidebar/sidebar.component';
-import { LoginComponent } from './SHARED/login/login.component';
+import { LoginComponent } from './SHARED/componente/login/login.component';
 import { DynamicFormDirective } from './SHARED/directive/dynamic-form.directive';
 
 
