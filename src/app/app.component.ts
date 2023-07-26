@@ -11,7 +11,7 @@ export class AppComponent {
 
   public constructor(private _Router: Router){
 
-    this._Router.navigate(['/Login'], { skipLocationChange: false });
+   this._Router.navigate(['/Login'], { skipLocationChange: false });
   
   }
 }

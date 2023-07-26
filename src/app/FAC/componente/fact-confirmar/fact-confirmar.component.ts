@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FactDeliveryComponent } from '../fact-delivery/fact-delivery.component';
-import { WaitComponent } from 'src/app/SHARED/componente/wait/wait.component';
 
 @Component({
   selector: 'app-fact-confirmar',
@@ -14,7 +13,12 @@ export class FactConfirmarComponent {
   public TipoPago: String = 'Contado';
   public TipoImpuesto: String = 'Iva';
 
-  public constructor(public dialog: MatDialog) {}
+  public constructor(public dialog: MatDialog) {
+   
+    
+  }
+
+
 
 
   //████████████████████████████████████████████FICHA FACTURA████████████████████████████████████████████████████████████████████████
@@ -45,6 +49,7 @@ export class FactConfirmarComponent {
   //████████████████████████████████████████████VER FACTURA████████████████████████████████████████████████████████████████████████
 
   public v_TipoFactura(event: any): void {
+   
     if (event.target.checked) {
       this.TipoFactura = 'Factura';
       return;

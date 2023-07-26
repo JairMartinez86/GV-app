@@ -77,7 +77,7 @@ export class SidebarComponent {
 */
     //FIN
 
-    $("#btnMenu").click(); // MOSTRAR MENU DESDE EL INICIO
+    $("#btnMenu").trigger("click"); // MOSTRAR MENU DESDE EL INICIO
    
     
 
@@ -90,12 +90,9 @@ export class SidebarComponent {
   public v_Abrir_Form(id : String) : void{
     
     if(id == "aNuevaFactura"){
-      $("#btnMenu").click();
-      this.DynamicFrom.viewContainerRef.clear();
-      this.DynamicFrom.viewContainerRef.createComponent(FacturaComponent);
-    
+      $("#btnMenu").trigger("click");
 
-      let link: HTMLLinkElement = this.document.createElement('link');
+     /* let link: HTMLLinkElement = this.document.createElement('link');
       link.setAttribute('rel', 'stylesheet');
       link.setAttribute('href', 'https://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.0.6/css/bootstrap5-toggle.min.css');
       this.document.head.appendChild(link);
@@ -103,8 +100,13 @@ export class SidebarComponent {
       let  script = this.document.createElement('script');
       script.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.0.6/js/bootstrap5-toggle.jquery.min.js');
       this.document.head.appendChild(script);
-  
-  
+      */
+      this.DynamicFrom.viewContainerRef.clear();
+        this.DynamicFrom.viewContainerRef.createComponent(FacturaComponent);
+
+     
+    
+
     }
 
     if(id == "aSalir"){

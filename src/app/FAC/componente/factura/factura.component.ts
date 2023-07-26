@@ -11,7 +11,6 @@ import { WaitComponent } from 'src/app/SHARED/componente/wait/wait.component';
   selector: 'app-factura',
   templateUrl: './factura.component.html',
   styleUrls: ['./factura.component.scss'],
-  
 })
 export class FacturaComponent {
   myControl = new FormControl('');
@@ -191,4 +190,18 @@ export class FacturaComponent {
       dialogRef.componentInstance.VisibleCol3 = true;
     });*/
   }
+
+
+  ngAfterViewInit(){
+
+
+    //HABILITANDO CHECKBOK POR PROBLEMAS DE VIZUALIZACION
+    const lstcheckbox : any = document.querySelectorAll("input[type='checkbox']")
+    lstcheckbox.forEach((f : any) => {
+      f.bootstrapToggle();
+    });
+
+
+  }
 }
+
