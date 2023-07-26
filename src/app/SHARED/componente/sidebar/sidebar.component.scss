@@ -1,12 +1,8 @@
 @import '/src/assets/scss/media.scss';
 
-.DynamicFrom{
-    z-index: 0;
-}
 
 .contenedor{
     position: relative;
-    z-index: 2;
 }
 
 .contenedor-boton{
@@ -17,7 +13,11 @@
     i{
         color: var(--escan-primario);
     }
-    
+    z-index: 2;
+}
+
+.DynamicFrom{
+    z-index: 0;
 }
 
 
