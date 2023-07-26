@@ -11,6 +11,7 @@ import { WaitComponent } from 'src/app/SHARED/componente/wait/wait.component';
   selector: 'app-factura',
   templateUrl: './factura.component.html',
   styleUrls: ['./factura.component.scss'],
+  
 })
 export class FacturaComponent {
   myControl = new FormControl('');

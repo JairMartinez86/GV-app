@@ -7,9 +7,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'GV-app';
+  title = 'Global Vet';
 
   public constructor(private _Router: Router){
+
     this._Router.navigate(['/Login'], { skipLocationChange: false });
+  
   }
 }

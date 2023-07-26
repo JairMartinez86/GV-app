@@ -13,11 +13,11 @@
 }
 
 
-.kk{
+.side-width{
 
 
        @include Tamano_Menor(lg) {
-        width: 40% !important;
+        width: 50% !important;
         }
 
         @include Tamano(lg) {
