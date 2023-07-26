@@ -1,5 +1,9 @@
 @import '/src/assets/scss/media.scss';
 
+.DynamicFrom{
+    z-index: 0;
+}
+
 .contenedor{
     position: relative;
     z-index: 2;
@@ -10,6 +14,10 @@
     top: 0;
     right: 0;
     padding-top: 0;
+    i{
+        color: var(--escan-primario);
+    }
+    
 }
 
 
