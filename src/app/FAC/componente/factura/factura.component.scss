@@ -1,25 +1,19 @@
+@import "/src/assets/scss/media.scss";
 
 #frmFichaFactura {
   padding-bottom: 50px;
   overflow: hidden;
-  min-width: var(--min-width);
 }
 
-.i-bonif{
+.i-bonif {
   margin-right: 1px;
 }
 
-
-
-.card-factura{
+.card-factura {
   margin-bottom: 35px;
 }
 
-
-
-
 //████████████████████████████████████████████FOOTER████████████████████████████████████████████████████████████████████████
-
 
 .flechas {
   z-index: 3;
@@ -40,8 +34,6 @@
       top: 0;
       right: -24px;
     }
-
-
   }
 
   &-atras {
@@ -55,44 +47,42 @@
       top: 0;
       left: -24px;
     }
+  }
 
+  button {
+    font-size: 1em;
+    @include Tamano_Menor(sm) {
+      font-size: 0.9em;
+    }
   }
 }
-
-
-
 
 //████████████████████████████████████████████CHECBOX████████████████████████████████████████████████████████████████████████
 
 .check-button-escasan {
   display: flex;
-  justify-content:space-between;
-
- 
+  justify-content: space-between;
 }
 
-
-
-.contra{
+.contra {
   display: flex;
-  justify-content:left;
- 
+  justify-content: left;
 }
-.export{
+.export {
   display: flex;
-  justify-content:right;
+  justify-content: right;
 }
 
 .contra,
-.export{
-  label{
+.export {
+  label {
     margin-left: 10px;
     font-weight: bold;
   }
 }
 
-.export{
-  label{
+.export {
+  label {
     margin-right: 10px;
   }
 }
