@@ -10,7 +10,7 @@
 
   text-align: right;
 
-  @include Tamano(s) {
+  @include Tamano(xs) {
     button{
       display: block;
       width: 100%;
