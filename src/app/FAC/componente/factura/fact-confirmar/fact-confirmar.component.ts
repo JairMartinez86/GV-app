@@ -76,7 +76,6 @@ export class FactConfirmarComponent {
 
 
   public v_Delivery(): void {
-    let a = 1 == 1 ? 1 : 0;
 
     const dialogRef: MatDialogRef<FactDeliveryComponent> = this.dialog.open(
       FactDeliveryComponent,
