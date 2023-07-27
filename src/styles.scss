@@ -138,8 +138,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 input[type=number]{
+  
+  appearance: none;
   -moz-appearance:textfield;
-
 
 }
 
