@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TablaDatosComponent } from '../tabla-datos/tabla-datos.component';
+import { TablaDatosComponent } from '../../tabla-datos/tabla-datos.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';

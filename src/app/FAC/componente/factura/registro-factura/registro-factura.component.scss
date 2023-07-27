@@ -1,0 +1,59 @@
+.RegistrosFactura{
+    padding: 15px;
+}
+
+.contenido-2{
+    display: flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.aling-block.center{
+    text-align: center;
+}
+
+
+.aling-block{
+
+    span{
+    display: block;
+    width: 100%;
+    }
+}
+
+
+
+.aling-right{
+    text-align: right;
+
+    span{
+        display: inline-block;
+        width: 50%;
+    }
+}
+
+.header-table-doc{
+    background-color: var(--escan-primario);
+    color: var(--escan-fondo);
+}
+
+tbody tr:first-child {
+    margin-top: 30px;
+  }
+
+  
+.linea {
+    border-bottom: 2px dashed var(--escan-secundario);
+  }
+
+  .btn-contenedor{
+    display: flex;
+    justify-content: right;
+    button:first-child{
+        margin-right: 50px;
+
+        i{
+            color: var(--escan-primario);
+        }
+    }
+  }

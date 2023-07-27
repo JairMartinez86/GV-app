@@ -4,6 +4,7 @@ import { FacturaComponent } from 'src/app/FAC/componente/factura/factura.compone
 import * as $ from 'jquery';
 import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
+import { RegistroFacturaComponent } from 'src/app/FAC/componente/factura/registro-factura/registro-factura.component';
 
 const SCRIPT_PATH = 'ttps://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.0.4/css/bootstrap5-toggle.min.css';
 declare let gapi: any;
@@ -102,10 +103,16 @@ export class SidebarComponent {
       this.document.head.appendChild(script);
       */
       this.DynamicFrom.viewContainerRef.clear();
-        this.DynamicFrom.viewContainerRef.createComponent(FacturaComponent);
+      this.DynamicFrom.viewContainerRef.createComponent(FacturaComponent);
 
      
     
+
+    }
+
+    if(id == "aRegistroFactura"){
+      this.DynamicFrom.viewContainerRef.clear();
+      this.DynamicFrom.viewContainerRef.createComponent(RegistroFacturaComponent);
 
     }
 

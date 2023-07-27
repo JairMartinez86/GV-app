@@ -16,15 +16,16 @@ import {MatIconModule} from '@angular/material/icon';
 
 import { faCoffee, fas, faWarehouse } from '@fortawesome/free-solid-svg-icons';
 import { TablaDatosComponent } from './FAC/componente/tabla-datos/tabla-datos.component';
-import { FactDeliveryComponent } from './FAC/componente/fact-delivery/fact-delivery.component';
-import { FactFichaProductoComponent } from './FAC/componente/fact-ficha-producto/fact-ficha-producto.component';
-import { FactConfirmarComponent } from './FAC/componente/fact-confirmar/fact-confirmar.component';
-import { FactRevisionComponent } from './FAC/componente/fact-revision/fact-revision.component';
-import { FactBonificacionLibreComponent } from './FAC/componente/fact-bonificacion-libre/fact-bonificacion-libre.component';
+import { FactDeliveryComponent } from './FAC/componente/factura/fact-delivery/fact-delivery.component';
+import { FactFichaProductoComponent } from './FAC/componente/factura/fact-ficha-producto/fact-ficha-producto.component';
+import { FactConfirmarComponent } from './FAC/componente/factura/fact-confirmar/fact-confirmar.component';
+import { FactRevisionComponent } from './FAC/componente/factura/fact-revision/fact-revision.component';
+import { FactBonificacionLibreComponent } from './FAC/componente/factura/fact-bonificacion-libre/fact-bonificacion-libre.component';
 import { WaitComponent } from './SHARED/componente/wait/wait.component';
 import { SidebarComponent } from './SHARED/componente/sidebar/sidebar.component';
 import { LoginComponent } from './SHARED/componente/login/login.component';
 import { DynamicFormDirective } from './SHARED/directive/dynamic-form.directive';
+import { RegistroFacturaComponent } from './FAC/componente/factura/registro-factura/registro-factura.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { DynamicFormDirective } from './SHARED/directive/dynamic-form.directive'
     SidebarComponent,
     LoginComponent,
     DynamicFormDirective,
+    RegistroFacturaComponent,
   ],
   imports: [
     BrowserModule,
