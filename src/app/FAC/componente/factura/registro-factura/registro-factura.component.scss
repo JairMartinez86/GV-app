@@ -1,3 +1,5 @@
+@import '/src/assets/scss/media.scss';
+
 .RegistrosFactura{
     padding: 15px;
 }
@@ -15,6 +17,15 @@ thead{
             .titulo{
                 font-size: 1.5em;
             }
+
+            
+            @include Tamano_Menor(lg) {
+                height: 170px;
+            }
+
+            @include Tamano_Menor(lg) {
+                height: 170px;
+            }
         }
 
         .linea{
@@ -25,6 +36,10 @@ thead{
             margin-top: 20px;
         }
     }
+}
+
+.btn-refescar{
+    padding: 0;
 }
 
 .contenido-2{
@@ -64,6 +79,10 @@ thead{
 
 tbody tr:first-child {
     margin-top: 120px;
+
+    @include Tamano_Menor(lg) {
+        margin-top: 170px;
+    }
   }
 
   
