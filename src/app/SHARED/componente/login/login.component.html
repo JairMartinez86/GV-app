@@ -1,6 +1,6 @@
 <div id="frmlogin">
     <div class=" form-signin">
-        <form  novalidate autocomplete="off">
+        <form [formGroup]="val.ValForm"   novalidate autocomplete="off">
     
             <div class="logo-login">
                 <img  src="../assets/images/ISOLOGO.png"  width="300px" height="240px"><!--217px-->
@@ -17,7 +17,7 @@
                 <div class="input-group">
                     
                     <div class="form-floating">
-                        <input type="text" id="txtUsuario" class="form-control"
+                        <input type="text" id="txtUsuario" formControlName="txtUsuario" class="form-control"
                             placeholder="Usuario" aria-label="Usuario">
                         <label for="txtUsuario">Usuario.</label>
 
@@ -30,7 +30,7 @@
                 <div class="input-group">
                    
                     <div class="form-floating">
-                        <input type="password" id="txtPass" class="form-control"
+                        <input type="password" id="txtPass" formControlName="txtPass" class="form-control"
                             placeholder="Contraseña" aria-label="Contraseña" autocomplete="off">
                         <label for="txtPass">Contraseña.</label>
 

@@ -16,7 +16,7 @@ export class TablaDatosComponent {
 
   constructor(
     public dialogRef: MatDialogRef<TablaDatosComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: String[],
+    @Inject(MAT_DIALOG_DATA) public data: string[],
   ) {
 
    

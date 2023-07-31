@@ -5,6 +5,7 @@ import * as $ from 'jquery';
 import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
 import { RegistroFacturaComponent } from 'src/app/FAC/componente/factura/registro-factura/registro-factura.component';
+import { LoginService } from '../../service/login.service';
 
 const SCRIPT_PATH = 'ttps://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.0.4/css/bootstrap5-toggle.min.css';
 declare let gapi: any;
@@ -23,7 +24,7 @@ export class SidebarComponent {
   constructor(
     private renderer: Renderer2,
     @Inject(DOCUMENT) private document: HTMLDocument,
-    private _Router: Router
+    private _SrvLogin: LoginService
   ) {
 
    
@@ -88,7 +89,7 @@ export class SidebarComponent {
 
 
   
-  public v_Abrir_Form(id : String) : void{
+  public v_Abrir_Form(id : string) : void{
     
     if(id == "aNuevaFactura"){
       $("#btnMenu").trigger("click");
@@ -117,7 +118,7 @@ export class SidebarComponent {
     }
 
     if(id == "aSalir"){
-      this._Router.navigate(['/Login'], { skipLocationChange: false });
+     this._SrvLogin.CerrarSession();
   
     }
   }

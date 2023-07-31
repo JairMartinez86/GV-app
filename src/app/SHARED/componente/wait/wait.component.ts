@@ -11,7 +11,7 @@ export class WaitComponent {
 
   constructor(
     public dialogRef: MatDialogRef<WaitComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: String[],
+    @Inject(MAT_DIALOG_DATA) public data: string[],
   ){}
 
 }

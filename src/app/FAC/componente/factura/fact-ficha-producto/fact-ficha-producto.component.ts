@@ -22,7 +22,7 @@ export class FactFichaProductoComponent {
     //████████████████████████████████████████████FICHA PRODUCTO████████████████████████████████████████████████████████████████████████
 
 
-    public v_Datos_Producto(p: String): void {
+    public v_Datos_Producto(p: string): void {
       let dialogRef: MatDialogRef<TablaDatosComponent> = this.dialog.open(
         TablaDatosComponent,
         {

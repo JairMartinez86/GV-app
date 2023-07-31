@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { LoginService } from './SHARED/service/login.service';
+
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,7 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'Global Vet';
 
-  public constructor(private _Router: Router){
-
-   this._Router.navigate(['/Login'], { skipLocationChange: false });
-  
+  public constructor(private _SrvLogin: LoginService){
+    this._SrvLogin.isLogin();
   }
 }

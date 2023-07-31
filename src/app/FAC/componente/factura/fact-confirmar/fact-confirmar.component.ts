@@ -8,10 +8,10 @@ import { FactDeliveryComponent } from '../fact-delivery/fact-delivery.component'
   styleUrls: ['./fact-confirmar.component.scss'],
 })
 export class FactConfirmarComponent {
-  public TipoFactura: String = 'Factura';
-  public TipoExoneracion: String = 'Sin Exoneración';
-  public TipoPago: String = 'Contado';
-  public TipoImpuesto: String = 'Iva';
+  public TipoFactura: string = 'Factura';
+  public TipoExoneracion: string = 'Sin Exoneración';
+  public TipoPago: string = 'Contado';
+  public TipoImpuesto: string = 'Iva';
 
   public constructor(public dialog: MatDialog) {
    

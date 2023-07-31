@@ -26,6 +26,7 @@ import { SidebarComponent } from './SHARED/componente/sidebar/sidebar.component'
 import { LoginComponent } from './SHARED/componente/login/login.component';
 import { DynamicFormDirective } from './SHARED/directive/dynamic-form.directive';
 import { RegistroFacturaComponent } from './FAC/componente/factura/registro-factura/registro-factura.component';
+import { DialogErrorComponent } from './SHARED/componente/dialog-error/dialog-error.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { RegistroFacturaComponent } from './FAC/componente/factura/registro-fact
     LoginComponent,
     DynamicFormDirective,
     RegistroFacturaComponent,
+    DialogErrorComponent,
   ],
   imports: [
     BrowserModule,

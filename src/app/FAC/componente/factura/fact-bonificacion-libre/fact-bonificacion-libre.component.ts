@@ -10,6 +10,6 @@ export class FactBonificacionLibreComponent {
 
   constructor(
     public dialogRef: MatDialogRef<FactBonificacionLibreComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: String,
+    @Inject(MAT_DIALOG_DATA) public data: string,
   ){}
 }
