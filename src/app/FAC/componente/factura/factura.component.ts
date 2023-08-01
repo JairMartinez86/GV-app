@@ -5,6 +5,11 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { TablaDatosComponent } from '../tabla-datos/tabla-datos.component';
 import { WaitComponent } from 'src/app/SHARED/componente/wait/wait.component';
+import { Validacion } from 'src/app/SHARED/class/validacion';
+import { getFactura } from '../../GET/get-factura';
+import { DialogErrorComponent } from 'src/app/SHARED/componente/dialog-error/dialog-error.component';
+import { iDatos } from 'src/app/SHARED/interface/i-Datos';
+import { iCliente } from '../../interface/i-Cliente';
 
 @Component({
   selector: 'app-factura',
@@ -12,9 +17,11 @@ import { WaitComponent } from 'src/app/SHARED/componente/wait/wait.component';
   styleUrls: ['./factura.component.scss'],
 })
 export class FacturaComponent {
-  myControl = new FormControl('');
-  options: string[] = ['Uno', 'Dos', 'Tres'];
-  filteredOptions: Observable<string[]> | undefined;
+
+  public val = new Validacion();
+
+  lstClientes: iCliente[] = [];
+  filteredClientes: Observable<iCliente[]> | undefined;
 
   public Panel: String = "";
   public BotonSiguienteLabel = "";
@@ -26,22 +33,63 @@ export class FacturaComponent {
 
   public SimboloMonedaCliente: String = 'C$';
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog) {
 
-  ngOnInit() {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value || ''))
-    );
+    this.val.add("txtCliente", "1", "LEN>", "0", "Cliente", "Seleccione un cliente.");
+
+    this.CargarDatos();
   }
 
-  private _filter(value: string): string[] {
+
+  private CargarDatos(): void{
+
+    let Conexion : getFactura = new getFactura();
+
+    Conexion.Datos_Factura().subscribe(
+      
+      s =>{
+        let _json = JSON.parse(s);
+   
+        if(_json["esError"] == 1){
+
+          let dialogRef: MatDialogRef<DialogErrorComponent> = this.dialog.open(
+            DialogErrorComponent,
+            {
+              data: _json["msj"],
+            }
+          );
+        }
+        else{
+          let Datos : iDatos[] = _json["d"];
+
+          this.lstClientes = Datos[0].d;
+
+        }
+
+        
+      },
+      err =>{
+        
+      }
+      );
+
+ 
+  }
+
+  
+ //████████████████████████████████████████████DATOS CLIENTE████████████████████████████████████████████████████████████████████████
+
+
+  private _filter(value: string): iCliente[] {
     const filterValue = value.toLowerCase();
 
-    return this.options.filter((option) =>
-      option.toLowerCase().includes(filterValue)
+    return this.lstClientes.filter((option) =>
+      option.Key.toLowerCase().includes(filterValue)
     );
   }
+
+
+
 
   //████████████████████████████████████████████FICHA FACTURA████████████████████████████████████████████████████████████████████████
   public v_TipoPago(event: any): void {
@@ -188,6 +236,38 @@ export class FacturaComponent {
       alert("")
       dialogRef.componentInstance.VisibleCol3 = true;
     });*/
+  }
+
+
+
+
+  ngOnInit() {
+
+    /*
+    this.filteredClientes = this.val.Get("txtCliente").valueChanges.pipe(
+      startWith(''),
+      map((value : iCliente) => (typeof value.Cliente === 'string' ? value : value?.Cliente)),
+      map((c : iCliente) =>
+        c
+          ? this.lstClientes.filter(
+              (f) =>{
+                f.Cliente.toLowerCase().includes(c.Cliente.toLowerCase())
+              }
+              
+            )
+          : this.lstClientes.slice()
+      )
+    );*/
+    
+
+    this.filteredClientes = this.val.Get("txtCliente").valueChanges.pipe(
+      startWith(''),
+      map((value : string) => this._filter(value || ''))
+    );
+
+
+
+
   }
 
 

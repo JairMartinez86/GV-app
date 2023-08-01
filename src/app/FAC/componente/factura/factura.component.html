@@ -2,7 +2,7 @@
 
 <div id="frmFichaFactura">
 
-    <form class="mx-2">
+    <form class="mx-2" [formGroup]="val.ValForm" >
 
         <div class="row">
             <div class="col-12 col-sm-12 col-md-6 mb-3 card-escasan">
@@ -16,7 +16,7 @@
                                 <div class="form-floating">
                                     <textarea type="text" id="txtCliente" class="form-control"
                                         placeholder="Seleccione un cliente." aria-label="Cliente" matInput
-                                        [formControl]="myControl" [matAutocomplete]="auto"> </textarea>
+                                        formControlName="txtCliente" [matAutocomplete]="cmbCliente"> </textarea>
                                     <label for="txtCliente">Cliente</label>
 
                                 </div>
@@ -126,8 +126,7 @@
                                 <span class="input-group-text"><i class="bi bi-shop"></i></span>
                                 <div class="form-floating">
                                     <input type="text" id="txtBodega" class="form-control"
-                                        placeholder="Seleccione una bodega." aria-label="Bodega" matInput
-                                        [formControl]="myControl" [matAutocomplete]="auto">
+                                        placeholder="Seleccione una bodega." aria-label="Bodega">
                                     <label for="txtBodega">Bodega</label>
 
                                 </div>
@@ -142,8 +141,7 @@
                                 <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
                                 <div class="form-floating">
                                     <textarea type="text" id="txtVendedor" class="form-control"
-                                        placeholder="Seleccione un vendedor." aria-label="Vendedor" matInput
-                                        [formControl]="myControl" [matAutocomplete]="auto"></textarea>
+                                        placeholder="Seleccione un vendedor." aria-label="Vendedor"></textarea>
                                     <label for="txtVendedor">Vendedor</label>
 
                                 </div>
@@ -245,9 +243,9 @@
 
 
 
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                {{option}}
+        <mat-autocomplete autoActiveFirstOption #cmbCliente="matAutocomplete">
+            <mat-option *ngFor="let option of filteredClientes | async" [value]="option.Key">
+                {{option.Key}}
             </mat-option>
         </mat-autocomplete>
 
