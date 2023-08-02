@@ -1,4 +1,95 @@
+
+@use "igniteui-angular/theming" as *;
+// Uncomment the following lines if you want to add a custom palette:
+ //$primary: #009d43 !default;
+ //$secondary: #ff4500 !default;
+ //$surface: white !default;
+ //$search-separator-border-color: #1a5214;
+ //$app-palette: palette($primary, $secondary, $surface, $search-separator-border-color);
+
+
+/* autoprefixer grid: on */
+
+@include core();
+@include typography($font-family: $material-typeface, $type-scale: $material-type-scale);
+@include theme($default-palette);
+// CSS Reset, comment out if not required or using a different module
+@import 'minireset.css/minireset';
 /* You can add global styles to this file, and also import other style files */
+
+$custom-combo-theme: combo-theme(
+    $search-separator-border-color:  var(--escan-primario),
+    
+);
+
+$custom-checkbox-theme: checkbox-theme(
+    $border-radius: 10px,
+    $fill-color: var(--escan-primario),
+    $empty-color: var(--escan-primario),
+);
+
+$custom-drop-down-theme: drop-down-theme(
+    $background-color: #d9f5d6,
+    $header-text-color: #1a5214,
+    $item-text-color: black,
+
+    $focused-item-background: #72da67,
+    $focused-item-text-color: #1a5214,
+    $hover-item-background: #a0e698,
+    $hover-item-text-color: #1a5214,
+
+    $selected-item-background: #a0e698,
+    $selected-item-text-color: #1a5214,
+    $selected-hover-item-background: #72da67,
+    $selected-hover-item-text-color: var(--escan-fondo),
+    $selected-focus-item-background: #72da67,
+    $selected-focus-item-text-color: var(--escan-fondo),
+   
+);
+
+
+
+@include css-vars($custom-combo-theme);
+@include css-vars($custom-drop-down-theme);
+@include css-vars($custom-checkbox-theme);
+
+
+[class^=igx-] {
+
+  
+  --box-background : transparent;
+  --box-background-hover: transparent;
+  --box-background-focus: transparent;
+  --toggle-button-background : transparent;
+  --toggle-button-background-focus : transparent;
+
+
+  igx-input-group{
+    --focused-secondary-color: var(--escan-secundario);
+    --success-secondary-color: var(--escan-secundario) ;
+    --error-secondary-color: var(--escan-primario);
+  }
+
+
+
+}
+
+/*
+.igx-input-group--box .igx-input-group__bundle,
+.igx-input-group--box .igx-input-group__bundle:hover,
+.igx-input-group--box .igx-input-group__bundle .igx-input-group--focused
+{
+  background-color: transparent;
+}
+
+.igx-input-group .igx-combo__toggle-button,
+.igx-input-group--box .igx-input-group--focused {
+   background: transparent; 
+ 
+}
+*/
+
+
 
 /* Importing Bootstrap SCSS file. */
 @import "bootstrap/scss/bootstrap";
@@ -34,7 +125,6 @@ auto - for classes that set the margin to auto, like mx-auto
   --escan-fondo: white;
 
   --min-width: 300px;
-
 }
 
 

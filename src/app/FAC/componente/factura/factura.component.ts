@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
@@ -10,6 +10,17 @@ import { getFactura } from '../../GET/get-factura';
 import { DialogErrorComponent } from 'src/app/SHARED/componente/dialog-error/dialog-error.component';
 import { iDatos } from 'src/app/SHARED/interface/i-Datos';
 import { iCliente } from '../../interface/i-Cliente';
+import {
+  ConnectedPositioningStrategy,
+  GlobalPositionStrategy,
+  HorizontalAlignment,
+  IgxComboComponent,
+  OverlaySettings,
+  PositionSettings,
+  VerticalAlignment,
+  scaleInCenter,
+  scaleOutCenter,
+} from 'igniteui-angular';
 
 @Component({
   selector: 'app-factura',
@@ -17,79 +28,119 @@ import { iCliente } from '../../interface/i-Cliente';
   styleUrls: ['./factura.component.scss'],
 })
 export class FacturaComponent {
-
   public val = new Validacion();
 
   lstClientes: iCliente[] = [];
   filteredClientes: Observable<iCliente[]> | undefined;
 
-  public Panel: String = "";
-  public BotonSiguienteLabel = "";
+  public Panel: String = '';
+  public BotonSiguienteLabel = '';
 
   public TipoPago: String = 'Contado';
   public TipoImpuesto: String = 'Iva';
   public EsContraEntrega: Boolean = false;
   public EsExportacion: Boolean = false;
 
+  public CodCliente : string = "";
+
   public SimboloMonedaCliente: String = 'C$';
 
   constructor(public dialog: MatDialog) {
-
-    this.val.add("txtCliente", "1", "LEN>", "0", "Cliente", "Seleccione un cliente.");
+    this.val.add(
+      'txtCliente',
+      '1',
+      'LEN>',
+      '0',
+      'Cliente',
+      'Seleccione un cliente.'
+    );
 
     this.CargarDatos();
   }
 
-
-  private CargarDatos(): void{
-
-    let Conexion : getFactura = new getFactura();
+  private CargarDatos(): void {
+    let Conexion: getFactura = new getFactura();
 
     Conexion.Datos_Factura().subscribe(
-      
-      s =>{
+      (s) => {
         let _json = JSON.parse(s);
-   
-        if(_json["esError"] == 1){
 
+        if (_json['esError'] == 1) {
           let dialogRef: MatDialogRef<DialogErrorComponent> = this.dialog.open(
             DialogErrorComponent,
             {
-              data: _json["msj"],
+              data: _json['msj'],
             }
           );
-        }
-        else{
-          let Datos : iDatos[] = _json["d"];
+        } else {
+          let Datos: iDatos[] = _json['d'];
 
           this.lstClientes = Datos[0].d;
-
         }
-
-        
       },
-      err =>{
-        
-      }
-      );
-
- 
-  }
-
-  
- //████████████████████████████████████████████DATOS CLIENTE████████████████████████████████████████████████████████████████████████
-
-
-  private _filter(value: string): iCliente[] {
-    const filterValue = value.toLowerCase();
-
-    return this.lstClientes.filter((option) =>
-      option.Key.toLowerCase().includes(filterValue)
+      (err) => {}
     );
   }
 
+  //████████████████████████████████████████████DATOS CLIENTE████████████████████████████████████████████████████████████████████████
+
+  public v_Select_Cliente(event: any): void {
+    let Cliente : iCliente[] = this.lstClientes.filter( f => f.Key == event.option.value);
+
+    this.CodCliente = "";
+    this.val.Get("txtCliente").setValue("");
+    if(Cliente.length > 0){
+      this.CodCliente = Cliente[0].Codigo;
+      this.val.Get("txtCliente").setValue(Cliente[0].Cliente);
+      this.val.Get("txtCliente").disable();
+    }
+  }
+
+  public v_Borrar_Cliente() : void{
+    this.CodCliente = "";
+    this.val.Get("txtCliente").setValue("");
+    this.val.Get("txtCliente").enable();
+  }
+
+  /*
+ @ViewChild('cmbCliente', { static: false })
+ public cmbCliente: IgxComboComponent;
+ 
+
+ public v_Select_Cliente(event: any) {
+  if (event.added.length) {
+      event.newSelection = event.added;
+      let _Fila : any =  this.lstClientes.find(f => f.Codigo == event.added)
+  }
+
+  this.cmbCliente.close();
+}
+
+public v_Enter_Cliente(event : any) {
+ 
+  if(event.key == "Enter"){
+    let _Item : iCliente =this.cmbCliente.dropdown.focusedItem.value
+    this.cmbCliente.setSelectedItem(_Item.Codigo);
+  }
+
+}
+
+public v_Close_Cliente(){
+ // this.f_key_Enter(this.igxCombo.id);
+}
 
 
+public customSettings: OverlaySettings = {
+  positionStrategy: new GlobalPositionStrategy(
+      {
+          openAnimation: scaleInCenter,
+          closeAnimation: scaleOutCenter,
+      }),
+  modal: true,
+  closeOnOutsideClick: true,
+};
+
+*/
 
   //████████████████████████████████████████████FICHA FACTURA████████████████████████████████████████████████████████████████████████
   public v_TipoPago(event: any): void {
@@ -142,14 +193,14 @@ export class FacturaComponent {
       'display:none;'
     );
 
-    
-    (document.querySelector('#frmConfirmarFactura') as HTMLElement).setAttribute(
-      'style',
-      'display:none;'
-    );
+    (
+      document.querySelector('#frmConfirmarFactura') as HTMLElement
+    ).setAttribute('style', 'display:none;');
 
-
-    if (evento == 'Siguiente' && this.Panel == ''   || evento == 'Atras' && this.Panel == 'Revision') {
+    if (
+      (evento == 'Siguiente' && this.Panel == '') ||
+      (evento == 'Atras' && this.Panel == 'Revision')
+    ) {
       this.Panel = 'Producto';
       this.BotonSiguienteLabel = 'Ver Producto';
 
@@ -172,8 +223,10 @@ export class FacturaComponent {
       return;
     }
 
-
-    if (evento == 'Siguiente' && this.Panel == 'Producto' || evento == 'Atras' && this.Panel == 'Confirmar') {
+    if (
+      (evento == 'Siguiente' && this.Panel == 'Producto') ||
+      (evento == 'Atras' && this.Panel == 'Confirmar')
+    ) {
       this.Panel = 'Revision';
       this.BotonSiguienteLabel = 'Confirmar';
 
@@ -184,16 +237,13 @@ export class FacturaComponent {
       return;
     }
 
-
-    
     if (evento == 'Siguiente' && this.Panel == 'Revision') {
       this.Panel = 'Confirmar';
       this.BotonSiguienteLabel = 'Facturar';
 
-      (document.querySelector('#frmConfirmarFactura') as HTMLElement).setAttribute(
-        'style',
-        'display:initial;'
-      );
+      (
+        document.querySelector('#frmConfirmarFactura') as HTMLElement
+      ).setAttribute('style', 'display:initial;');
       return;
     }
 
@@ -201,26 +251,20 @@ export class FacturaComponent {
       this.Panel = 'Confirmar';
       this.BotonSiguienteLabel = 'Facturar';
 
-      (document.querySelector('#frmConfirmarFactura') as HTMLElement).setAttribute(
-        'style',
-        'display:initial;'
+      (
+        document.querySelector('#frmConfirmarFactura') as HTMLElement
+      ).setAttribute('style', 'display:initial;');
+
+      let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+        WaitComponent,
+        {
+          panelClass: 'escasan-dialog-full-blur',
+          data: '',
+        }
       );
-     
-        let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
-          WaitComponent,
-          {
-            panelClass: "escasan-dialog-full-blur",
-            data: ""
-          }
-        );
 
       return;
     }
-
-
-
-
-
   }
 
   public v_Datos_Producto(p: String): void {
@@ -238,52 +282,29 @@ export class FacturaComponent {
     });*/
   }
 
-
-
-
   ngOnInit() {
-
-    /*
-    this.filteredClientes = this.val.Get("txtCliente").valueChanges.pipe(
+    //FILTRO CLIENTE
+    this.filteredClientes = this.val.Get('txtCliente').valueChanges.pipe(
       startWith(''),
-      map((value : iCliente) => (typeof value.Cliente === 'string' ? value : value?.Cliente)),
-      map((c : iCliente) =>
-        c
-          ? this.lstClientes.filter(
-              (f) =>{
-                f.Cliente.toLowerCase().includes(c.Cliente.toLowerCase())
-              }
-              
-            )
-          : this.lstClientes.slice()
-      )
-    );*/
-    
-
-    this.filteredClientes = this.val.Get("txtCliente").valueChanges.pipe(
-      startWith(''),
-      map((value : string) => this._filter(value || ''))
+      map((value: string) => {
+        return this.lstClientes.filter((option) =>
+          option.Key.toLowerCase().includes(
+            (value || '').toLowerCase().trimStart()
+          )
+        );
+      })
     );
-
-
-
-
   }
 
-
-  ngAfterViewInit(){
-
-
+  ngAfterViewInit() {
     //HABILITANDO CHECKBOK POR PROBLEMAS DE VIZUALIZACION
-    const lstcheckbox : any = document.querySelectorAll("input[type='checkbox']")
-    lstcheckbox.forEach((f : any) => {
-
-      if(f.id != "chkDelivery"){
+    const lstcheckbox: any = document.querySelectorAll(
+      "input[type='checkbox']"
+    );
+    lstcheckbox.forEach((f: any) => {
+      if (f.id != 'chkDelivery') {
         f.bootstrapToggle();
       }
     });
-
-
   }
 }
-

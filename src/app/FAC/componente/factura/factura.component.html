@@ -2,7 +2,7 @@
 
 <div id="frmFichaFactura">
 
-    <form class="mx-2" [formGroup]="val.ValForm" >
+    <form class="mx-2" [formGroup]="val.ValForm">
 
         <div class="row">
             <div class="col-12 col-sm-12 col-md-6 mb-3 card-escasan">
@@ -11,9 +11,27 @@
 
                     <div class="card-body">
                         <div class="row mb-1">
+
+                            <!--
+                                    <igx-combo #cmbCliente #withValueKey [data]="lstClientes" valueKey="Codigo"
+                                        displayKey="Key" id="txtCliente" formControlName="txtCliente"
+                                        placeholder="Cliente" searchPlaceholder="Seleccione un cliente..."
+                                        [autoFocusSearch]="true"
+                                        [overlaySettings]="customSettings"
+                                        (selectionChanging)="v_Select_Cliente($event)"
+                                        (keyup)="v_Enter_Cliente($event);" (closed)="v_Close_Cliente()">
+                                        <label igxLabel>Cliente</label>
+                                        <igx-prefix><i class="bi bi-people-fill"></i></igx-prefix>
+                                    </igx-combo>
+                                -->
+
                             <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
+
+                                <span class="input-group-text"><button type="button" class="btn i-boton"
+                                    (click)="v_Borrar_Cliente();"><i
+                                            [ngClass]="CodCliente == '' ? 'bi bi-people-fill' : 'fa-solid fa-eraser fa-beat-fade fa-lg'"></i>{{CodCliente}}</button></span>
                                 <div class="form-floating">
+
                                     <textarea type="text" id="txtCliente" class="form-control"
                                         placeholder="Seleccione un cliente." aria-label="Cliente" matInput
                                         formControlName="txtCliente" [matAutocomplete]="cmbCliente"> </textarea>
@@ -22,6 +40,7 @@
                                 </div>
 
                             </div>
+
                         </div>
 
                         <div class="row mb-1">
@@ -151,7 +170,7 @@
 
 
 
-                        
+
 
 
 
@@ -160,35 +179,36 @@
                             <div class="col-6">
                                 <div class="contra">
                                     <input type="checkbox" id="chkContraEntrega" data-toggle="toggle" data-style="on"
-                                data-onstyle="on" data-offstyle="off" data-onlabel="Si" data-offlabel="No"
-                                data-width="100"(change)="v_ContraEntrega($event)"><label>  Contra Entrega </label>
-                                </div> 
-    
+                                        data-onstyle="on" data-offstyle="off" data-onlabel="Si" data-offlabel="No"
+                                        data-width="100" (change)="v_ContraEntrega($event)"><label> Contra Entrega
+                                    </label>
+                                </div>
+
                             </div>
                             <div class="col-6">
-                               
 
-                               
-                                <div class="export"><label>  Exportación</label>
+
+
+                                <div class="export"><label> Exportación</label>
                                     <input type="checkbox" id="chkExportacion" data-toggle="toggle" data-style="on"
-                                    data-onstyle="on" data-offstyle="off" data-onlabel="Si" data-offlabel="No"
-                                    data-width="100" (change)="v_Exportacion($event)"> 
-                                </div> 
-                                
+                                        data-onstyle="on" data-offstyle="off" data-onlabel="Si" data-offlabel="No"
+                                        data-width="100" (change)="v_Exportacion($event)">
+                                </div>
+
                             </div>
 
-                            
-                     
-                   
 
-                           
 
-                  
-                           
 
-                           
 
-                         
+
+
+
+
+
+
+
+
 
                             <!--
 
@@ -243,7 +263,8 @@
 
 
 
-        <mat-autocomplete autoActiveFirstOption #cmbCliente="matAutocomplete">
+        <mat-autocomplete autoActiveFirstOption #cmbCliente="matAutocomplete"
+            (optionSelected)="v_Select_Cliente($event)">
             <mat-option *ngFor="let option of filteredClientes | async" [value]="option.Key">
                 {{option.Key}}
             </mat-option>
@@ -305,4 +326,3 @@
     </div>
 
 </div>
-

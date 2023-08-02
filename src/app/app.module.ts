@@ -6,13 +6,13 @@ import { AppComponent } from './app.component';
 import { FacturaComponent } from './FAC/componente/factura/factura.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import { FontAwesomeModule, FaIconLibrary   } from '@fortawesome/angular-fontawesome';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatIconModule} from '@angular/material/icon';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 
 import { faCoffee, fas, faWarehouse } from '@fortawesome/free-solid-svg-icons';
 import { TablaDatosComponent } from './FAC/componente/tabla-datos/tabla-datos.component';
@@ -27,7 +27,8 @@ import { LoginComponent } from './SHARED/componente/login/login.component';
 import { DynamicFormDirective } from './SHARED/directive/dynamic-form.directive';
 import { RegistroFacturaComponent } from './FAC/componente/factura/registro-factura/registro-factura.component';
 import { DialogErrorComponent } from './SHARED/componente/dialog-error/dialog-error.component';
-
+import { IgxComboModule } from 'igniteui-angular';
+import { IgxIconModule } from 'igniteui-angular';
 
 @NgModule({
   declarations: [
@@ -58,8 +59,9 @@ import { DialogErrorComponent } from './SHARED/componente/dialog-error/dialog-er
     MatInputModule,
     FontAwesomeModule,
     MatDialogModule,
-    MatIconModule
-    
+    MatIconModule,
+    IgxComboModule,
+    IgxIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -69,4 +71,4 @@ export class AppModule {
     library.addIconPacks(fas);
     library.addIcons(faCoffee);
   }
- }
+}
