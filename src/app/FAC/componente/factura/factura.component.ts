@@ -66,7 +66,7 @@ export class FacturaComponent {
         let _json = JSON.parse(s);
 
         if (_json['esError'] == 1) {
-          let dialogRef: MatDialogRef<DialogErrorComponent> = this.dialog.open(
+          this.dialog.open(
             DialogErrorComponent,
             {
               data: _json['msj'],
@@ -78,7 +78,15 @@ export class FacturaComponent {
           this.lstClientes = Datos[0].d;
         }
       },
-      (err) => {}
+      (err) => {
+
+         this.dialog.open(
+          DialogErrorComponent,
+          {
+            data: err.message,
+          }
+        );
+      }
     );
   }
 
