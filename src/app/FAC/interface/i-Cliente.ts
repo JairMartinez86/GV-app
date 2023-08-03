@@ -1,6 +1,11 @@
 export interface iCliente{
     Codigo: string;
-    Cliente : string;
-    Filtro : string;
-    Key : string;
+    Cliente: string;
+    Ruc: string;
+    Cedula: string;
+    Contacto: string;
+    Limite : Number;
+    Moneda : string
+    Filtro: string;
+    Key: string;
 }

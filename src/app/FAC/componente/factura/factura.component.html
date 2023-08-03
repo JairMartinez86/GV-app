@@ -37,6 +37,13 @@
                                         formControlName="txtCliente" [matAutocomplete]="cmbCliente"> </textarea>
                                     <label for="txtCliente">Cliente</label>
 
+                                    <mat-autocomplete autoActiveFirstOption #cmbCliente="matAutocomplete"
+                                    (optionSelected)="v_Select_Cliente($event)">
+                                    <mat-option *ngFor="let option of filteredClientes | async" [value]="option.Key">
+                                        {{option.Key}}
+                                    </mat-option>
+                                </mat-autocomplete>
+
                                 </div>
 
                             </div>
@@ -47,7 +54,7 @@
                             <div class="input-group">
                                 <div class="form-floating">
                                     <input type="text" id="txtNombre" class="form-control" placeholder="Nombre"
-                                        aria-label="Nombre">
+                                        aria-label="Nombre" formControlName="txtNombre">
                                     <label for="txtNombre">Nombre</label>
                                 </div>
 
@@ -62,7 +69,7 @@
                                     <span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
                                     <div class="form-floating">
                                         <input type="text" id="txtIdentificacion" class="form-control"
-                                            placeholder="Ruc/Cedula" aria-label="Ruc_Cedula">
+                                            placeholder="Ruc/Cedula" aria-label="Ruc_Cedula" formControlName="txtIdentificacion">
                                         <label for="txtIdentificacion">Ruc/Cedula</label>
                                     </div>
 
@@ -71,10 +78,10 @@
                             </div>
                             <div class="col-12 col-sm-12 col-md-6 mb-1">
                                 <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-wallet"></i></span>
+                                    <span class="input-group-text">{{SimboloMonedaCliente}}</span>
                                     <div class="form-floating">
                                         <input type="text" id="txtLimite" class="form-control" placeholder="Limite"
-                                            aria-label="Limite">
+                                            aria-label="Limite" formControlName="txtLimite">
                                         <label for="txtLimite">Limite</label>
                                     </div>
 
@@ -89,7 +96,7 @@
                                     <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
                                     <div class="form-floating">
                                         <input type="text" id="txtContacto" class="form-control" placeholder="Contacto"
-                                            aria-label="Contacto">
+                                            aria-label="Contacto" formControlName="txtContacto">
                                         <label for="txtContacto">Contacto</label>
                                     </div>
 
@@ -98,10 +105,10 @@
                             </div>
                             <div class="col-12 col-sm-12 col-md-6">
                                 <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-currency-dollar"></i></span>
+                                    <span class="input-group-text">{{SimboloMonedaCliente}}</span>
                                     <div class="form-floating">
                                         <input type="text" id="txtDisponible" class="form-control"
-                                            placeholder="Disponible" aria-label="Disponible">
+                                            placeholder="Disponible" aria-label="Disponible" formControlName="txtDisponible">
                                         <label for="txtDisponible">Disponible</label>
                                     </div>
 
@@ -128,7 +135,7 @@
 
                                 <input type="checkbox" id="chkTipoFactura" data-toggle="toggle" data-style="on"
                                     data-onstyle="on" data-offstyle="off" data-onlabel="Crédito" data-offlabel="Contado"
-                                    data-width="120" checked (change)="v_TipoPago($event)">
+                                    data-width="120"  (change)="v_TipoPago($event)">
 
 
                                 <input type="checkbox" id="chkImpuesto" data-toggle="toggle" data-style="on"
@@ -141,16 +148,37 @@
 
 
                         <div class="row mb-1">
+
+                            <igx-combo #cmbBodega #withValueKey [data]="lstBodega" valueKey="Codigo"
+                                        displayKey="Key" id="txtBodega" formControlName="txtBodega"
+                                        placeholder="Bodega" searchPlaceholder="Seleccione una bodega..."
+                                        [autoFocusSearch]="true"
+                                        (selectionChanging)="v_Select_Bodega($event)"
+                                        (keyup)="v_Enter_Bodega($event);" (closed)="v_Close_Bodega()">
+                                        <label igxLabel>Bodega</label>
+                                        <igx-prefix><i class="bi bi-shop"></i></igx-prefix>
+                                    </igx-combo>
+
+                            <!--
                             <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-shop"></i></span>
+                                <span class="input-group-text"><i class="bi bi-shop"></i>{{CodBodega}}</span>
                                 <div class="form-floating">
-                                    <input type="text" id="txtBodega" class="form-control"
-                                        placeholder="Seleccione una bodega." aria-label="Bodega">
+                                    <textarea type="text" id="txtBodega" class="form-control"
+                                        placeholder="Seleccione una bodega." aria-label="Bodega" formControlName="txtBodega" [matAutocomplete]="cmbBodega"></textarea>
                                     <label for="txtBodega">Bodega</label>
 
                                 </div>
 
+                                <mat-autocomplete autoActiveFirstOption #cmbBodega="matAutocomplete"
+                                (optionSelected)="v_Select_Bodega($event)">
+                                <mat-option *ngFor="let option of filteredBodega | async" [value]="option.Key">
+                                    {{option.Key}}
+                                </mat-option>
+                            </mat-autocomplete>
+
                             </div>
+
+                        -->
                         </div>
 
 
@@ -263,12 +291,7 @@
 
 
 
-        <mat-autocomplete autoActiveFirstOption #cmbCliente="matAutocomplete"
-            (optionSelected)="v_Select_Cliente($event)">
-            <mat-option *ngFor="let option of filteredClientes | async" [value]="option.Key">
-                {{option.Key}}
-            </mat-option>
-        </mat-autocomplete>
+      
 
     </form>
 

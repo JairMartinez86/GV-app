@@ -16,8 +16,12 @@ export class getFactura{
     }
     
     public Datos_Factura() : Observable<string>{
-       return this.http.get<any>(this._Cnx.Url() + "Factura/Datos")
+       return this.http.get<any>(this._Cnx.Url() + "Factura/Datos");
     }
     
+    public Datos_Credito(CodCliente : string) : Observable<string>{
+        return this.http.get<any>(this._Cnx.Url() + "Factura/DatosCredito?CodCliente=" + CodCliente);
+     }
+     
 
 }

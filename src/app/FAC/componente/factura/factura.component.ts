@@ -21,6 +21,8 @@ import {
   scaleInCenter,
   scaleOutCenter,
 } from 'igniteui-angular';
+import { iBodega } from '../../interface/i-Bodega';
+import { iCredito } from '../../interface/i-Credito';
 
 @Component({
   selector: 'app-factura',
@@ -30,8 +32,14 @@ import {
 export class FacturaComponent {
   public val = new Validacion();
 
+  public CodCliente : string = "";
   lstClientes: iCliente[] = [];
   filteredClientes: Observable<iCliente[]> | undefined;
+
+
+  lstBodega: iBodega[] = [];
+
+
 
   public Panel: String = '';
   public BotonSiguienteLabel = '';
@@ -41,9 +49,10 @@ export class FacturaComponent {
   public EsContraEntrega: Boolean = false;
   public EsExportacion: Boolean = false;
 
-  public CodCliente : string = "";
+  
 
-  public SimboloMonedaCliente: String = 'C$';
+  public SimboloMonedaCliente: String = 'U$';
+  private MonedaCliente : string;
 
   constructor(public dialog: MatDialog) {
     this.val.add(
@@ -55,14 +64,58 @@ export class FacturaComponent {
       'Seleccione un cliente.'
     );
 
-    this.CargarDatos();
+    this.val.add("txtNombre", "1", "LEN>=", "0", "Nombre", "");
+    this.val.add("txtIdentificacion", "1", "LEN>=", "0", "Ruc/Cedula", "");
+    this.val.add("txtLimite", "1", "LEN>=", "0", "Limite", "");
+    this.val.add("txtContacto", "1", "LEN>=", "0", "Contacto", "");
+    this.val.add("txtDisponible", "1", "LEN>=", "0", "Disponible", "");
+
+    this.val.add("txtBodega", "1", "LEN>", "0", "Bodega", "Seleccione una bodega.");
+
+    this._Evento("Iniciar");
+  }
+
+  private _Evento(e : string): void{
+    switch(e){
+      case "Iniciar":
+        this.CargarDatos();
+        this._Evento("Limpiar");
+        
+        break;
+
+        case "Limpiar":
+          this.SimboloMonedaCliente = "U$";
+          this.val.Get("txtCliente").setValue(" ");
+          this.val.Get("txtNombre").setValue("");
+          this.val.Get("txtIdentificacion").setValue("");
+          this.val.Get("txtLimite").setValue("0");
+          this.val.Get("txtContacto").setValue("");
+          this.val.Get("txtDisponible").setValue("0");
+
+
+          this.val.Get("txtBodega").setValue(" ");
+        break;
+    }
+
   }
 
   private CargarDatos(): void {
     let Conexion: getFactura = new getFactura();
 
+    
+    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+      WaitComponent,
+      {
+        id: "wait",
+        panelClass: 'escasan-dialog-full-blur',
+        data: '',
+      }
+    );
+    
     Conexion.Datos_Factura().subscribe(
       (s) => {
+
+        dialogRef.close();
         let _json = JSON.parse(s);
 
         if (_json['esError'] == 1) {
@@ -76,14 +129,17 @@ export class FacturaComponent {
           let Datos: iDatos[] = _json['d'];
 
           this.lstClientes = Datos[0].d;
+          this.lstBodega = Datos[1].d;
         }
       },
       (err) => {
 
+        dialogRef.close();
+
          this.dialog.open(
           DialogErrorComponent,
           {
-            data: err.message,
+            data: "<b class='error'>" + err.message + "</b>",
           }
         );
       }
@@ -97,45 +153,52 @@ export class FacturaComponent {
 
     this.CodCliente = "";
     this.val.Get("txtCliente").setValue("");
+    this.val.Get("txtIdentificacion").setValue("");
+    this.val.Get("txtLimite").setValue("0");
+    this.val.Get("txtContacto").setValue("");
+    this.val.Get("txtDisponible").setValue("0");
+
     if(Cliente.length > 0){
       this.CodCliente = Cliente[0].Codigo;
       this.val.Get("txtCliente").setValue(Cliente[0].Cliente);
+      this.val.Get("txtIdentificacion").setValue(Cliente[0].Ruc + "/" + Cliente[0].Cedula);
+      this.val.Get("txtLimite").setValue(Cliente[0].Limite);
+      this.val.Get("txtContacto").setValue(Cliente[0].Contacto);
+      this.val.Get("txtDisponible").setValue("0");
+      this.MonedaCliente = Cliente[0].Moneda;
+      this.SimboloMonedaCliente = "U$";
+      if(Cliente[0].Moneda == "C")  this.SimboloMonedaCliente = "C$";
+
       this.val.Get("txtCliente").disable();
+      
     }
   }
+
+
 
   public v_Borrar_Cliente() : void{
     this.CodCliente = "";
     this.val.Get("txtCliente").setValue("");
+    this.val.Get("txtIdentificacion").setValue("");
+    this.val.Get("txtLimite").setValue("0");
+    this.val.Get("txtContacto").setValue("");
+    this.val.Get("txtDisponible").setValue("0");
+    this.SimboloMonedaCliente = "U$";
     this.val.Get("txtCliente").enable();
+
+    let chk: any  = document.querySelector("#chkTipoFactura");
+    this.TipoPago = 'Contado';
+    chk.bootstrapToggle("off");
+
+
   }
 
   /*
- @ViewChild('cmbCliente', { static: false })
- public cmbCliente: IgxComboComponent;
+ 
  
 
- public v_Select_Cliente(event: any) {
-  if (event.added.length) {
-      event.newSelection = event.added;
-      let _Fila : any =  this.lstClientes.find(f => f.Codigo == event.added)
-  }
 
-  this.cmbCliente.close();
-}
 
-public v_Enter_Cliente(event : any) {
- 
-  if(event.key == "Enter"){
-    let _Item : iCliente =this.cmbCliente.dropdown.focusedItem.value
-    this.cmbCliente.setSelectedItem(_Item.Codigo);
-  }
-
-}
-
-public v_Close_Cliente(){
- // this.f_key_Enter(this.igxCombo.id);
-}
 
 
 public customSettings: OverlaySettings = {
@@ -151,16 +214,133 @@ public customSettings: OverlaySettings = {
 */
 
   //████████████████████████████████████████████FICHA FACTURA████████████████████████████████████████████████████████████████████████
+
+  @ViewChild('cmbBodega', { static: false })
+ public cmbBodega: IgxComboComponent;
+
+ public v_Select_Bodega(event: any) {
+  if (event.added.length) {
+      event.newSelection = event.added;
+  }
+
+}
+
+public v_Enter_Bodega(event : any) {
+ 
+  if(event.key == "Enter"){
+    let _Item : iBodega =this.cmbBodega.dropdown.focusedItem.value
+    this.cmbBodega.setSelectedItem(_Item.Codigo);
+  }
+
+}
+
+public v_Close_Bodega(){
+ // this.f_key_Enter(this.igxCombo.id);
+}
+
+  
+  
   public v_TipoPago(event: any): void {
-    if (event.target.checked) {
-      this.TipoPago = 'Credito';
-      return;
-    }
 
     if (!event.target.checked) {
       this.TipoPago = 'Contado';
       return;
     }
+
+
+    let chk: any  = document.querySelector("#chkTipoFactura");
+   // chk.bootstrapToggle("off");
+
+
+    let Conexion: getFactura = new getFactura();
+
+    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+      WaitComponent,
+      {
+        id: "wait",
+        panelClass: 'escasan-dialog-full-blur',
+        data: '',
+      }
+    );
+    
+
+  
+    Conexion.Datos_Credito(this.CodCliente).subscribe(
+      (s) => {
+
+        dialogRef.close();
+        let _json = JSON.parse(s);
+
+        if (_json['esError'] == 1) {
+          this.dialog.open(
+            DialogErrorComponent,
+            {
+              data: _json['msj'],
+            }
+          );
+        } else {
+          let Datos: iDatos[] = _json['d'];
+          let Credito: iCredito[] = Datos[0].d;
+
+          this.val.Get("txtLimite").setValue(0);
+          this.val.Get("txtDisponible").setValue(0);
+
+          if(Credito.length > 0)
+          {
+            this.TipoPago = 'Credito';
+            this.val.Get("txtLimite").setValue(Credito[0].Limite);
+            this.val.Get("txtDisponible").setValue(Credito[0].Disponible);
+  
+  
+            if(Credito[0].Plazo == 0){
+              this.TipoPago = 'Contado';
+              chk.bootstrapToggle("off");
+              this.dialog.open(
+                DialogErrorComponent,
+                {
+                  data: "<b class='error'>No tiene crédito disponible.</b>",
+                }
+              );
+            }
+          }
+          else{
+            this.TipoPago = 'Contado';
+              chk.bootstrapToggle("off");
+
+              this.dialog.open(
+                DialogErrorComponent,
+                {
+                  data: "<b class='error'>No tiene crédito asignado.</b>",
+                }
+              );
+          }
+
+   
+         
+         
+      
+        }
+      },
+      (err) => {
+
+        dialogRef.close();
+        this.TipoPago = 'Contado';
+        chk.bootstrapToggle("off");
+
+         this.dialog.open(
+          DialogErrorComponent,
+          {
+            data: "<b class='error'>" + err.message + "</b>",
+          }
+        );
+      }
+    );
+
+
+    
+
+
+    
   }
 
   public v_TipoImpuesto(event: any): void {
@@ -284,10 +464,7 @@ public customSettings: OverlaySettings = {
       }
     );
 
-    /*dialogRef.afterOpened().subscribe(s =>{
-      alert("")
-      dialogRef.componentInstance.VisibleCol3 = true;
-    });*/
+   
   }
 
   ngOnInit() {
@@ -296,17 +473,20 @@ public customSettings: OverlaySettings = {
       startWith(''),
       map((value: string) => {
         return this.lstClientes.filter((option) =>
-          option.Key.toLowerCase().includes(
+          option.Filtro.toLowerCase().includes(
             (value || '').toLowerCase().trimStart()
           )
         );
       })
     );
+
+
+
   }
 
   ngAfterViewInit() {
     //HABILITANDO CHECKBOK POR PROBLEMAS DE VIZUALIZACION
-    const lstcheckbox: any = document.querySelectorAll(
+    let lstcheckbox: any = document.querySelectorAll(
       "input[type='checkbox']"
     );
     lstcheckbox.forEach((f: any) => {
