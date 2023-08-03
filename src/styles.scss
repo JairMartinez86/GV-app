@@ -64,7 +64,7 @@ $custom-drop-down-theme: drop-down-theme(
   --toggle-button-background-focus : transparent;
 
 
-  igx-input-group{
+  .igx-input-group{
     --focused-secondary-color: var(--escan-secundario);
     --success-secondary-color: var(--escan-secundario) ;
     --error-secondary-color: var(--escan-primario);

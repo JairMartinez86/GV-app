@@ -6,6 +6,8 @@ export interface iCliente{
     Contacto: string;
     Limite : Number;
     Moneda : string
+    Vendedor : string;
+    EsClave : Boolean;
     Filtro: string;
     Key: string;
 }

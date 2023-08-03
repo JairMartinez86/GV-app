@@ -184,16 +184,17 @@
 
 
                         <div class="row mb-1">
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
-                                <div class="form-floating">
-                                    <textarea type="text" id="txtVendedor" class="form-control"
-                                        placeholder="Seleccione un vendedor." aria-label="Vendedor"></textarea>
-                                    <label for="txtVendedor">Vendedor</label>
 
-                                </div>
+                            <igx-combo #cmbVendedor #withValueKey [data]="lstVendedores" valueKey="Codigo"
+                            displayKey="Key" id="txtVendedor" formControlName="txtVendedor"
+                            placeholder="Vendedor" searchPlaceholder="Seleccione un vendedor..."
+                            [autoFocusSearch]="true"
+                            (selectionChanging)="v_Select_Vendedor($event)"
+                            (keyup)="v_Enter_Vendedor($event);" (closed)="v_Close_Vendedor()">
+                            <label igxLabel>Vendedor</label>
+                            <igx-prefix><i class="bi bi-person-fill"></i></igx-prefix>
+                        </igx-combo>
 
-                            </div>
                         </div>
 
 

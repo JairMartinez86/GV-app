@@ -23,6 +23,7 @@ import {
 } from 'igniteui-angular';
 import { iBodega } from '../../interface/i-Bodega';
 import { iCredito } from '../../interface/i-Credito';
+import { iVendedor } from '../../interface/i-venedor';
 
 @Component({
   selector: 'app-factura',
@@ -38,6 +39,7 @@ export class FacturaComponent {
 
 
   lstBodega: iBodega[] = [];
+  lstVendedores: iVendedor[] = [];
 
 
 
@@ -48,6 +50,7 @@ export class FacturaComponent {
   public TipoImpuesto: String = 'Iva';
   public EsContraEntrega: Boolean = false;
   public EsExportacion: Boolean = false;
+  public isKeyEnter : Boolean = false;
 
   
 
@@ -71,7 +74,8 @@ export class FacturaComponent {
     this.val.add("txtDisponible", "1", "LEN>=", "0", "Disponible", "");
 
     this.val.add("txtBodega", "1", "LEN>", "0", "Bodega", "Seleccione una bodega.");
-
+    this.val.add("txtVendedor", "1", "LEN>", "0", "Vendedor", "Seleccione un vendedor.");
+    
     this._Evento("Iniciar");
   }
 
@@ -93,7 +97,8 @@ export class FacturaComponent {
           this.val.Get("txtDisponible").setValue("0");
 
 
-          this.val.Get("txtBodega").setValue(" ");
+          this.val.Get("txtBodega").setValue("");
+          this.val.Get("txtVendedor").setValue("");
         break;
     }
 
@@ -130,6 +135,7 @@ export class FacturaComponent {
 
           this.lstClientes = Datos[0].d;
           this.lstBodega = Datos[1].d;
+          this.lstVendedores = Datos[2].d;
         }
       },
       (err) => {
@@ -157,6 +163,8 @@ export class FacturaComponent {
     this.val.Get("txtLimite").setValue("0");
     this.val.Get("txtContacto").setValue("");
     this.val.Get("txtDisponible").setValue("0");
+    this.cmbVendedor.setSelectedItem("");
+    this.val.Get("txtVendedor").setValue("");
 
     if(Cliente.length > 0){
       this.CodCliente = Cliente[0].Codigo;
@@ -165,6 +173,15 @@ export class FacturaComponent {
       this.val.Get("txtLimite").setValue(Cliente[0].Limite);
       this.val.Get("txtContacto").setValue(Cliente[0].Contacto);
       this.val.Get("txtDisponible").setValue("0");
+
+      if(this.val.Get("txtVendedor").value == "" || Cliente[0].EsClave)
+      {
+        this.cmbVendedor.setSelectedItem(Cliente[0].Vendedor);
+        this.val.Get("txtVendedor").setValue([Cliente[0].Vendedor]);
+      }
+    
+
+
       this.MonedaCliente = Cliente[0].Moneda;
       this.SimboloMonedaCliente = "U$";
       if(Cliente[0].Moneda == "C")  this.SimboloMonedaCliente = "C$";
@@ -183,8 +200,12 @@ export class FacturaComponent {
     this.val.Get("txtLimite").setValue("0");
     this.val.Get("txtContacto").setValue("");
     this.val.Get("txtDisponible").setValue("0");
+
+
     this.SimboloMonedaCliente = "U$";
     this.val.Get("txtCliente").enable();
+
+    
 
     let chk: any  = document.querySelector("#chkTipoFactura");
     this.TipoPago = 'Contado';
@@ -215,12 +236,15 @@ public customSettings: OverlaySettings = {
 
   //████████████████████████████████████████████FICHA FACTURA████████████████████████████████████████████████████████████████████████
 
+
+  //BODEGA
   @ViewChild('cmbBodega', { static: false })
  public cmbBodega: IgxComboComponent;
 
  public v_Select_Bodega(event: any) {
   if (event.added.length) {
       event.newSelection = event.added;
+      this.val.Get("txtBodega").setValue(event.added);
   }
 
 }
@@ -230,13 +254,131 @@ public v_Enter_Bodega(event : any) {
   if(event.key == "Enter"){
     let _Item : iBodega =this.cmbBodega.dropdown.focusedItem.value
     this.cmbBodega.setSelectedItem(_Item.Codigo);
+    this.val.Get("txtBodega").setValue(_Item.Codigo);
   }
 
 }
 
 public v_Close_Bodega(){
- // this.f_key_Enter(this.igxCombo.id);
+ // this.f_key_Enter(this.cmbBodega.id);
 }
+
+//VENDEDOR
+
+@ViewChild('cmbVendedor', { static: false })
+ public cmbVendedor: IgxComboComponent;
+
+ public v_Select_Vendedor(event: any) {
+
+ 
+  if (event.added.length) {
+      event.newSelection = event.added;
+      this.val.Get("txtVendedor").setValue(event.added);
+
+      if(this.isKeyEnter){
+        this.isKeyEnter = false;
+        return;
+      }
+      else{
+        this.v_EsClienteClave(event.added);
+      }
+
+    
+
+      
+  }
+
+}
+
+public v_Enter_Vendedor(event : any) {
+ 
+  if(event.key == "Enter"){
+    this.isKeyEnter = true;
+    let _Item : iVendedor =this.cmbVendedor.dropdown.focusedItem.value
+    this.cmbVendedor.setSelectedItem(_Item.Codigo);
+    this.val.Get("txtVendedor").setValue(_Item.Codigo);
+    
+    this.v_EsClienteClave(_Item.Codigo);
+  }
+
+}
+
+public v_Close_Vendedor(){
+ // this.f_key_Enter(this.cmbVendedor.id);
+}
+
+
+private v_EsClienteClave(CodNewVend : string): void{
+
+  if(CodNewVend == "") return;
+
+  let Conexion: getFactura = new getFactura();
+
+  let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+    WaitComponent,
+    {
+      id: "wait",
+      panelClass: 'escasan-dialog-full-blur',
+      data: '',
+    }
+  );
+
+
+  Conexion.Datos_ClienteClave(this.CodCliente).subscribe(
+    (s) => {
+
+      dialogRef.close();
+      let _json = JSON.parse(s);
+
+      if (_json['esError'] == 1) {
+        this.dialog.open(
+          DialogErrorComponent,
+          {
+            data: _json['msj'],
+          }
+        );
+      } else {
+        let Datos: iDatos[] = _json['d'];
+        let Clave: any = Datos[0].d;
+
+        if(Clave.length > 0)
+        {
+          if(Clave[0].EsClave && Clave[0].CodVendedor != CodNewVend[0]){
+            this.cmbVendedor.setSelectedItem(Clave[0].CodVendedor);
+            this.val.Get("txtVendedor").setValue(Clave[0].CodVendedor);
+            this.cmbVendedor.close();
+  
+            this.dialog.open(
+              DialogErrorComponent,
+              {
+                data: "<p>Cliente Clave solo se permite seleccionar el vendedor:<b class='error'>" + Clave[0].Vendedor +"</b></p>",
+              }
+            );
+  
+          }
+  
+        }
+
+    
+       
+      }
+    },
+    (err) => {
+
+      dialogRef.close();
+       this.dialog.open(
+        DialogErrorComponent,
+        {
+          data: "<b class='error'>" + err.message + "</b>",
+        }
+      );
+    }
+  );
+
+ 
+
+}
+
 
   
   
@@ -335,10 +477,6 @@ public v_Close_Bodega(){
         );
       }
     );
-
-
-    
-
 
     
   }
