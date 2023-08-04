@@ -135,12 +135,12 @@
 
                                 <input type="checkbox" id="chkTipoFactura" data-toggle="toggle" data-style="on"
                                     data-onstyle="on" data-offstyle="off" data-onlabel="Crédito" data-offlabel="Contado"
-                                    data-width="120"  (change)="v_TipoPago($event)">
+                                    data-width="120" formControlName="chkTipoFactura"  (change)="v_TipoPago($event)">
 
 
                                 <input type="checkbox" id="chkImpuesto" data-toggle="toggle" data-style="on"
                                     data-onstyle="on" data-offstyle="off" data-onlabel="Iva" data-offlabel="Sin Iva"
-                                    data-width="120" checked (change)="v_TipoImpuesto($event)">
+                                    data-width="120" formControlName="chkImpuesto"  checked (change)="v_TipoImpuesto($event)">
 
                             </div>
 
@@ -209,7 +209,7 @@
                                 <div class="contra">
                                     <input type="checkbox" id="chkContraEntrega" data-toggle="toggle" data-style="on"
                                         data-onstyle="on" data-offstyle="off" data-onlabel="Si" data-offlabel="No"
-                                        data-width="100" (change)="v_ContraEntrega($event)"><label> Contra Entrega
+                                        data-width="100" formControlName="chkContraEntrega" (change)="v_ContraEntrega($event)"><label> Contra Entrega
                                     </label>
                                 </div>
 
@@ -221,7 +221,7 @@
                                 <div class="export"><label> Exportación</label>
                                     <input type="checkbox" id="chkExportacion" data-toggle="toggle" data-style="on"
                                         data-onstyle="on" data-offstyle="off" data-onlabel="Si" data-offlabel="No"
-                                        data-width="100" (change)="v_Exportacion($event)">
+                                        data-width="100" formControlName="chkExportacion" (change)="v_Exportacion($event)">
                                 </div>
 
                             </div>
@@ -268,7 +268,7 @@
                                 <div class="input-group">
                                     <div class="form-floating">
                                         <input type="text" id="txtOC" class="form-control" placeholder="OC"
-                                            aria-label="OC">
+                                            aria-label="OC" formControlName="txtOC">
                                         <label for="txtOC">Orden de Compra</label>
                                     </div>
 
@@ -278,9 +278,6 @@
 
                         </div>
 
-
-
-
                     </div>
                 </div>
 
@@ -288,7 +285,11 @@
 
         </div>
 
-
+        <div class="row">
+            <div class="btn-contenedor">
+                <button type="button" class="btn btn-primario" id="btnRefrescar" (click)="CargarDatos();"><i class="fa-solid fa-arrows-rotate fa-spin fa-lg"></i> Refrescar</button>
+            </div>
+        </div>
 
 
 

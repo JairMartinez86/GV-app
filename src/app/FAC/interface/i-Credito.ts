@@ -1,7 +1,8 @@
 export interface iCredito{
     CodCliente: string;
-    Limite: Number;
-    Plazo: Number;
+    Limite: number;
+    Plazo: number;
+    Gracia : number;
     Moneda: string;
-    Disponible: Number;
+    Disponible: number;
 }

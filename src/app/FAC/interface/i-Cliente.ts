@@ -4,7 +4,7 @@ export interface iCliente{
     Ruc: string;
     Cedula: string;
     Contacto: string;
-    Limite : Number;
+    Limite : number;
     Moneda : string
     Vendedor : string;
     EsClave : Boolean;

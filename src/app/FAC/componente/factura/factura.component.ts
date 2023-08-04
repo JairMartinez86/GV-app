@@ -43,18 +43,19 @@ export class FacturaComponent {
 
 
 
-  public Panel: String = '';
+  public Panel: string = '';
   public BotonSiguienteLabel = '';
 
-  public TipoPago: String = 'Contado';
-  public TipoImpuesto: String = 'Iva';
+  public TipoPago: string = 'Contado';
+  public TipoImpuesto: string = 'Iva';
+  public Plazo : number = 0;
   public EsContraEntrega: Boolean = false;
   public EsExportacion: Boolean = false;
   public isKeyEnter : Boolean = false;
 
   
 
-  public SimboloMonedaCliente: String = 'U$';
+  public SimboloMonedaCliente: string = 'U$';
   private MonedaCliente : string;
 
   constructor(public dialog: MatDialog) {
@@ -72,9 +73,13 @@ export class FacturaComponent {
     this.val.add("txtLimite", "1", "LEN>=", "0", "Limite", "");
     this.val.add("txtContacto", "1", "LEN>=", "0", "Contacto", "");
     this.val.add("txtDisponible", "1", "LEN>=", "0", "Disponible", "");
-
+    this.val.add("chkTipoFactura", "1", "LEN>=", "0", "Tipo Factura", "");
+    this.val.add("chkImpuesto", "1", "LEN>=", "0", "Impuesto", "");
     this.val.add("txtBodega", "1", "LEN>", "0", "Bodega", "Seleccione una bodega.");
     this.val.add("txtVendedor", "1", "LEN>", "0", "Vendedor", "Seleccione un vendedor.");
+    this.val.add("chkContraEntrega", "1", "LEN>=", "0", "Contra Entrega", "");
+    this.val.add("chkExportacion", "1", "LEN>=", "0", "Exportación", "");
+    this.val.add("txtOC", "1", "LEN>=", "0", "Orden de Compra", "");
     
     this._Evento("Iniciar");
   }
@@ -88,6 +93,7 @@ export class FacturaComponent {
         break;
 
         case "Limpiar":
+          this.Plazo = 0;
           this.SimboloMonedaCliente = "U$";
           this.val.Get("txtCliente").setValue(" ");
           this.val.Get("txtNombre").setValue("");
@@ -95,7 +101,13 @@ export class FacturaComponent {
           this.val.Get("txtLimite").setValue("0");
           this.val.Get("txtContacto").setValue("");
           this.val.Get("txtDisponible").setValue("0");
-
+          this.val.Get("chkTipoFactura").setValue(true);
+          this.TipoPago = "Contado";
+          this.val.Get("chkImpuesto").setValue(true);
+          this.TipoImpuesto = "Iva";
+          this.val.Get("chkContraEntrega").setValue(false);
+          this.val.Get("chkExportacion").setValue(false);
+          
 
           this.val.Get("txtBodega").setValue("");
           this.val.Get("txtVendedor").setValue("");
@@ -104,10 +116,12 @@ export class FacturaComponent {
 
   }
 
-  private CargarDatos(): void {
+  public CargarDatos(): void {
+    document.getElementById("btnRefrescar")?.setAttribute("disabled", "disabled");
+    
     let Conexion: getFactura = new getFactura();
 
-    
+   
     let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
       WaitComponent,
       {
@@ -120,6 +134,7 @@ export class FacturaComponent {
     Conexion.Datos_Factura().subscribe(
       (s) => {
 
+        document.getElementById("btnRefrescar")?.removeAttribute("disabled");
         dialogRef.close();
         let _json = JSON.parse(s);
 
@@ -140,6 +155,7 @@ export class FacturaComponent {
       },
       (err) => {
 
+        document.getElementById("btnRefrescar")?.removeAttribute("disabled");
         dialogRef.close();
 
          this.dialog.open(
@@ -173,7 +189,7 @@ export class FacturaComponent {
       this.val.Get("txtLimite").setValue(Cliente[0].Limite);
       this.val.Get("txtContacto").setValue(Cliente[0].Contacto);
       this.val.Get("txtDisponible").setValue("0");
-
+     
       if(this.val.Get("txtVendedor").value == "" || Cliente[0].EsClave)
       {
         this.cmbVendedor.setSelectedItem(Cliente[0].Vendedor);
@@ -406,7 +422,7 @@ private v_EsClienteClave(CodNewVend : string): void{
     );
     
 
-  
+    this.Plazo = 0;
     Conexion.Datos_Credito(this.CodCliente).subscribe(
       (s) => {
 
@@ -432,6 +448,8 @@ private v_EsClienteClave(CodNewVend : string): void{
             this.TipoPago = 'Credito';
             this.val.Get("txtLimite").setValue(Credito[0].Limite);
             this.val.Get("txtDisponible").setValue(Credito[0].Disponible);
+            this.Plazo = Credito[0].Plazo + Credito[0].Gracia;
+
   
   
             if(Credito[0].Plazo == 0){
@@ -482,6 +500,11 @@ private v_EsClienteClave(CodNewVend : string): void{
   }
 
   public v_TipoImpuesto(event: any): void {
+
+    let chk: any  = document.querySelector("#chkImpuesto");
+    chk.bootstrapToggle("on");
+    /*
+
     if (event.target.checked) {
       this.TipoImpuesto = 'Sin Iva';
       return;
@@ -490,7 +513,7 @@ private v_EsClienteClave(CodNewVend : string): void{
     if (!event.target.checked) {
       this.TipoImpuesto = 'Iva';
       return;
-    }
+    }*/
   }
 
   public v_ContraEntrega(event: any): void {
@@ -503,7 +526,7 @@ private v_EsClienteClave(CodNewVend : string): void{
 
   //████████████████████████████████████████████FICHA PRODUCTO████████████████████████████████████████████████████████████████████████
 
-  public v_FichaPanel(evento: String): void {
+  public v_FichaPanel(evento: string): void {
     (document.querySelector('#frmFichaFactura') as HTMLElement).setAttribute(
       'style',
       'display:none;'
@@ -593,7 +616,7 @@ private v_EsClienteClave(CodNewVend : string): void{
     }
   }
 
-  public v_Datos_Producto(p: String): void {
+  public v_Datos_Producto(p: string): void {
     let dialogRef: MatDialogRef<TablaDatosComponent> = this.dialog.open(
       TablaDatosComponent,
       {

@@ -9,9 +9,7 @@
   margin-right: 1px;
 }
 
-.card-factura {
-  margin-bottom: 35px;
-}
+
 span{
   color: #ff4500;
   font-weight: bold;
@@ -25,6 +23,27 @@ span{
   }
 }
 
+
+.btn-contenedor{
+  margin-bottom: 35px;
+  text-align: right;
+
+  @include Tamano(xs) {
+    button{
+      display: block;
+      width: 100%;
+    }
+  }
+
+  @include Tamano(lg) {
+    button{
+      display: initial;
+      width: auto;
+    }
+  }
+ 
+  
+}
 
 
 

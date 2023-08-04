@@ -20,6 +20,10 @@
   padding: 0;
 }
 
+.card-confirmar {
+  margin-bottom: 35px;
+}
+
 
 
 //████████████████████████████████████████████CHECBOX████████████████████████████████████████████████████████████████████████
@@ -29,4 +33,29 @@
     justify-content:space-between;
   }
   
+  
+
+
+
+
+  .btn-contenedor{
+
+    text-align: right;
+  
+    @include Tamano(xs) {
+      button{
+        display: block;
+        width: 100%;
+      }
+    }
+  
+    @include Tamano(lg) {
+      button{
+        display: initial;
+        width: auto;
+      }
+    }
+   
+    
+  }
   
