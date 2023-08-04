@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FactDeliveryComponent } from '../fact-delivery/fact-delivery.component';
+import { Validacion } from 'src/app/SHARED/class/validacion';
 
 @Component({
   selector: 'app-fact-confirmar',
@@ -8,13 +9,18 @@ import { FactDeliveryComponent } from '../fact-delivery/fact-delivery.component'
   styleUrls: ['./fact-confirmar.component.scss'],
 })
 export class FactConfirmarComponent {
+  public val = new Validacion();
+
+  
   public TipoFactura: string = 'Factura';
   public TipoExoneracion: string = 'Sin Exoneración';
   public TipoPago: string = 'Contado';
   public TipoImpuesto: string = 'Iva';
 
   public constructor(public dialog: MatDialog) {
-   
+
+    this.val.add("txtPlazo", "1", "LEN>=", "0", "Plazo", "No se ha definido un plazo");
+    this.val.add("txtVence", "1", "LEN>=", "0", "Vence", "No se ha definido una fecha de vencimiento.");
     
   }
 

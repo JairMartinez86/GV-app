@@ -1,5 +1,5 @@
 <div id="frmConfirmarFactura" style="display:none;">
-    <form class="mx-2">
+    <form class="mx-2" [formGroup]="val.ValForm">
         <div class="row">
             <div class="mb-3">
                 <div class="col-12 card-escasan">
@@ -14,16 +14,16 @@
                                             
                                     <div class="input-group">
                                         <span class="input-group-text">
-                                            <input type="checkbox" id="chkEsPedido_Confirmar"
+                                            <input type="checkbox" id="chkEsPedido"
                                                 data-toggle="toggle" data-style="on" data-onstyle="on"
                                                 data-offstyle="off" data-onlabel="Factura"
                                                 data-offlabel="Pedido" data-width="120" data-height="100%"
                                                 (change)="v_TipoFactura($event)">
                                         </span>
                                         <div class="form-floating">
-                                            <input type="text" id="chkEsFactura_Confirmar" class="form-control"
+                                            <input type="text" id="chkEsFactura" class="form-control"
                                                 placeholder="No" aria-label="No">
-                                            <label for="chkEsFactura_Confirmar">No {{TipoFactura}}</label>
+                                            <label for="chkEsFactura">No {{TipoFactura}}</label>
 
                                         </div>
 
@@ -44,9 +44,9 @@
                                                 <span class="input-group-text"><i
                                                         class="bi bi-calendar"></i></span>
                                                 <div class="form-floating">
-                                                    <input type="text" id="txtDia_Confirmar"
+                                                    <input type="text" id="txtDia"
                                                         class="form-control" placeholder="Dia" aria-label="Dia">
-                                                    <label for="txtDia_Confirmar">Dia</label>
+                                                    <label for="txtDia">Dia</label>
 
                                                 </div>
 
@@ -59,9 +59,9 @@
 
                                             <div class="input-group">
                                                 <div class="form-floating">
-                                                    <input type="text" id="txtMes_Confirmar"
+                                                    <input type="text" id="txtMes"
                                                         class="form-control" placeholder="Mes" aria-label="Mes">
-                                                    <label for="txtMes_Confirmar">Mes</label>
+                                                    <label for="txtMes">Mes</label>
 
                                                 </div>
 
@@ -72,9 +72,9 @@
 
                                             <div class="input-group">
                                                 <div class="form-floating">
-                                                    <input type="text" id="txtAnio_Confirmar"
+                                                    <input type="text" id="txtAnio"
                                                         class="form-control" placeholder="Año" aria-label="Año">
-                                                    <label for="txtAnio_Confirmar">Año</label>
+                                                    <label for="txtAnio">Año</label>
 
                                                 </div>
 
@@ -95,9 +95,9 @@
                                             <div class="input-group">
                                                 
                                                 <div class="form-floating">
-                                                    <input type="text" id="txtPazo_Confirmar"
-                                                        class="form-control" placeholder="Plazo" aria-label="Plazo">
-                                                    <label for="txtPazo_Confirmar">Plazo</label>
+                                                    <input type="text" id="txtPlazo"
+                                                        class="form-control" placeholder="Plazo" aria-label="Plazo" formControlName="txtPlazo">
+                                                    <label for="txtPlazo">Plazo</label>
 
                                                 </div>
 
@@ -112,9 +112,9 @@
                                                 <span class="input-group-text"><i
                                                     class="bi bi-calendar"></i></span>
                                                 <div class="form-floating">
-                                                    <input type="date" id="txtVence_Confirmar"
-                                                        class="form-control" placeholder="Vence" aria-label="Vence">
-                                                    <label for="txtVence_Confirmar">Vence</label>
+                                                    <input type="date" id="txtVence"
+                                                        class="form-control" placeholder="Vence" aria-label="Vence" formControlName="txtVence">
+                                                    <label for="txtVence">Vence</label>
 
                                                 </div>
 
@@ -137,9 +137,9 @@
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
                                         <div class="form-floating">
-                                            <textarea type="text" id="txtCliente_Confirmar" class="form-control"
+                                            <textarea type="text" id="txtCliente" class="form-control"
                                                 placeholder="Cliente" aria-label="Cliente"> </textarea>
-                                            <label for="txtCliente_Confirmar">Cod. Cliente</label>
+                                            <label for="txtCliente">Cod. Cliente</label>
 
                                         </div>
 
@@ -151,9 +151,9 @@
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
                                         <div class="form-floating">
-                                            <textarea type="text" id="txtVendedor_Confirmar" class="form-control"
+                                            <textarea type="text" id="txtVendedor" class="form-control"
                                                 placeholder="Vendedor" aria-label="Vendedor"></textarea>
-                                            <label for="txtVendedor_Confirmar">Vendedor</label>
+                                            <label for="txtVendedor">Vendedor</label>
 
                                         </div>
 
@@ -166,9 +166,9 @@
                                 <div class="col-12 col-sm-12 col-md-6 mb-1">
                                     <div class="input-group">
                                         <div class="form-floating">
-                                            <textarea type="text" id="txtNombre_Confirmar" class="form-control"
+                                            <textarea type="text" id="txtNombre" class="form-control"
                                                 placeholder="Cliente" aria-label="Nombre"> </textarea>
-                                            <label for="txtNombre_Confirmar">Nombre</label>
+                                            <label for="txtNombre">Nombre</label>
 
                                         </div>
 
@@ -179,9 +179,9 @@
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-shop"></i></span>
                                         <div class="form-floating">
-                                            <input type="text" id="txtBodega_Confirmar" class="form-control"
+                                            <input type="text" id="txtBodega" class="form-control"
                                                 placeholder="Bodega" aria-label="Bodega">
-                                            <label for="txtBodega_Confirmar">Bodega</label>
+                                            <label for="txtBodega">Bodega</label>
 
                                         </div>
 
@@ -202,12 +202,12 @@
 
                                         <div class="col-md-12 col-lg-8 mb-1">
                                             <div class="check-button-escasan">
-                                                <input type="checkbox" id="chkTipoFactura_Confirmar"
+                                                <input type="checkbox" id="chkTipoFactura"
                                                     data-toggle="toggle" data-style="on" data-onstyle="on"
                                                     data-offstyle="off" data-onlabel="Crédito" data-offlabel="Contado"
                                                     data-width="120" data-height="100%" (change)="v_TipoPago($event)">
 
-                                                <input type="checkbox" id="chkImpuesto_Confirmar" data-toggle="toggle"
+                                                <input type="checkbox" id="chkImpuesto" data-toggle="toggle"
                                                     data-style="on" data-onstyle="on" data-offstyle="off"
                                                     data-onlabel="Iva" data-offlabel="Sin Iva" data-width="120"
                                                     data-height="100%" checked (change)="v_TipoImpuesto($event)">
@@ -217,9 +217,9 @@
                                         <div class="col-md-12 col-lg-4 mb-1">
                                             <div class="input-group">
                                                 <div class="form-floating">
-                                                    <input type="text" id="txtMoneda_Confirmar" class="form-control"
+                                                    <input type="text" id="txtMoneda" class="form-control"
                                                         placeholder="Moneda" aria-label="Moneda">
-                                                    <label for="txtMoneda_Confirmar">Moneda</label>
+                                                    <label for="txtMoneda">Moneda</label>
 
                                                 </div>
 
@@ -241,16 +241,16 @@
 
                                         <div class="input-group">
                                             <span class="check-button-escasan">
-                                                <input type="checkbox" id="chkExoneracion_Confirmar"
+                                                <input type="checkbox" id="chkExoneracion"
                                                     data-toggle="toggle" data-style="on" data-onstyle="on"
                                                     data-offstyle="off" data-onlabel="Con Exoneración"
                                                     data-offlabel="Sin Exoneración" data-width="130" data-height="100%"
                                                     (change)="v_TipoExoneracion($event)">
                                             </span>
                                             <div class="form-floating">
-                                                <input type="text" id="txtNoExoneracion_Confirmar" class="form-control"
+                                                <input type="text" id="txtNoExoneracion" class="form-control"
                                                     placeholder="No Exoneracion" aria-label="No Exoneracion">
-                                                <label for="txtNoExoneracion_Confirmar">No Exoneración</label>
+                                                <label for="txtNoExoneracion">No Exoneración</label>
 
                                             </div>
 
@@ -266,9 +266,9 @@
                                 <div class="col-12 col-sm-12 col-md-6 mb-1">
                                     <div class="input-group">
                                         <div class="form-floating">
-                                            <textarea type="text" id="txtObservaciones_Confirmar" class="form-control"
+                                            <textarea type="text" id="txtObservaciones" class="form-control"
                                                 placeholder="Observaciones" aria-label="Observacion"></textarea>
-                                            <label for="txtObservaciones_Confirmar">Observaciones</label>
+                                            <label for="txtObservaciones">Observaciones</label>
 
                                         </div>
 
@@ -287,9 +287,9 @@
                                                     (click)="v_Delivery();"></i></button></span>
 
                                         <div class="form-floating">
-                                            <textarea type="text" id="txtDelivery_Confirmar" class="form-control"
+                                            <textarea type="text" id="txtDelivery" class="form-control"
                                                 placeholder="Dirección" aria-label="Direccion"></textarea>
-                                            <label for="txtDelivery_Confirmar">Dirección</label>
+                                            <label for="txtDelivery">Dirección</label>
 
                                         </div>
 

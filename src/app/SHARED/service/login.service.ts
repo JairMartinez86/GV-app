@@ -9,9 +9,9 @@ import { interval, Subscription } from 'rxjs';
 })
 export class LoginService {
 
-  private cFunciones : Funciones = new Funciones();
+  
 
-  constructor(private _Router: Router) { }
+  constructor(private _Router: Router, private cFunciones : Funciones) { }
 
 
   public Session(user : string, pwd : string) : void{
@@ -53,8 +53,8 @@ export class LoginService {
 
 
   Diff(FechaLogin : Date){
-    let Current = this.cFunciones.DateFormat(new Date(), "yyyy/MM/dd hh:mm:ss");
-    let FechaServidor : Date = new Date(Current);
+
+    let FechaServidor : Date = new Date(this.cFunciones.FechaServidor());
 
     var Segundos = Math.abs((FechaLogin.getTime() - FechaServidor.getTime()) / 1000);
     return Segundos;
@@ -68,7 +68,7 @@ export class LoginService {
    if(s != undefined){
 
       let l : iLogin = JSON.parse(s);
-      l.Fecha = this.cFunciones.DateFormat(new Date(), "yyyy/MM/dd hh:mm:ss");
+      l.Fecha = this.cFunciones.DateFormat(new Date(), "yyyy-MM-dd hh:mm:ss");
       localStorage.removeItem("login");
       localStorage.setItem("login", JSON.stringify(l));
     }
