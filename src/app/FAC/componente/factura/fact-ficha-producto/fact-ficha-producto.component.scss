@@ -8,7 +8,12 @@
 
 .btn-contenedor{
 
-  text-align: right;
+  display: flex;
+  justify-content: space-between;
+  
+  button{
+    margin-right: 5px;
+  }
 
   @include Tamano(xs) {
     button{

@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatNumber } from '@angular/common';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -45,5 +45,11 @@ export class Funciones {
 
   public DateFormat(fecha: Date, formart: string): string {
     return this.datePipe.transform(fecha, formart)!;
+  }
+
+
+
+  public NumFormat(valor: number): string {
+    return formatNumber(valor, "en-IN",  "1.2-2");
   }
 }

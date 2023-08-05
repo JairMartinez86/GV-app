@@ -1,5 +1,5 @@
 <div id="frmFichaProducto" style="display:none;">
-    <form class="mx-2">
+    <form class="mx-2" [formGroup]="val.ValForm" autocomplete="off">
         <div class="row">
             <div class="mb-3">
                 <div class="card">
@@ -13,13 +13,22 @@
                                         <div class="form-floating">
                                             <input type="text" id="txtCodProducto" class="form-control"
                                                 placeholder="Seleccione un producto" aria-label="CodProducto" matInput
-                                                [formControl]="myControl" [matAutocomplete]="completeProducto">
+                                                formControlName="txtCodProducto" [matAutocomplete]="cmbProducto">
                                             <label for="txtCodProducto">Codigo</label>
 
                                         </div>
                                         <span class="input-group-text"><button type="button" class="btn i-boton"
                                                 (click)="v_Datos_Producto('E');"><i
                                                     class="fa-solid fa-warehouse fa-beat-fade fa-lg"></i></button></span>
+
+
+                                        <mat-autocomplete autoActiveFirstOption #cmbProducto="matAutocomplete"
+                                            (optionSelected)="v_Select_Producto($event)">
+                                            <mat-option *ngFor="let option of filteredProductos | async"
+                                                [value]="option.Codigo">
+                                                {{option.Key}}
+                                            </mat-option>
+                                        </mat-autocomplete>
                                     </div>
                                 </div>
 
@@ -27,9 +36,9 @@
                                 <div class="col-12 col-sm-12 col-md-12 col-lg-9 mb-1">
                                     <div class="input-group">
                                         <div class="form-floating">
-                                            <textarea type="text" id="txtProducto" class="form-control" placeholder=""
-                                                aria-label="Producto"></textarea>
-                                            <label for="txtCodProducto">Nombre</label>
+                                            <textarea type="text" id="txtProducto" class="form-control" placeholder="" 
+                                                aria-label="Producto" formControlName="txtProducto"></textarea>
+                                            <label for="txtProducto">Nombre</label>
                                         </div>
 
                                     </div>
@@ -43,8 +52,8 @@
                                     <div class="input-group">
                                         <span class="input-group-text">C$</span>
                                         <div class="form-floating">
-                                            <input type="number" id="txtPrecioCor" class="form-control" placeholder=""
-                                                aria-label="Precio">
+                                            <input type="text" id="txtPrecioCor" class="form-control" placeholder=""
+                                                aria-label="Precio" formControlName="txtPrecioCor">
                                             <label for="txtPrecioCor">Precio</label>
 
                                         </div>
@@ -56,8 +65,8 @@
                                     <div class="input-group">
                                         <span class="input-group-text">U$</span>
                                         <div class="form-floating">
-                                            <input type="number" id="txtPrecioDol" class="form-control" placeholder=""
-                                                aria-label="Precio">
+                                            <input type="text" id="txtPrecioDol" class="form-control" placeholder=""
+                                                aria-label="Precio" formControlName="txtPrecioDol">
                                             <label for="txtPrecioDol">Precio</label>
 
                                         </div>
@@ -75,8 +84,8 @@
                                         <!--<fa-icon icon="warehouse"></fa-icon>-->
 
                                         <div class="form-floating">
-                                            <input type="number" id="txtCantidad" class="form-control" placeholder=""
-                                                aria-label="Cantidad"
+                                            <input type="text" id="txtCantidad" class="form-control" placeholder=""
+                                                aria-label="Cantidad" formControlName="txtCantidad"
                                                 onkeydown="if(event.key==='.'){event.preventDefault();}">
                                             <label for="txtCantidad">Cantidad</label>
                                         </div>
@@ -91,15 +100,15 @@
                                             </div>
 
                                         </span>
-                                        <span class="input-group-text i-bonif"><button type="button" class="btn i-boton"><i
-                                                    class="fa-solid fa-b fa-beat-fade fa-lg i-bonif"
+                                        <span class="input-group-text i-bonif"><button type="button"
+                                                class="btn i-boton"><i class="fa-solid fa-b fa-beat-fade fa-lg i-bonif"
                                                     (click)="v_Datos_Producto('B');"></i>
                                                 <i class="fa-solid fa-o fa-beat-fade fa-lg"
                                                     (click)="v_Datos_Producto('B');"></i>
                                             </button></span>
 
                                         <span class="input-group-text i-bonif"><button type="button" class="btn i-boton"
-                                            (click)="v_Bonificacion_Libre();"><i
+                                                (click)="v_Bonificacion_Libre();"><i
                                                     class="fa-solid fa-b fa-beat-fade fa-lg i-bonif"></i>
                                                 <i class="fa-solid fa-o fa-beat-fade fa-lg i-bonif"></i>
                                                 <i class="fa-solid fa-l fa-beat-fade fa-lg"></i></button></span>
@@ -110,8 +119,8 @@
                                 <div class="col-12 col-ms-12 col-md-6 mb-1">
                                     <div class="input-group">
                                         <div class="form-floating">
-                                            <input type="number" id="txtProcDescuento" class="form-control"
-                                                placeholder="" aria-label="ProcDescuento">
+                                            <input type="text" id="txtProcDescuento" class="form-control"
+                                                placeholder="" aria-label="ProcDescuento" formControlName="txtProcDescuento">
                                             <label for="txtProcDescuento">Descuento</label>
                                         </div>
                                         <span class="input-group-text input-group-simbolo">
@@ -134,7 +143,11 @@
 
                             <div class="row">
                                 <div class="btn-contenedor">
-                                    <button type="button" class="btn btn-primario" (click)="v_Agregar_Producto();">Agregar Producto</button>
+                                    <button type="button" class="btn btn-secundario" id="btnRefrescarProductos" (click)="v_Cargar_Productos();"><i class="fa-solid fa-arrows-rotate fa-spin fa-lg"></i> Refrescar</button>
+
+                                    <button type="button" class="btn btn-primario"
+                                        (click)="v_Agregar_Producto();"><i
+                                        class="bi bi-plus-circle-fill"></i> Agregar Producto</button>
                                 </div>
                             </div>
 
@@ -144,11 +157,7 @@
             </div>
         </div>
 
-        <mat-autocomplete autoActiveFirstOption #completeProducto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                {{option}}
-            </mat-option>
-        </mat-autocomplete>
+
     </form>
 
 </div>

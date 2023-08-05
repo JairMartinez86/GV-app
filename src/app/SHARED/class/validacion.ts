@@ -43,7 +43,7 @@ interface I_Frm {
 
 export class Validacion {
   private fb = new FormBuilder();
-  public Iniciar: Boolean = false;
+  public Iniciar: boolean = false;
   public Errores: string = "";
   private Index: string = "-1";
 
@@ -125,7 +125,7 @@ export class Validacion {
     this.lstReglas[i].Mensaje = msj;
   }
 
-  public EsValido(): Boolean {
+  public EsValido(): boolean {
     this.Errores = "";
 
     let i: number = 0;
@@ -141,7 +141,7 @@ export class Validacion {
 
       let r: string[] = this._Validar(f.Id, f, frm, retorno, errores);
 
-      if (r[1] != "") {
+      if (r[1] != "" && f.Mensaje != "") {
         er += "<li class='error-mensaje'>" + f.Mensaje + "</li>";
 
         if (i + 1 < this.lstReglas.length) {

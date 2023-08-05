@@ -1,7 +1,11 @@
 import { HttpClient, HttpXhrBackend } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/internal/Observable";
 import { Conexion } from "src/app/SHARED/class/Cadena_Conexion";
 
+@Injectable({
+    providedIn: 'root',
+  })
 export class getFactura{
     
     private _Cnx = new Conexion();
@@ -25,6 +29,13 @@ export class getFactura{
 
      public Datos_ClienteClave(CodCliente : string) : Observable<string>{
         return this.http.get<any>(this._Cnx.Url() + "Factura/ClienteClave?CodCliente=" + CodCliente);
+     }
+     
+
+
+
+     public Cargar_Productos(CodCliente : string) : Observable<string>{
+        return this.http.get<any>(this._Cnx.Url() + "Factura/CargarProductos?CodCliente=" + CodCliente);
      }
      
 

@@ -2,7 +2,7 @@
 
 <div id="frmFichaFactura">
 
-    <form class="mx-2" [formGroup]="val.ValForm">
+    <form class="mx-2" [formGroup]="val.ValForm" autocomplete="off">
 
         <div class="row">
             <div class="col-12 col-sm-12 col-md-6 mb-3 card-escasan">
@@ -287,7 +287,7 @@
 
         <div class="row">
             <div class="btn-contenedor">
-                <button type="button" class="btn btn-primario" id="btnRefrescar" (click)="CargarDatos();"><i class="fa-solid fa-arrows-rotate fa-spin fa-lg"></i> Refrescar</button>
+                <button type="button" class="btn btn-secundario" id="btnRefrescar" (click)="CargarDatos();"><i class="fa-solid fa-arrows-rotate fa-spin fa-lg"></i> Refrescar</button>
             </div>
         </div>
 
@@ -304,7 +304,7 @@
 <!--████████████████████████████████████████████FICHA PRODUCTO██████████████████████████████████████████████████████████████████████████████████████-->
 
 
-<app-fact-ficha-producto></app-fact-ficha-producto>
+<app-fact-ficha-producto #FichaProducto></app-fact-ficha-producto>
 
 <!--████████████████████████████████████████████REVISION DE FACTURA██████████████████████████████████████████████████████████████████████████████████████-->
 

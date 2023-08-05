@@ -153,6 +153,12 @@ i {
   border-bottom: 2px solid var(--escan-primario);
 }
 
+input:disabled,
+textarea:disabled{
+  font-weight: bold;
+  color: black;
+}
+
 //████████████████████████████████████████████CARD████████████████████████████████████████████████████████████████████████
 
 
@@ -248,6 +254,9 @@ button:active{
 .btn-primario {
   background-color: var(--escan-primario);
   color: var(--escan-fondo);
+  i{
+    color: var(--escan-fondo);
+  }
 }
 
 .btn-primario:hover {
@@ -259,6 +268,10 @@ button:active{
 .btn-secundario {
   background-color: var(--escan-secundario);
   color: var(--escan-fondo);
+
+  i{
+    color: var(--escan-fondo);
+  }
   
 }
 
