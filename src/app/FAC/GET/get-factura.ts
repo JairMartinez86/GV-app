@@ -34,8 +34,8 @@ export class getFactura{
 
 
 
-     public Cargar_Productos(CodCliente : string) : Observable<string>{
-        return this.http.get<any>(this._Cnx.Url() + "Factura/CargarProductos?CodCliente=" + CodCliente);
+     public Cargar_Productos(CodCliente : string, Tc : number) : Observable<string>{
+        return this.http.get<any>(this._Cnx.Url() + "Factura/CargarProductos?CodCliente=" + CodCliente + "&Tc=" + Tc);
      }
      
 

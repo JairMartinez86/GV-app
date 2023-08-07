@@ -1,5 +1,4 @@
 import { Component, ViewChild } from "@angular/core";
-import { FormControl } from "@angular/forms";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
@@ -52,6 +51,8 @@ export class FacturaComponent {
   public EsContraEntrega: boolean = false;
   public EsExportacion: boolean = false;
   public isKeyEnter: boolean = false;
+  public TC : number = 36.9566;
+  private bol_Referescar : boolean = false;
 
   public SimboloMonedaCliente: string = "U$";
   private MonedaCliente: string;
@@ -105,6 +106,7 @@ export class FacturaComponent {
         break;
 
       case "Limpiar":
+        this.bol_Referescar = false;
         this.Plazo = 0;
         this.SimboloMonedaCliente = "U$";
         this.val.Get("txtCliente").setValue("");
@@ -129,7 +131,7 @@ export class FacturaComponent {
     }
   }
 
-  public CargarDatos(): void {
+  private CargarDatos(): void {
     document
       .getElementById("btnRefrescar")
       ?.setAttribute("disabled", "disabled");
@@ -161,6 +163,12 @@ export class FacturaComponent {
           this.lstClientes = Datos[0].d;
           this.lstBodega = Datos[1].d;
           this.lstVendedores = Datos[2].d;
+
+          //LLENAR DATOS AL REFRESCAR
+          if(this.bol_Referescar){
+            this.LlenarDatosCliente(this.CodCliente);
+            this.bol_Referescar = false;
+          } 
         }
       },
       (err) => {
@@ -174,12 +182,15 @@ export class FacturaComponent {
     );
   }
 
+  public v_Refrescar(): void {
+    this.bol_Referescar = true;
+    this.CargarDatos();
+  }
+
   //████████████████████████████████████████████DATOS CLIENTE████████████████████████████████████████████████████████████████████████
 
   public v_Select_Cliente(event: any): void {
-    let Cliente: iCliente[] = this.lstClientes.filter(
-      (f) => f.Key == event.option.value
-    );
+
 
     this.CodCliente = "";
     this.val.Get("txtCliente").setValue("");
@@ -190,13 +201,41 @@ export class FacturaComponent {
     this.cmbVendedor.setSelectedItem("");
     this.val.Get("txtVendedor").setValue([]);
 
+    this.LlenarDatosCliente(event.option.value);
+
+  }
+
+  public v_Borrar_Cliente(): void {
+    this.CodCliente = "";
+    this.val.Get("txtCliente").setValue("");
+    this.val.Get("txtIdentificacion").setValue("");
+    this.val.Get("txtLimite").setValue("0.00");
+    this.val.Get("txtContacto").setValue("");
+    this.val.Get("txtDisponible").setValue("0.00");
+
+    this.SimboloMonedaCliente = "U$";
+    this.val.Get("txtCliente").enable();
+
+    let chk: any = document.querySelector("#chkTipoFactura");
+    this.TipoPago = "Contado";
+    chk.bootstrapToggle("off");
+  }
+
+  private LlenarDatosCliente(cod : string) : void{
+
+    let Cliente: iCliente[] = this.lstClientes.filter(
+      (f) => f.Key == cod || f.Codigo == cod
+    );
+
+
     if (Cliente.length > 0) {
+      
       this.CodCliente = Cliente[0].Codigo;
       this.val.Get("txtCliente").setValue(Cliente[0].Cliente);
       this.val
         .Get("txtIdentificacion")
         .setValue(Cliente[0].Ruc + "/" + Cliente[0].Cedula);
-      this.val.Get("txtLimite").setValue( this.cFunciones.NumFormat(Cliente[0].Limite));
+      this.val.Get("txtLimite").setValue( this.cFunciones.NumFormat(Cliente[0].Limite, "2"));
       this.val.Get("txtContacto").setValue(Cliente[0].Contacto);
       this.val.Get("txtDisponible").setValue("0.00");
 
@@ -220,22 +259,9 @@ export class FacturaComponent {
 
       this.val.Get("txtCliente").disable();
     }
-  }
 
-  public v_Borrar_Cliente(): void {
-    this.CodCliente = "";
-    this.val.Get("txtCliente").setValue("");
-    this.val.Get("txtIdentificacion").setValue("");
-    this.val.Get("txtLimite").setValue("0.00");
-    this.val.Get("txtContacto").setValue("");
-    this.val.Get("txtDisponible").setValue("0.00");
+   
 
-    this.SimboloMonedaCliente = "U$";
-    this.val.Get("txtCliente").enable();
-
-    let chk: any = document.querySelector("#chkTipoFactura");
-    this.TipoPago = "Contado";
-    chk.bootstrapToggle("off");
   }
 
   /*
@@ -408,8 +434,8 @@ public customSettings: OverlaySettings = {
 
           if (Credito.length > 0) {
             this.TipoPago = "Credito";
-            this.val.Get("txtLimite").setValue(this.cFunciones.NumFormat(Credito[0].Limite));
-            this.val.Get("txtDisponible").setValue(this.cFunciones.NumFormat(Credito[0].Disponible));
+            this.val.Get("txtLimite").setValue(this.cFunciones.NumFormat(Credito[0].Limite, "2"));
+            this.val.Get("txtDisponible").setValue(this.cFunciones.NumFormat(Credito[0].Disponible, "2"));
             this.Plazo = Number(Credito[0].Plazo) + Number(Credito[0].Gracia);
 
             if (Credito[0].Plazo == 0) {
@@ -472,6 +498,14 @@ public customSettings: OverlaySettings = {
     if (this.val.Errores != "") {
       this.dialog.open(DialogErrorComponent, {
         data: this.val.Errores,
+      });
+
+      return;
+    }
+
+    if (this.CodCliente == "") {
+      this.dialog.open(DialogErrorComponent, {
+        data: "<b>Seleccione un cliente.</b>",
       });
 
       return;
@@ -580,7 +614,7 @@ public customSettings: OverlaySettings = {
   public FichaProducto: FactFichaProductoComponent;
 
   private LlenarDatosfichaProducto(): void {
-    this.FichaProducto._Evento("Iniciar", this.CodCliente);
+    this.FichaProducto.Iniciar(this.CodCliente, this.MonedaCliente, this.TC);
   }
 
 

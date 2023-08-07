@@ -9,7 +9,9 @@
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-md-12 col-lg-3 mb-1">
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
+                                        <span class="input-group-text"><button type="button" class="btn i-boton"
+                                            (click)="v_Borrar_Producto();"><i
+                                                    [ngClass]="CodProducto == '' ? 'bi bi-upc-scan' : 'fa-solid fa-eraser fa-beat-fade fa-lg'"></i></button></span>
                                         <div class="form-floating">
                                             <input type="text" id="txtCodProducto" class="form-control"
                                                 placeholder="Seleccione un producto" aria-label="CodProducto" matInput
@@ -53,7 +55,10 @@
                                         <span class="input-group-text">C$</span>
                                         <div class="form-floating">
                                             <input type="text" id="txtPrecioCor" class="form-control" placeholder=""
-                                                aria-label="Precio" formControlName="txtPrecioCor">
+                                                aria-label="Precio" formControlName="txtPrecioCor"
+                                                (keydown)="this.cFunciones.v_Prevent_IsNumber($event,  'Decimal');"
+                                                (change)="v_ConvertirPrecio($event);"
+                                                (focusout)="v_FocusOut('txtPrecioCor', '4');">
                                             <label for="txtPrecioCor">Precio</label>
 
                                         </div>
@@ -66,7 +71,10 @@
                                         <span class="input-group-text">U$</span>
                                         <div class="form-floating">
                                             <input type="text" id="txtPrecioDol" class="form-control" placeholder=""
-                                                aria-label="Precio" formControlName="txtPrecioDol">
+                                                aria-label="Precio" formControlName="txtPrecioDol"
+                                                (keydown)="this.cFunciones.v_Prevent_IsNumber($event,  'Decimal');"
+                                                (change)="v_ConvertirPrecio($event);"
+                                                (focusout)="v_FocusOut('txtPrecioDol', '4');">
                                             <label for="txtPrecioDol">Precio</label>
 
                                         </div>
@@ -86,7 +94,9 @@
                                         <div class="form-floating">
                                             <input type="text" id="txtCantidad" class="form-control" placeholder=""
                                                 aria-label="Cantidad" formControlName="txtCantidad"
-                                                onkeydown="if(event.key==='.'){event.preventDefault();}">
+                                                (keydown)="this.cFunciones.v_Prevent_IsNumber($event,  'Entero');"
+                                                (change)="Calcular();"
+                                                (focusout)="v_FocusOut('txtCantidad', '0');">
                                             <label for="txtCantidad">Cantidad</label>
                                         </div>
                                         <span class="input-group-text input-group-simbolo">
@@ -120,7 +130,10 @@
                                     <div class="input-group">
                                         <div class="form-floating">
                                             <input type="text" id="txtProcDescuento" class="form-control"
-                                                placeholder="" aria-label="ProcDescuento" formControlName="txtProcDescuento">
+                                                placeholder="" aria-label="ProcDescuento" formControlName="txtProcDescuento"
+                                                (keydown)="this.cFunciones.v_Prevent_IsNumber($event,  'Decimal');"
+                                                (change)="Calcular();"
+                                                (focusout)="v_FocusOut('txtProcDescuento', '2');">
                                             <label for="txtProcDescuento">Descuento</label>
                                         </div>
                                         <span class="input-group-text input-group-simbolo">
@@ -143,7 +156,7 @@
 
                             <div class="row">
                                 <div class="btn-contenedor">
-                                    <button type="button" class="btn btn-secundario" id="btnRefrescarProductos" (click)="v_Cargar_Productos();"><i class="fa-solid fa-arrows-rotate fa-spin fa-lg"></i> Refrescar</button>
+                                    <button type="button" class="btn btn-secundario" id="btnRefrescarProductos" (click)="v_Refrescar();"><i class="fa-solid fa-arrows-rotate fa-spin fa-lg"></i> Refrescar</button>
 
                                     <button type="button" class="btn btn-primario"
                                         (click)="v_Agregar_Producto();"><i
@@ -155,6 +168,66 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row">
+
+           <div class="contenedor">
+
+
+                    <div class="row">
+                        <div class="col-12 contenedor-totles">
+                            <div class="etiqueta-totales">SUB TOTAL:</div>
+                            <div class="valores-totales"><b>{{SubTotal| number : '1.2-2'}}</b></div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 contenedor-totles">
+                            <div class="etiqueta-totales">DECUENTO:</div>
+                            <div class="valores-totales"><b>{{Descuento| number : '1.2-2'}}</b></div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 contenedor-totles">
+                            <div class="etiqueta-totales">SUB.T NETO:</div>
+                            <div class="valores-totales"><b>{{SubTotalNeto| number : '1.2-2'}}</b></div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 contenedor-totles">
+                            <div class="etiqueta-totales">IMPUESTO:</div>
+                            <div class="valores-totales"><b>{{Impuesto| number : '1.2-2'}}</b></div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-12 contenedor-totles">
+                            <div class="etiqueta-totales">TOTAL C$</div>
+                            <div class="valores-totales"><b class="cordoba">{{TotalCordoba| number : '1.2-2'}}</b></div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 contenedor-totles">
+                            <div class="etiqueta-totales">TOTAL U$:</div>
+                            <div class="valores-totales"><b class="dolar">{{TotalDolar| number : '1.2-2'}}</b></div>
+                        </div>
+                    </div>
+
+        
+
+                    <div class="row">
+                        <div class="col-12 contenedor-totles">
+                            <div class="etiqueta-totales">TC:</div>
+                            <div class="valores-totales"><b class="tasa">{{TC| number : '1.4-4'}}</b></div>
+                        </div>
+                    </div>
+
+                </div>
+           
         </div>
 
 

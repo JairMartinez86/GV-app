@@ -1,6 +1,7 @@
 export interface iPrecio{
     CodProducto: string;
     Tipo: string;
-    Precio: number;
+    PrecioCordoba: number;
+    PrecioDolar: number;
     Principal: boolean;
 }

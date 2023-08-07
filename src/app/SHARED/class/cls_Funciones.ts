@@ -9,6 +9,8 @@ export class Funciones {
 
   private datePipe: DatePipe = new DatePipe('en-US');
 
+  public MonedaLocal = "C";
+
   constructor() {
     this._FechaServidor = new Date(
       this.DateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss')
@@ -49,7 +51,60 @@ export class Funciones {
 
 
 
-  public NumFormat(valor: number): string {
-    return formatNumber(valor, "en-IN",  "1.2-2");
+  public NumFormat(valor: number, decimal : string): string {
+    return formatNumber(valor, "en-IN",  "1."+decimal+"-"+decimal);
   }
+
+
+  public Redondeo(valor : number, numDecimal : string) : number{
+
+    valor = Number(valor);
+    valor = (Math.round(valor * Math.pow(10, Number(numDecimal))) / Math.pow(10, Number(numDecimal)));
+
+    return  Number(valor);
+  }
+
+
+
+  public v_Prevent_IsNumber(event : any, tipo : string) : void{
+
+    if(event.key == "Backspace") return;
+
+    if(event.key == ",") {
+      event.preventDefault();
+      return;
+    }
+    
+
+    if(tipo == "Decimal")
+    {
+      if((String(event.target.value).includes(".") && event.key == ".")  || ( event.key == "." && event.target.value == "")) {
+        event.preventDefault();
+        return;
+      }
+      
+      if(String(event.target.value).includes("."))
+      {
+        let decimal : string[] = String(event.target.value).split(".");
+  
+        if(isNaN(parseFloat(event.key)) && !isFinite(event.key)){
+          event.preventDefault();
+          return;
+        }
+  
+      }
+    }
+
+    if(tipo == "Entero"){
+      if(isNaN(parseFloat(event.key)) && !isFinite(event.key)){
+        event.preventDefault();
+        return;
+      }
+    }
+
+   
+  }
+
 }
+
+
