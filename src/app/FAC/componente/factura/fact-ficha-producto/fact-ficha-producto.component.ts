@@ -59,7 +59,7 @@ export class FactFichaProductoComponent {
     this.val.add(
       "txtPrecioCor",
       "1",
-      "NUM>",
+      "NUM>=",
       "0",
       "Precio Cordoba",
       "Ingrese  precio cordoba."
@@ -67,7 +67,7 @@ export class FactFichaProductoComponent {
     this.val.add(
       "txtPrecioDol",
       "1",
-      "DEC>",
+      "DEC>=",
       "0",
       "Precio Dolar",
       "Ingrese  precio dolar."
@@ -289,12 +289,12 @@ export class FactFichaProductoComponent {
   public v_FocusOut(id: string, decimal: string): void {
     this.val
       .Get(id)
-      .setValue(this.cFunciones.NumFormat(this.val.Get(id).value, decimal));
+      .setValue(this.cFunciones.NumFormat(this.val.Get(id).value.replaceAll(",", ""), decimal));
   }
 
   public v_ConvertirPrecio(event: any): void {
     if (event.target.value == "") return;
-    let valor: number = Number(String(event.target.value).replace(",", ""));
+    let valor: number = Number(String(event.target.value).replaceAll(",", ""));
 
     if (event.target.id == "txtPrecioCor") {
       valor = valor / this.TC;
@@ -324,12 +324,34 @@ export class FactFichaProductoComponent {
 
   public v_Agregar_Producto(): void {
 
+    let MsjError : string = "";
     let index : number = 1;
     let det : iDetalleFactura = JSON.parse(JSON.stringify(this.Detalle));;
 
     if(this.lstDetalle.length > 0) index = Math.max(...this.lstDetalle.map(o => o.Index)) + 1
 
     det.Index = index;
+
+    this.val.EsValido();
+
+    if(det.Precio == 0) MsjError += "<li class='error-etiqueta'>Precio<ul><li class='error-mensaje'>El producto no tiene precio.</li></ul>";
+    if(det.PorcDescuento > 100) MsjError += "<li class='error-etiqueta'>Descuento<ul><li class='error-mensaje'>Por favor revise el descuento.</li></ul>";
+    
+
+    if(MsjError != "" ||  this.val.Errores)
+    {
+      this.dialog.open(DialogErrorComponent, {
+        data:
+          "<ul>"+MsjError+"</ul>" + this.val.Errores,
+      });
+
+      return;
+  
+    }
+
+
+
+    
    
     this.lstDetalle.push(det);
 
@@ -339,6 +361,8 @@ export class FactFichaProductoComponent {
   public Calcular(): void {
 
     this.Detalle = {} as iDetalleFactura;
+
+
     this.SubTotal = 0;
     this.Descuento = 0;
     this.SubTotalNeto = 0;
@@ -354,11 +378,17 @@ export class FactFichaProductoComponent {
 
     if (Producto.length == 0) return;
 
-    let PrecioCordoba: number = Number(this.val.Get("txtPrecioCor").value.replace(",", ""));
-    let PrecioDolar: number = Number(this.val.Get("txtPrecioDol").value.replace(",", ""));
-    let Cantidad: number = Number(this.val.Get("txtCantidad").value);
-    let PorDescuento: number = Number(this.val.Get("txtProcDescuento").value) / 100;
+
+    let PrecioCordoba: number = Number(String(this.val.Get("txtPrecioCor").value).replaceAll(",", ""));
+    let PrecioDolar: number = Number(String(this.val.Get("txtPrecioDol").value).replaceAll(",", ""));
+    let Cantidad: number = Number(this.val.Get("txtCantidad").value.replaceAll(",", ""));
+    let PorDescuento: number = Number(String(this.val.Get("txtProcDescuento").value.replaceAll(",", ""))) / 100;
     let PorcImpuesto: number = Producto[0].ConImpuesto ? 0.15 : 0;
+
+
+    this.Detalle.Precio = PrecioCordoba;
+    this.Detalle.PorcDescuento = this.cFunciones.Redondeo(PorDescuento * 100, "2");
+
 
     if (Cantidad == 0 || PrecioCordoba == 0 || PrecioDolar == 0) return;
     if (this.TC == 0) this.TC = 1;
