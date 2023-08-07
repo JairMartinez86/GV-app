@@ -11,6 +11,7 @@ import { DialogErrorComponent } from "src/app/SHARED/componente/dialog-error/dia
 import { iDatos } from "src/app/SHARED/interface/i-Datos";
 import { iPrecio } from "src/app/FAC/interface/i-Precio";
 import { Funciones } from "src/app/SHARED/class/cls_Funciones";
+import { iDetalleFactura } from "src/app/FAC/interface/i-detalle-factura";
 
 @Component({
   selector: "app-fact-ficha-producto",
@@ -19,6 +20,9 @@ import { Funciones } from "src/app/SHARED/class/cls_Funciones";
 })
 export class FactFichaProductoComponent {
   public val = new Validacion();
+
+  public Detalle : iDetalleFactura;
+  public lstDetalle : iDetalleFactura[] = [];
 
   private MonedaCliente: string;
   public CodCliente: string = "";
@@ -89,18 +93,21 @@ export class FactFichaProductoComponent {
   }
 
   public Iniciar(CodCliente: string, MonedaCliente: string, TC: number): void {
+    this._Evento("Limpiar");
     this.CodCliente = CodCliente;
     this.TC = TC;
     this.MonedaCliente = MonedaCliente;
+    document.getElementById("btnAgregarProducto")?.setAttribute("disabled", "disabled");
+
     this.v_Cargar_Productos();
   }
 
   private _Evento(e: string): void {
     switch (e) {
       case "Limpiar":
+        this.Detalle = {} as iDetalleFactura;
         this.bol_Referescar = false;
-        this.CodCliente = "";
-        this.TC = 0;
+        this.CodProducto = "";
         this.val.Get("txtCodProducto").setValue("");
         this.val.Get("txtProducto").setValue("");
         this.val.Get("txtPrecioCor").setValue("0.0000");
@@ -108,6 +115,8 @@ export class FactFichaProductoComponent {
         this.val.Get("txtCantidad").setValue("1");
         this.val.Get("txtProcDescuento").setValue("0.00");
 
+        this.val.Get("txtCodProducto").enable();
+        this.val.Get("txtProducto").enable();
         this.val.Get("txtPrecioCor").disable();
         this.val.Get("txtPrecioDol").disable();
         this.val.Get("txtProcDescuento").disable();
@@ -117,7 +126,11 @@ export class FactFichaProductoComponent {
         this.Descuento = 0;
         this.SubTotalNeto = 0;
         this.Impuesto = 0;
-        this.SubTotal = 0;
+        this.TotalCordoba = 0;
+        this.TotalDolar = 0;
+
+        document.getElementById("btnAgregarProducto")?.setAttribute("disabled", "disabled");
+
 
         break;
     }
@@ -200,6 +213,7 @@ export class FactFichaProductoComponent {
     this.val.Get("txtProcDescuento").setValue("0.00");
 
     if (Producto.length > 0) {
+     
       this.CodProducto = Producto[0].Codigo;
       this.val.Get("txtProducto").setValue(Producto[0].Producto);
       this.val.Get("txtCodProducto").disable();
@@ -228,6 +242,8 @@ export class FactFichaProductoComponent {
     }
 
     this.Calcular();
+
+    document.getElementById("btnAgregarProducto")?.removeAttribute("disabled");
   }
 
   public v_Borrar_Producto(): void {
@@ -251,6 +267,8 @@ export class FactFichaProductoComponent {
     this.SubTotalNeto = 0;
     this.Impuesto = 0;
     this.SubTotal = 0;
+
+    document.getElementById("btnAgregarProducto")?.setAttribute("disabled", "disabled");
   }
 
   public v_Datos_Producto(p: string): void {
@@ -304,14 +322,29 @@ export class FactFichaProductoComponent {
       });
   }
 
-  public v_Agregar_Producto(): void {}
+  public v_Agregar_Producto(): void {
+
+    let index : number = 1;
+    let det : iDetalleFactura = JSON.parse(JSON.stringify(this.Detalle));;
+
+    if(this.lstDetalle.length > 0) index = Math.max(...this.lstDetalle.map(o => o.Index)) + 1
+
+    det.Index = index;
+   
+    this.lstDetalle.push(det);
+
+    this._Evento("Limpiar");
+  }
 
   public Calcular(): void {
+
+    this.Detalle = {} as iDetalleFactura;
     this.SubTotal = 0;
     this.Descuento = 0;
     this.SubTotalNeto = 0;
     this.Impuesto = 0;
-    this.SubTotal = 0;
+    this.TotalCordoba = 0;
+    this.TotalDolar = 0;
 
     if (this.CodProducto == "") return;
 
@@ -363,7 +396,28 @@ export class FactFichaProductoComponent {
         "2"
       );
     }
+
+
+
+
+    this.Detalle.Index = -1;
+    this.Detalle.Codigo = this.CodProducto;
+    this.Detalle.Producto = Producto[0].Producto;
+    this.Detalle.Precio = PrecioCordoba;
+    this.Detalle.PorcDescuento = this.cFunciones.Redondeo(PorDescuento * 100, "2");
+    this.Detalle.PorcImpuesto = PorcImpuesto;
+    this.Detalle.Cantidad = Cantidad;
+    this.Detalle.SubTotal = this.SubTotal;
+    this.Detalle.Descuento = this.Descuento;
+    this.Detalle.SubTotalNeto = this.SubTotalNeto;
+    this.Detalle.Impuesto = this.Impuesto;
+    this.Detalle.TotalCordoba = this.TotalCordoba;
+    this.Detalle.TotalDolar = this.TotalDolar;
+
+
   }
+
+
 
   private ngOnInit() {
     //FILTRO PRODUCTO

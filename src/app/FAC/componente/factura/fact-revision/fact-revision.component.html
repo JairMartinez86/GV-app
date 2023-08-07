@@ -9,43 +9,49 @@
                             <th scope="col" class="col-12">PRODUCTO</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody *ngFor="let det of lstDetalle">
 
                         <tr class="row">
                             <td class="col-sm-12">
-                                <div class="text-ajustar">XX-XX-XXXX</div>
+                                <div class="text-ajustar">{{det.Codigo}}</div>
                             </td>
                             <td class="col-sm-12">
                                 <div class="text-ajustar">
-                                    asdasdsadsadsadsadsadasdahdksadlkhsalkdhsaldhlkjahdkjsahkjdsakjdkjsadkjasdsa</div>
+                                    {{det.Producto}}</div>
                             </td>
                             <td class="col-sm-12">
                                 <div class="etiqueta">Precio:</div>
-                                <div class="valores">999,999,99</div>
+                                <div class="valores">{{det.Precio| number : '1.4-4'}}</div>
                             </td>
                             <td class="col-sm-12">
                                 <div class="etiqueta">Cantidad:</div>
-                                <div class="valores">999,999,99</div>
+                                <div class="valores">{{det.Cantidad| number : '1.2-2'}}</div>
                             </td>
                             <td class="col-sm-12">
                                 <div class="etiqueta">Sub Total:</div>
-                                <div class="valores">999,999,99</div>
+                                <div class="valores">{{det.SubTotal| number : '1.2-2'}}</div>
                             </td>
                             <td class="col-sm-12">
                                 <div class="etiqueta">Descuento:</div>
                                 <div class="valores">
-                                    <div class="valores-descuento"><span class="porc">5.00
-                                            %</span><span>999,999,99</span></div>
+                                    <div class="valores-descuento"><span class="porc">{{det.PorcDescuento| number :
+                                            '1.2-2'}} %</span><span>{{det.Descuento| number : '1.2-2'}}</span></div>
                                 </div>
                             </td>
                             <td class="col-sm-12">
                                 <div class="etiqueta">Sub Total Neto:</div>
-                                <div class="valores">999,999,99</div>
+                                <div class="valores">{{det.SubTotalNeto| number : '1.2-2'}}</div>
                             </td>
+
+                            <td class="col-sm-12">
+                                <div class="etiqueta">Bonificado</div>
+                                <div class="valores">No</div>
+                            </td>
+
                             <td class="col-sm-12 linea">
                                 <span class="input-group-text">
                                     <button type="button" class="btn"><i class="fa-solid fa-trash fa-beat-fade"
-                                            (click)="v_Eliminar();"></i>
+                                            (click)="v_Eliminar(det.Index);"></i>
                                     </button>
                                 </span>
 
@@ -53,215 +59,7 @@
                         </tr>
 
 
-                        <tr class="row">
-                            <td class="col-sm-12">
-                                <div class="text-ajustar">XX-XX-XXXX</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="text-ajustar">
-                                    asdasdsadsadsadsadsadasdahdksadlkhsalkdhsaldhlkjahdkjsahkjdsakjdkjsadkjasdsa</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Precio:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Cantidad:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Sub Total:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Descuento:</div>
-                                <div class="valores">
-                                    <div class="valores-descuento"><span class="porc">5.00
-                                            %</span><span>999,999,99</span></div>
-                                </div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Sub Total Neto:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12 linea">
-                                <span class="input-group-text">
-                                    <button type="button" class="btn"><i class="fa-solid fa-trash fa-beat-fade"
-                                            (click)="v_Eliminar();"></i>
-                                    </button>
-                                </span>
 
-                            </td>
-                        </tr>
-
-
-                        <tr class="row">
-                            <td class="col-sm-12">
-                                <div class="text-ajustar">XX-XX-XXXX</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="text-ajustar">
-                                    asdasdsadsadsadsadsadasdahdksadlkhsalkdhsaldhlkjahdkjsahkjdsakjdkjsadkjasdsa</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Precio:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Cantidad:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Sub Total:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Descuento:</div>
-                                <div class="valores">
-                                    <div class="valores-descuento"><span class="porc">5.00
-                                            %</span><span>999,999,99</span></div>
-                                </div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Sub Total Neto:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12 linea">
-                                <span class="input-group-text">
-                                    <button type="button" class="btn"><i class="fa-solid fa-trash fa-beat-fade"
-                                            (click)="v_Eliminar();"></i>
-                                    </button>
-                                </span>
-
-                            </td>
-                        </tr>
-
-
-                        <tr class="row">
-                            <td class="col-sm-12">
-                                <div class="text-ajustar">XX-XX-XXXX</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="text-ajustar">
-                                    asdasdsadsadsadsadsadasdahdksadlkhsalkdhsaldhlkjahdkjsahkjdsakjdkjsadkjasdsa</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Precio:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Cantidad:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Sub Total:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Descuento:</div>
-                                <div class="valores">
-                                    <div class="valores-descuento"><span class="porc">5.00
-                                            %</span><span>999,999,99</span></div>
-                                </div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Sub Total Neto:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12 linea">
-                                <span class="input-group-text">
-                                    <button type="button" class="btn"><i class="fa-solid fa-trash fa-beat-fade"
-                                            (click)="v_Eliminar();"></i>
-                                    </button>
-                                </span>
-
-                            </td>
-                        </tr>
-
-
-                        <tr class="row">
-                            <td class="col-sm-12">
-                                <div class="text-ajustar">XX-XX-XXXX</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="text-ajustar">
-                                    asdasdsadsadsadsadsadasdahdksadlkhsalkdhsaldhlkjahdkjsahkjdsakjdkjsadkjasdsa</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Precio:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Cantidad:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Sub Total:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Descuento:</div>
-                                <div class="valores">
-                                    <div class="valores-descuento"><span class="porc">5.00
-                                            %</span><span>999,999,99</span></div>
-                                </div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Sub Total Neto:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12 linea">
-                                <span class="input-group-text">
-                                    <button type="button" class="btn"><i class="fa-solid fa-trash fa-beat-fade"
-                                            (click)="v_Eliminar();"></i>
-                                    </button>
-                                </span>
-
-                            </td>
-                        </tr>
-
-
-                        <tr class="row">
-                            <td class="col-sm-12">
-                                <div class="text-ajustar">XX-XX-XXXX</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="text-ajustar">
-                                    asdasdsadsadsadsadsadasdahdksadlkhsalkdhsaldhlkjahdkjsahkjdsakjdkjsadkjasdsa</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Precio:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Cantidad:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Sub Total:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Descuento:</div>
-                                <div class="valores">
-                                    <div class="valores-descuento"><span class="porc">5.00
-                                            %</span><span>999,999,99</span></div>
-                                </div>
-                            </td>
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Sub Total Neto:</div>
-                                <div class="valores">999,999,99</div>
-                            </td>
-                            <td class="col-sm-12 linea">
-                                <span class="input-group-text">
-                                    <button type="button" class="btn"><i class="fa-solid fa-trash fa-beat-fade"
-                                            (click)="v_Eliminar();"></i>
-                                    </button>
-                                </span>
-
-                            </td>
-                        </tr>
-                     
 
 
                     </tbody>
@@ -277,28 +75,28 @@
                     <div class="row">
                         <div class="col-12 contenedor-totales total-panel-1">
                             <div class="etiqueta-totales">SUB TOTAL</div>
-                            <div class="valores-totales">999,999,999.00</div>
+                            <div class="valores-totales">{{SubTotal| number : '1.2-2'}}</div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-12 contenedor-totales total-panel-1">
                             <div class="etiqueta-totales">DECUENTO</div>
-                            <div class="valores-totales">999,999,999.00</div>
+                            <div class="valores-totales">{{Descuento| number : '1.2-2'}}</div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-12 contenedor-totales total-panel-1">
                             <div class="etiqueta-totales">SUB.T NETO</div>
-                            <div class="valores-totales">999,999,999.00</div>
+                            <div class="valores-totales">{{SubTotalNeto| number : '1.2-2'}}</div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-12 contenedor-totales total-panel-2">
                             <div class="etiqueta-totales">IMPUESTO</div>
-                            <div class="valores-totales">999,999,999.00</div>
+                            <div class="valores-totales">{{Impuesto| number : '1.2-2'}}</div>
                         </div>
                     </div>
 
@@ -306,14 +104,14 @@
                     <div class="row">
                         <div class="col-12 contenedor-totales total-panel-3">
                             <div class="etiqueta-totales">TOTAL C$</div>
-                            <div class="valores-totales">999,999,999.00</div>
+                            <div class="valores-totales">{{TotalCordoba| number : '1.2-2'}}</div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-12 contenedor-totales total-panel-3">
                             <div class="etiqueta-totales">TOTAL U$</div>
-                            <div class="valores-totales">999,999,999.00</div>
+                            <div class="valores-totales">{{TotalDolar| number : '1.2-2'}}</div>
                         </div>
                     </div>
 
@@ -321,7 +119,7 @@
                     <div class="row">
                         <div class="col-12 contenedor-totales total-panel-2">
                             <div class="etiqueta-totales">TC</div>
-                            <div class="valores-totales">99.9999</div>
+                            <div class="valores-totales">{{TC| number : '1.4-4'}}</div>
                         </div>
                     </div>
 

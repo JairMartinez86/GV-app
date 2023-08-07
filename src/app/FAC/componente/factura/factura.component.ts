@@ -26,6 +26,8 @@ import { iVendedor } from "../../interface/i-venedor";
 import { FactConfirmarComponent } from "./fact-confirmar/fact-confirmar.component";
 import { Funciones } from "src/app/SHARED/class/cls_Funciones";
 import { FactFichaProductoComponent } from "./fact-ficha-producto/fact-ficha-producto.component";
+import { iDetalleFactura } from "../../interface/i-detalle-factura";
+import { FactRevisionComponent } from "./fact-revision/fact-revision.component";
 
 @Component({
   selector: "app-factura",
@@ -56,6 +58,8 @@ export class FacturaComponent {
 
   public SimboloMonedaCliente: string = "U$";
   private MonedaCliente: string;
+
+  public lstDetalle : iDetalleFactura[] = [];
 
   constructor(private dialog: MatDialog, private cFunciones : Funciones, private Conexion : getFactura) {
     this.val.add(
@@ -572,6 +576,8 @@ public customSettings: OverlaySettings = {
         "display:initial;"
       );
 
+      this.LlenarRevision();
+
       return;
     }
 
@@ -617,6 +623,18 @@ public customSettings: OverlaySettings = {
     this.FichaProducto.Iniciar(this.CodCliente, this.MonedaCliente, this.TC);
   }
 
+
+  
+  //████████████████████████████████████████████REVISION FACTURA████████████████████████████████████████████████████████████████████████
+
+  @ViewChild("RevisionFactura", { static: false })
+  public RevisionFactura: FactRevisionComponent;
+
+
+  private LlenarRevision(): void {
+    this.lstDetalle = this.FichaProducto.lstDetalle;
+    this.RevisionFactura.Iniciar(this.lstDetalle, this.TC);
+  }
 
 
   //████████████████████████████████████████████CONFIRMAR FACTURA████████████████████████████████████████████████████████████████████
