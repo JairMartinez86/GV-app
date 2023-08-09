@@ -150,6 +150,11 @@ export class FactFichaProductoComponent {
   //████████████████████████████████████████████FICHA PRODUCTO████████████████████████████████████████████████████████████████████████
 
   private v_Cargar_Productos(): void {
+
+    this.lstPrecios.splice(0, this.lstPrecios.length);
+    this.lstExistencia.splice(0, this.lstExistencia.length);
+    this.lstBonificacion.splice(0, this.lstBonificacion.length);
+
     document
       .getElementById("btnRefrescarProductos")
       ?.setAttribute("disabled", "disabled");
@@ -184,7 +189,6 @@ export class FactFichaProductoComponent {
           //LLENAR DATOS AL REFRESCAR
           if (this.bol_Referescar) {
 
-            this.LlenarPrecio();
             if(this.CodProducto != "" && this.CodBodega != "")this.v_Datos_Producto();
             this.bol_Referescar = false;
           }
@@ -420,6 +424,18 @@ export class FactFichaProductoComponent {
     this.lstDetalle.push(det);
 
     this._Evento("Limpiar");
+  }
+
+  public v_minus_mas(s : string, id : string) : void{
+
+    let num : number = Number(this.val.Get(id).value.replaceAll("," , ""))
+
+    if(s == "+") num += 1;
+
+    if(s == "-") num -= 1;
+
+    this.val.Get(id).setValue(this.cFunciones.NumFormat(num, (id == "txtCantidad" ? "0": "2")));
+
   }
 
   public Calcular(): void {

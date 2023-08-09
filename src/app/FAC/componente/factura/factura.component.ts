@@ -54,7 +54,7 @@ export class FacturaComponent {
   public EsContraEntrega: boolean = false;
   public EsExportacion: boolean = false;
   public isKeyEnter: boolean = false;
-  public TC : number = 36.9566;
+  public TC : number = 1;
   private bol_Referescar : boolean = false;
 
   public SimboloMonedaCliente: string = "U$";
@@ -114,6 +114,7 @@ export class FacturaComponent {
         this.bol_Referescar = false;
         this.Plazo = 0;
         this.SimboloMonedaCliente = "U$";
+        this.CodBodega = "B-01"
         this.val.Get("txtCliente").setValue("");
         this.val.Get("txtNombre").setValue("");
         this.val.Get("txtIdentificacion").setValue("");
@@ -126,7 +127,7 @@ export class FacturaComponent {
         this.TipoImpuesto = "Iva";
         this.val.Get("chkContraEntrega").setValue(false);
         this.val.Get("chkExportacion").setValue(false);
-        this.val.Get("txtBodega").setValue(["B-01"]);
+        this.val.Get("txtBodega").setValue([this.CodBodega]);
         this.val.Get("txtVendedor").setValue([]);
 
 
@@ -152,7 +153,7 @@ export class FacturaComponent {
       }
     );
 
-    this.Conexion.Datos_Factura().subscribe(
+    this.Conexion.Datos_Factura(this.cFunciones.DateFormat(this.cFunciones.FechaServidor(), "yyyy-MM-dd")).subscribe(
       (s) => {
         document.getElementById("btnRefrescar")?.removeAttribute("disabled");
         dialogRef.close();
@@ -168,6 +169,8 @@ export class FacturaComponent {
           this.lstClientes = Datos[0].d;
           this.lstBodega = Datos[1].d;
           this.lstVendedores = Datos[2].d;
+          this.TC = Datos[3].d;
+
 
           //LLENAR DATOS AL REFRESCAR
           if(this.bol_Referescar){
@@ -186,6 +189,8 @@ export class FacturaComponent {
       }
     );
   }
+
+
 
   public v_Refrescar(): void {
     this.bol_Referescar = true;
