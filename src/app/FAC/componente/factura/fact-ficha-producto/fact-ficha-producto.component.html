@@ -20,7 +20,7 @@
 
                                         </div>
                                         <span class="input-group-text"><button type="button" class="btn i-boton"
-                                                (click)="v_Datos_Producto('E');"><i
+                                                (click)="v_tabla_Producto('E');"><i
                                                     class="fa-solid fa-warehouse fa-beat-fade fa-lg"></i></button></span>
 
 
@@ -52,7 +52,9 @@
                             <div class="row">
                                 <div class="col-12 col-ms-12 col-md-6 mb-1">
                                     <div class="input-group">
-                                        <span class="input-group-text">C$</span>
+                                        
+                                        <span class="input-group-text"><button type="button" class="btn i-boton btn-precio"
+                                            (click)="v_tabla_Producto('P');">C$</button></span>
                                         <div class="form-floating">
                                             <input type="text" id="txtPrecioCor" class="form-control" placeholder=""
                                                 aria-label="Precio" formControlName="txtPrecioCor"
@@ -68,7 +70,8 @@
 
                                 <div class="col-12 col-ms-12 col-md-6 mb-1">
                                     <div class="input-group">
-                                        <span class="input-group-text">U$</span>
+                                        <span class="input-group-text"><button type="button" class="btn i-boton btn-precio"
+                                            (click)="v_tabla_Producto('P');">U$</button></span>
                                         <div class="form-floating">
                                             <input type="text" id="txtPrecioDol" class="form-control" placeholder=""
                                                 aria-label="Precio" formControlName="txtPrecioDol"
@@ -112,9 +115,9 @@
                                         </span>
                                         <span class="input-group-text i-bonif"><button type="button"
                                                 class="btn i-boton"><i class="fa-solid fa-b fa-beat-fade fa-lg i-bonif"
-                                                    (click)="v_Datos_Producto('B');"></i>
+                                                    (click)="v_tabla_Producto('B');"></i>
                                                 <i class="fa-solid fa-o fa-beat-fade fa-lg"
-                                                    (click)="v_Datos_Producto('B');"></i>
+                                                    (click)="v_tabla_Producto('B');"></i>
                                             </button></span>
 
                                         <span class="input-group-text i-bonif"><button type="button" class="btn i-boton"
@@ -149,7 +152,7 @@
                                         </span>
                                         <span class="input-group-text"><button type="button" class="btn i-boton"><i
                                                     class="fa-sharp fa-solid fa-percent fa-beat-fade fa-lg"
-                                                    (click)="v_Datos_Producto('D');"></i></button></span>
+                                                    (click)="v_tabla_Producto('D');"></i></button></span>
                                     </div>
                                 </div>
                             </div>

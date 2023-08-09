@@ -1,93 +1,41 @@
-<div class="escasan-dialog">
-  <div class="btn-contenedor">
-    <button  class="close-button custom-cerrar" [mat-dialog-close]="true">
-      <mat-icon class="close-icon" color="warn">close</mat-icon>
-    </button>
-  </div>
-  
-    
- 
+<div id="div-tabla">
+  <div class="escasan-dialog">
+    <div class="btn-contenedor">
+      <button class="close-button custom-cerrar" [mat-dialog-close]="true">
+        <mat-icon class="close-icon" color="warn">close</mat-icon>
+      </button>
+    </div>
+
+
     <h1 mat-dialog-title>{{Titulo}}</h1>
 
     <div mat-dialog-content>
       <div class="row escan-table">
         <table class="table table-hover table-bordered table-sm">
-          <thead>
-            <tr>
-              <th scope="col">{{Encabezado_1}}</th>
-              <th scope="col">{{Encabezado_2}}</th>
-              <th scope="col" *ngIf="Encabezado_3 !=''">{{Encabezado_3}}</th>
-            </tr>
-          </thead>
+         
+            <thead>
+              <tr>
+                <th>{{Encabezado_1}}</th>
+                <th >{{Encabezado_2}}</th>
+                <th  *ngIf="Encabezado_3 !=''">{{Encabezado_3}}</th>
+              </tr>
+            </thead>
+          
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td></td>
-              <td class="aling-number" *ngIf="Encabezado_3 !=''"></td>
+            <tr *ngFor="let det of lstDetalle" [ngClass]="(det.EsPrincipal ==true) ? 'Seleccionar': '' ">
+              <th scope="row">{{det.col1}}</th>
+              <td class="aling-number">{{det.col2}}</td>
+              <td class="aling-number" *ngIf="Encabezado_3 !=''">{{det.col3}}</td>
             </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td></td>
-              <td class="aling-number" *ngIf="Encabezado_3 !=''"></td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td></td>
-              <td class="aling-number" *ngIf="Encabezado_3 !=''"></td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td></td>
-              <td class="aling-number" *ngIf="Encabezado_3 !=''"></td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td></td>
-              <td class="aling-number" *ngIf="Encabezado_3 !=''"></td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td></td>
-              <td class="aling-number" *ngIf="Encabezado_3 !=''"></td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td></td>
-              <td class="aling-number" *ngIf="Encabezado_3 !=''"></td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td></td>
-              <td class="aling-number" *ngIf="Encabezado_3 !=''"></td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td></td>
-              <td class="aling-number" *ngIf="Encabezado_3 !=''"></td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td></td>
-              <td class="aling-number" *ngIf="Encabezado_3 !=''"></td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td></td>
-              <td class="aling-number" *ngIf="Encabezado_3 !=''"></td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td></td>
-              <td class="aling-number" *ngIf="Encabezado_3 !=''"></td>
-            </tr>
+
           </tbody>
         </table>
       </div>
-      
+
     </div>
     <div mat-dialog-actions class="btn-contenedor">
       <button type="button" class="btn btn-secundario" (click)="dialogRef.close();" cdkFocusInitial>Cerrar</button>
     </div>
-</div>
+  </div>
 
-    
+</div>

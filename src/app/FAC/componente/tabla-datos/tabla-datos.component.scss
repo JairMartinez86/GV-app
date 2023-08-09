@@ -2,14 +2,37 @@
 
 .escan-table table {
   overflow-y: auto;
-  height: 100vh;
+ 
 }
 
-thead,
-th {
-  background: #eee;
-}
+
 thead th {
   position: sticky;
   top: 0;
+}
+
+thead{
+  th{
+
+    background-color: var(--escan-primario);
+    color: var(--escan-fondo);
+    padding: 5px;
+    border-left: 1px var(--escan-fondo) solid;
+    text-align: center;
+   
+  }
+}
+
+
+
+th, td{
+  font-weight: initial;
+  width: 200px;
+}
+
+.Seleccionar{
+  td, th{
+    font-weight: bold;
+  }
+  
 }

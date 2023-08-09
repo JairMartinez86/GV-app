@@ -12,6 +12,8 @@ import { iDatos } from "src/app/SHARED/interface/i-Datos";
 import { iPrecio } from "src/app/FAC/interface/i-Precio";
 import { Funciones } from "src/app/SHARED/class/cls_Funciones";
 import { iDetalleFactura } from "src/app/FAC/interface/i-detalle-factura";
+import { iExistencia } from "src/app/FAC/interface/i-Existencia";
+import { iBonificacion } from "src/app/FAC/interface/i-Bonificacion";
 
 @Component({
   selector: "app-fact-ficha-producto",
@@ -30,10 +32,13 @@ export class FactFichaProductoComponent {
   private bol_Referescar: boolean = false;
 
   public CodProducto: string = "";
+  public CodBodega: string = "";
   lstProductos: iProducto[] = [];
   filteredProductos: Observable<iProducto[]> | undefined;
 
   private lstPrecios: iPrecio[] = [];
+  private lstExistencia: iExistencia[] = [];
+  private lstBonificacion: iBonificacion[] = [];
 
   public SubTotal: number = 0;
   public Descuento: number = 0;
@@ -92,8 +97,9 @@ export class FactFichaProductoComponent {
     this._Evento("Limpiar");
   }
 
-  public Iniciar(CodCliente: string, MonedaCliente: string, TC: number): void {
+  public Iniciar(CodBodega : string, CodCliente: string, MonedaCliente: string, TC: number): void {
     this._Evento("Limpiar");
+    this.CodBodega = CodBodega;
     this.CodCliente = CodCliente;
     this.TC = TC;
     this.MonedaCliente = MonedaCliente;
@@ -151,13 +157,12 @@ export class FactFichaProductoComponent {
     let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
       WaitComponent,
       {
-        id: "wait",
         panelClass: "escasan-dialog-full-blur",
         data: "",
       }
     );
 
-    this.Conexion.Cargar_Productos(this.CodCliente, this.TC).subscribe(
+    this.Conexion.Cargar_Productos().subscribe(
       (s) => {
         document
           .getElementById("btnRefrescarProductos")
@@ -173,16 +178,14 @@ export class FactFichaProductoComponent {
           let Datos: iDatos[] = _json["d"];
 
           this.lstProductos = Datos[0].d;
-          this.lstPrecios = Datos[1].d;
-
-          this.lstPrecios.forEach((f) => {
-            f.PrecioCordoba = this.cFunciones.Redondeo(f.PrecioCordoba, "4");
-            f.PrecioDolar = this.cFunciones.Redondeo(f.PrecioDolar, "4");
-          });
+        
+         
 
           //LLENAR DATOS AL REFRESCAR
           if (this.bol_Referescar) {
+
             this.LlenarPrecio();
+            if(this.CodProducto != "" && this.CodBodega != "")this.v_Datos_Producto();
             this.bol_Referescar = false;
           }
         }
@@ -223,13 +226,13 @@ export class FactFichaProductoComponent {
       this.val.Get("txtProcDescuento").enable();
       this.val.Get("txtCantidad").enable();
 
-      this.LlenarPrecio();
+      this.v_Datos_Producto();
     }
   }
 
   private LlenarPrecio(): void {
     let PrecioProd: iPrecio[] = this.lstPrecios.filter(
-      (f) => f.CodProducto == this.CodProducto && f.Principal
+      (f) => f.CodProducto == this.CodProducto && f.EsPrincipal
     );
 
     if (PrecioProd.length > 0) {
@@ -245,6 +248,62 @@ export class FactFichaProductoComponent {
 
     document.getElementById("btnAgregarProducto")?.removeAttribute("disabled");
   }
+
+  private v_Datos_Producto(): void{
+
+    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+      WaitComponent,
+      {
+        panelClass: "escasan-dialog-full-blur",
+        data: "",
+      }
+    );
+
+
+    this.Conexion.Datos_Producto(this.CodProducto, this.CodBodega, this.CodCliente, this.TC).subscribe(
+      (s) => {
+
+        dialogRef.close();
+        let _json = JSON.parse(s);
+
+        if (_json["esError"] == 1) {
+          this.dialog.open(DialogErrorComponent, {
+            data: _json["msj"].Mensaje,
+          });
+        } else {
+          let Datos: iDatos[] = _json["d"];
+
+          this.lstExistencia = Datos[0].d;
+          this.lstBonificacion = Datos[1].d;
+          this.lstPrecios = Datos[2].d;
+
+
+          this.lstPrecios.forEach((f) => {
+            f.PrecioCordoba = this.cFunciones.Redondeo(f.PrecioCordoba, "4");
+            f.PrecioDolar = this.cFunciones.Redondeo(f.PrecioDolar, "4");
+          });
+
+
+          this.LlenarPrecio();
+
+        }
+      },
+      (err) => {
+
+
+        dialogRef.close();
+
+        this.dialog.open(DialogErrorComponent, {
+          data: "<b class='error'>" + err.message + "</b>",
+        });
+      }
+    );
+
+
+
+  }
+
+
 
   public v_Borrar_Producto(): void {
     this.CodProducto = "";
@@ -271,19 +330,24 @@ export class FactFichaProductoComponent {
     document.getElementById("btnAgregarProducto")?.setAttribute("disabled", "disabled");
   }
 
-  public v_Datos_Producto(p: string): void {
+  public v_tabla_Producto(p: string): void {
+
+    let data : any;
+
+
+    if(p == "E") data = this.lstExistencia;
+    if(p == "B") data = this.lstBonificacion;
+    if(p == "P") data = this.lstPrecios.filter(f => f.CodProducto == this.CodProducto);
+
     let dialogRef: MatDialogRef<TablaDatosComponent> = this.dialog.open(
       TablaDatosComponent,
       {
         panelClass: window.innerWidth < 992 ? "escasan-dialog-full" : "",
-        data: [p, ""],
+        data: [p, data],
       }
     );
 
-    /*dialogRef.afterOpened().subscribe(s =>{
-        alert("")
-        dialogRef.componentInstance.VisibleCol3 = true;
-      });*/
+
   }
 
   public v_FocusOut(id: string, decimal: string): void {

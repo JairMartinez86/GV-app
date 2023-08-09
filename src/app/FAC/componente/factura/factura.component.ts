@@ -37,6 +37,7 @@ import { FactRevisionComponent } from "./fact-revision/fact-revision.component";
 export class FacturaComponent {
   public val = new Validacion();
 
+  private CodBodega : string = "";
   public CodCliente: string = "";
   lstClientes: iCliente[] = [];
   filteredClientes: Observable<iCliente[]> | undefined;
@@ -298,6 +299,7 @@ public customSettings: OverlaySettings = {
     if (event.added.length) {
       event.newSelection = event.added;
       this.val.Get("txtBodega").setValue(event.added);
+      this.CodBodega = event.added[0];
     }
   }
 
@@ -306,6 +308,7 @@ public customSettings: OverlaySettings = {
       let _Item: iBodega = this.cmbBodega.dropdown.focusedItem.value;
       this.cmbBodega.setSelectedItem(_Item.Codigo);
       this.val.Get("txtBodega").setValue([_Item.Codigo]);
+      this.CodBodega = _Item.Codigo;
     }
   }
 
@@ -620,7 +623,7 @@ public customSettings: OverlaySettings = {
   public FichaProducto: FactFichaProductoComponent;
 
   private LlenarDatosfichaProducto(): void {
-    this.FichaProducto.Iniciar(this.CodCliente, this.MonedaCliente, this.TC);
+    this.FichaProducto.Iniciar(this.CodBodega, this.CodCliente, this.MonedaCliente, this.TC);
   }
 
 

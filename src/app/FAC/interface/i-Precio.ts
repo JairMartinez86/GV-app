@@ -3,5 +3,5 @@ export interface iPrecio{
     Tipo: string;
     PrecioCordoba: number;
     PrecioDolar: number;
-    Principal: boolean;
+    EsPrincipal: boolean;
 }
