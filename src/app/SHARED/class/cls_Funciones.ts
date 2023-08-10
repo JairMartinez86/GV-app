@@ -68,7 +68,7 @@ export class Funciones {
 
   public v_Prevent_IsNumber(event : any, tipo : string) : void{
 
-    if(event.key == "Backspace") return;
+    if(event.key === "Backspace" || event.key === "Enter") return;
 
     if(event.key == ",") {
       event.preventDefault();

@@ -136,7 +136,7 @@ export class FactFichaProductoComponent {
         this.TotalDolar = 0;
 
         document.getElementById("btnAgregarProducto")?.setAttribute("disabled", "disabled");
-
+        document?.getElementById("txtCodProducto")?.focus();
 
         break;
     }
@@ -218,6 +218,7 @@ export class FactFichaProductoComponent {
     this.val.Get("txtPrecioDol").setValue("0.0000");
     this.val.Get("txtCantidad").setValue("1");
     this.val.Get("txtProcDescuento").setValue("0.00");
+    
 
     if (Producto.length > 0) {
      
@@ -230,8 +231,13 @@ export class FactFichaProductoComponent {
       this.val.Get("txtProcDescuento").enable();
       this.val.Get("txtCantidad").enable();
 
+      document?.getElementById("txtPrecioCor")?.focus();
+
       this.v_Datos_Producto();
     }
+
+    
+    
   }
 
   private LlenarPrecio(): void {
@@ -311,6 +317,9 @@ export class FactFichaProductoComponent {
 
   public v_Borrar_Producto(): void {
     this.CodProducto = "";
+    this.lstPrecios.splice(0, this.lstPrecios.length);
+    this.lstBonificacion.splice(0, this.lstBonificacion.length);
+    this.lstExistencia.splice(0, this.lstExistencia.length);
     this.val.Get("txtCodProducto").setValue("");
     this.val.Get("txtProducto").setValue("");
     this.val.Get("txtPrecioCor").setValue("0.0000");
@@ -332,9 +341,12 @@ export class FactFichaProductoComponent {
     this.SubTotal = 0;
 
     document.getElementById("btnAgregarProducto")?.setAttribute("disabled", "disabled");
+    document?.getElementById("txtCodProducto")?.focus();
   }
 
   public v_tabla_Producto(p: string): void {
+
+    if(this.CodProducto == "") return;
 
     let data : any;
 
@@ -427,6 +439,8 @@ export class FactFichaProductoComponent {
   }
 
   public v_minus_mas(s : string, id : string) : void{
+
+    if(this.CodProducto == "") return;
 
     let num : number = Number(this.val.Get(id).value.replaceAll("," , ""))
 
@@ -530,6 +544,17 @@ export class FactFichaProductoComponent {
 
 
   private ngOnInit() {
+
+     ///CAMBIO DE FOCO
+     this.val.addFocus("txtCodProducto", "txtPrecioCor", undefined);
+     this.val.addFocus("txtPrecioCor", "txtCantidad", undefined);
+
+     this.val.addFocus("txtPrecioDol", "txtCantidad", undefined);
+     this.val.addFocus("txtCantidad", "txtProcDescuento", undefined);
+     this.val.addFocus("txtProcDescuento", "btnAgregarProducto", "click");
+
+     
+
     //FILTRO PRODUCTO
     this.filteredProductos = this.val.Get("txtCodProducto").valueChanges.pipe(
       startWith(""),

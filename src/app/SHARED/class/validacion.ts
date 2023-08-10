@@ -10,6 +10,8 @@ import {
 import { ErrorStateMatcher } from "@angular/material/core";
 
 import { formatDate } from "@angular/common";
+import { EventEmitter, Injectable, Output } from "@angular/core";
+import { event } from "jquery";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -41,7 +43,18 @@ interface I_Frm {
   Etiqueta: string;
 }
 
+interface iFocus {
+  Id: string;
+  IdNext: string;
+  Evento : any;
+}
+
+
+const lstFocus: iFocus[] = [];
+
+
 export class Validacion {
+  
   private fb = new FormBuilder();
   public Iniciar: boolean = false;
   public Errores: string = "";
@@ -49,6 +62,7 @@ export class Validacion {
 
   private lstReglas: ReglasValidacion[] = [];
   private lstFrm: I_Frm[] = [];
+ 
 
   constructor() {}
 
@@ -90,6 +104,49 @@ export class Validacion {
     this.lstReglas.push(_Regla);
     if (this.Get(id) == undefined)
       this.lstFrm.push({ Id: id, Frm: _frm, Etiqueta: etiqueta });
+  }
+
+  public addFocus(id : string, idNext : string, evento : any){
+    let i : number = lstFocus.findIndex(f => f.Id == id);
+
+    if(i != -1){
+      lstFocus[i].IdNext == idNext;
+    }
+    else{
+      lstFocus.push({Id: id, IdNext : idNext, Evento : evento});
+
+      document.querySelector('#' + id)?.addEventListener('keypress', this.onKeyEnter);
+    }
+
+
+   
+  }
+
+   onKeyEnter(event: any){
+
+    if(event.key !== "Enter") return;
+
+    
+    let id : string = event.target.id;
+    let _element_next  = lstFocus.find(f => f.Id == id);
+
+    if(_element_next == undefined) return;
+
+
+    document?.getElementById(_element_next.IdNext)?.focus();
+
+    if(String(_element_next.Evento) != undefined) $("#" + _element_next.IdNext).trigger(_element_next.Evento);
+
+    /*
+    if(String(event.target.value) == "") {
+      document?.getElementById(_input)?.focus();
+      event.preventDefault();
+      return;
+    }*/
+
+
+    event.preventDefault();
+
   }
 
   public del(id: string): void {
@@ -358,4 +415,8 @@ export class Validacion {
     const timestamp = typeof value === "number" ? value : Date.parse(value);
     return isNaN(timestamp) ? null : new Date(timestamp);
   }
+
+
+
+
 }

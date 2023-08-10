@@ -75,16 +75,16 @@
   padding-right: 4px;
 }
 
-.btn-precio {
+.texto-efecto {
   color: var(--escan-secundario);
 
   transform: scale(1.25);
 
   //-webkit-animation: giro3D 1.25s infinite;
-  animation: moneda-efecto 1.25s infinite;
+  animation: texto-efecto 1.25s infinite;
 }
 
-@keyframes moneda-efecto {
+@keyframes texto-efecto {
   //0.0833
   5% {
     transform: scale(1.25);

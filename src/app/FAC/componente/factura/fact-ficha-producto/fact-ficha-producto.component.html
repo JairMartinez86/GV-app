@@ -53,7 +53,7 @@
                                 <div class="col-12 col-ms-12 col-md-6 mb-1">
                                     <div class="input-group">
                                         
-                                        <span class="input-group-text"><button type="button" class="btn i-boton btn-precio"
+                                        <span class="input-group-text"><button type="button" class="btn i-boton texto-efecto"
                                             (click)="v_tabla_Producto('P');">C$</button></span>
                                         <div class="form-floating">
                                             <input type="text" id="txtPrecioCor" class="form-control" placeholder=""
@@ -70,7 +70,7 @@
 
                                 <div class="col-12 col-ms-12 col-md-6 mb-1">
                                     <div class="input-group">
-                                        <span class="input-group-text"><button type="button" class="btn i-boton btn-precio"
+                                        <span class="input-group-text"><button type="button" class="btn i-boton texto-efecto"
                                             (click)="v_tabla_Producto('P');">U$</button></span>
                                         <div class="form-floating">
                                             <input type="text" id="txtPrecioDol" class="form-control" placeholder=""
@@ -116,17 +116,11 @@
 
                                         </span>
                                         <span class="input-group-text i-bonif"><button type="button"
-                                                class="btn i-boton"><i class="fa-solid fa-b fa-beat-fade fa-lg i-bonif"
-                                                    (click)="v_tabla_Producto('B');"></i>
-                                                <i class="fa-solid fa-o fa-beat-fade fa-lg"
-                                                    (click)="v_tabla_Producto('B');"></i>
-                                            </button></span>
+                                                class="btn i-boton texto-efecto"
+                                                (click)="v_tabla_Producto('B');">BO</button></span>
 
-                                        <span class="input-group-text i-bonif"><button type="button" class="btn i-boton"
-                                                (click)="v_Bonificacion_Libre();"><i
-                                                    class="fa-solid fa-b fa-beat-fade fa-lg i-bonif"></i>
-                                                <i class="fa-solid fa-o fa-beat-fade fa-lg i-bonif"></i>
-                                                <i class="fa-solid fa-l fa-beat-fade fa-lg"></i></button></span>
+                                        <span class="input-group-text i-bonif"><button type="button" class="btn i-boton texto-efecto"
+                                                (click)="v_Bonificacion_Libre();">BOL</button></span>
 
                                     </div>
                                 </div>

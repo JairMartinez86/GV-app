@@ -38,6 +38,7 @@ export class LoginComponent {
       'La contraseña debe de contener almenos 6 caracteres.'
     );
 
+   
     this.v_Limpiar();
     this._SrvLogin.isLogin();
   }
@@ -61,5 +62,16 @@ export class LoginComponent {
       );
 
     }
+  }
+
+
+  
+  private ngOnInit() {
+
+    ///CAMBIO DE FOCO
+    this.val.addFocus("txtUsuario", "txtPass", undefined);
+    this.val.addFocus("txtPass", "btnIniciar", "click");
+
+    
   }
 }
