@@ -81,10 +81,10 @@
   transform: scale(1.25);
 
   //-webkit-animation: giro3D 1.25s infinite;
-  animation: giro3D 1.25s infinite;
+  animation: moneda-efecto 1.25s infinite;
 }
 
-@keyframes giro3D {
+@keyframes moneda-efecto {
   //0.0833
   5% {
     transform: scale(1.25);
