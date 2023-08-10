@@ -1,45 +1,37 @@
-@import '/src/assets/scss/media.scss';
+@import "/src/assets/scss/media.scss";
 
-
-#frmFichaProducto{
+#frmFichaProducto {
   min-width: var(--min-width);
-
- 
 }
 
-
-.btn-contenedor{
-
+.btn-contenedor {
   display: flex;
   justify-content: space-between;
-  
-  button{
+
+  button {
     margin-right: 5px;
   }
 
   @include Tamano(xs) {
-    button{
+    button {
       display: block;
       width: 100%;
     }
   }
 
   @include Tamano(lg) {
-    button{
+    button {
       display: initial;
       width: auto;
     }
   }
- 
-  
 }
 
-
-.i-boton{
+.i-boton {
   padding: 0;
 }
 
-.btn-precio{
+.btn-precio {
   color: var(--escan-secundario);
 }
 
@@ -76,113 +68,93 @@
     }*/
 }
 
-
-.i-bonif{
+.i-bonif {
   padding-top: 0;
   padding-bottom: 0;
   padding-left: 4px;
   padding-right: 4px;
 }
 
-
-.btn-precio{
+.btn-precio {
   color: var(--escan-secundario);
 
-  transform: scale(1);
+  transform: scale(1.25);
 
- // -webkit-animation: giro3D 1.25s infinite;
-            animation: giro3D 1.25s infinite;
-
-
+  //-webkit-animation: giro3D 1.25s infinite;
+  animation: giro3D 1.25s infinite;
 }
 
-@keyframes giro3Ds{
+@keyframes giro3D {
+  //0.0833
+  5% {
+    transform: scale(1.25);
+  }
 
-  //0.1428
-  5%{
+  20% {
+    transform: scale(1.1667);
+  }
+
+  45% {
+    transform: scale(1.0834);
+  }
+
+  60% {
     transform: scale(1);
   }
 
-
-  20%{
-    transform: scale(0.8572);
+  75% {
+    transform: scale(1.0833);
   }
 
-  45%{
-    transform: scale(0.7144);
+  90% {
+    transform: scale(1.1666);
   }
-
-  60%{
-    transform: scale(0.5716);
-  }
-
-  75%{
-    transform: scale(0.7144);
-  }
-
-  90%{
-    transform: scale(0.8572);
-  }
-
-
 }
-
-
-
 
 //████████████████████████████████████████████TOTALES████████████████████████████████████████████████████████████████████████
 
-.contenedor{
+.contenedor {
   text-align: right;
   @include Tamano_Menor(lg) {
     margin-bottom: 70px;
   }
-
 }
 
-.contenedor-totles{
+.contenedor-totles {
   display: flex;
   margin-bottom: 5px;
 
   font-weight: bolder;
 
-  .etiqueta-totales{
-  
+  .etiqueta-totales {
     width: 85%;
 
     @include Tamano_Menor(lg) {
       width: 50%;
     }
-
-      
-
   }
 
-  .valores-totales{
-
+  .valores-totales {
     width: 15%;
     margin-right: 10px;
-    
 
     @include Tamano_Menor(lg) {
       width: 50%;
     }
   }
 
-  b{
+  b {
     padding-left: 15px;
     padding-right: 15px;
   }
 
-  .cordoba, .dolar{
+  .cordoba,
+  .dolar {
     background-color: var(--escan-primario);
     color: var(--escan-fondo);
   }
-  .tasa{
+  .tasa {
     background-color: #1b364c;
     color: var(--escan-fondo);
   }
-
 }
-
-
