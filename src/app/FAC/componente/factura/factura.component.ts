@@ -37,6 +37,7 @@ import { FactRevisionComponent } from "./fact-revision/fact-revision.component";
 export class FacturaComponent {
   public val = new Validacion();
 
+
   private CodBodega : string = "";
   public CodCliente: string = "";
   lstClientes: iCliente[] = [];
@@ -54,13 +55,11 @@ export class FacturaComponent {
   public EsContraEntrega: boolean = false;
   public EsExportacion: boolean = false;
   public isKeyEnter: boolean = false;
-  public TC : number = 1;
   private bol_Referescar : boolean = false;
 
   public SimboloMonedaCliente: string = "U$";
   private MonedaCliente: string;
 
-  public lstDetalle : iDetalleFactura[] = [];
 
   constructor(private dialog: MatDialog, private cFunciones : Funciones, private Conexion : getFactura) {
     this.val.add(
@@ -153,7 +152,7 @@ export class FacturaComponent {
       }
     );
 
-    this.Conexion.Datos_Factura(this.cFunciones.DateFormat(this.cFunciones.FechaServidor(), "yyyy-MM-dd")).subscribe(
+    this.Conexion.Datos_Factura().subscribe(
       (s) => {
         document.getElementById("btnRefrescar")?.removeAttribute("disabled");
         dialogRef.close();
@@ -169,8 +168,7 @@ export class FacturaComponent {
           this.lstClientes = Datos[0].d;
           this.lstBodega = Datos[1].d;
           this.lstVendedores = Datos[2].d;
-          this.TC = Datos[3].d;
-
+    
 
           //LLENAR DATOS AL REFRESCAR
           if(this.bol_Referescar){
@@ -555,9 +553,11 @@ public customSettings: OverlaySettings = {
         "style",
         "display:initial;"
       );
+
+     
       
       this.LlenarDatosfichaProducto();
-
+    
       return;
     }
 
@@ -569,6 +569,7 @@ public customSettings: OverlaySettings = {
         "style",
         "display:initial;"
       );
+
       return;
     }
 
@@ -583,6 +584,7 @@ public customSettings: OverlaySettings = {
         "style",
         "display:initial;"
       );
+      
 
       this.LlenarRevision();
 
@@ -628,7 +630,7 @@ public customSettings: OverlaySettings = {
   public FichaProducto: FactFichaProductoComponent;
 
   private LlenarDatosfichaProducto(): void {
-    this.FichaProducto.Iniciar(this.CodBodega, this.CodCliente, this.MonedaCliente, this.TC);
+    this.FichaProducto.Iniciar(this.CodBodega, this.CodCliente, this.MonedaCliente, this.ConfirmarFactura.TipoExoneracion);
   }
 
 
@@ -640,8 +642,7 @@ public customSettings: OverlaySettings = {
 
 
   private LlenarRevision(): void {
-    this.lstDetalle = this.FichaProducto.lstDetalle;
-    this.RevisionFactura.Iniciar(this.lstDetalle, this.TC);
+    this.RevisionFactura.Iniciar(this.FichaProducto.lstDetalle, this.FichaProducto.TC, this.MonedaCliente, this.ConfirmarFactura.TipoExoneracion);
   }
 
 

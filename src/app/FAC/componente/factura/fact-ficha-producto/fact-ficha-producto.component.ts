@@ -39,6 +39,7 @@ export class FactFichaProductoComponent {
   private lstPrecios: iPrecio[] = [];
   private lstExistencia: iExistencia[] = [];
   private lstBonificacion: iBonificacion[] = [];
+  private TipoExoneracion : string;
 
   public SubTotal: number = 0;
   public Descuento: number = 0;
@@ -97,12 +98,13 @@ export class FactFichaProductoComponent {
     this._Evento("Limpiar");
   }
 
-  public Iniciar(CodBodega : string, CodCliente: string, MonedaCliente: string, TC: number): void {
+  public Iniciar(CodBodega : string, CodCliente: string, MonedaCliente: string, TipoExoneracion : string): void {
     this._Evento("Limpiar");
     this.CodBodega = CodBodega;
     this.CodCliente = CodCliente;
-    this.TC = TC;
     this.MonedaCliente = MonedaCliente;
+    this.TipoExoneracion = TipoExoneracion;
+
     document.getElementById("btnAgregarProducto")?.setAttribute("disabled", "disabled");
 
     this.v_Cargar_Productos();
@@ -183,6 +185,7 @@ export class FactFichaProductoComponent {
           let Datos: iDatos[] = _json["d"];
 
           this.lstProductos = Datos[0].d;
+          this.TC = Datos[1].d;
         
          
 
@@ -270,7 +273,7 @@ export class FactFichaProductoComponent {
     );
 
 
-    this.Conexion.Datos_Producto(this.CodProducto, this.CodBodega, this.CodCliente, this.TC).subscribe(
+    this.Conexion.Datos_Producto(this.CodProducto, this.CodBodega, this.CodCliente).subscribe(
       (s) => {
 
         dialogRef.close();
@@ -411,6 +414,7 @@ export class FactFichaProductoComponent {
     if(this.lstDetalle.length > 0) index = Math.max(...this.lstDetalle.map(o => o.Index)) + 1
 
     det.Index = index;
+    det.IndexUnion = index;
 
     this.val.EsValido();
 
@@ -478,7 +482,7 @@ export class FactFichaProductoComponent {
     let Cantidad: number = Number(this.val.Get("txtCantidad").value.replaceAll(",", ""));
     let PorDescuento: number = Number(String(this.val.Get("txtProcDescuento").value.replaceAll(",", ""))) / 100;
     let PorcImpuesto: number = Producto[0].ConImpuesto ? 0.15 : 0;
-
+    let ImpuestoExo : number = 0;
 
     this.Detalle.Precio = PrecioCordoba;
     this.Detalle.PorcDescuento = this.cFunciones.Redondeo(PorDescuento * 100, "2");
@@ -498,6 +502,14 @@ export class FactFichaProductoComponent {
         this.SubTotalNeto * PorcImpuesto,
         "2"
       );
+
+      ImpuestoExo = 0;
+      if(this.TipoExoneracion == "Exonerado"){
+        ImpuestoExo = this.Impuesto;
+        this.Impuesto = 0;
+      }
+       
+
       this.TotalCordoba = this.cFunciones.Redondeo(this.SubTotalNeto + this.Impuesto, "2");
       this.TotalDolar = this.cFunciones.Redondeo(
         this.TotalCordoba / this.TC,
@@ -514,6 +526,14 @@ export class FactFichaProductoComponent {
         this.SubTotalNeto * PorcImpuesto,
         "2"
       );
+
+      ImpuestoExo = 0;
+      if(this.TipoExoneracion == "Exonerado"){
+        ImpuestoExo = this.Impuesto;
+        this.Impuesto = 0;
+      }
+
+
       this.TotalDolar = this.cFunciones.Redondeo(this.SubTotalNeto + this.Impuesto, "2");
       this.TotalCordoba = this.cFunciones.Redondeo(
         this.TotalDolar * this.TC,
@@ -522,22 +542,29 @@ export class FactFichaProductoComponent {
     }
 
 
+   
+       
 
 
     this.Detalle.Index = -1;
     this.Detalle.Codigo = this.CodProducto;
     this.Detalle.Producto = Producto[0].Producto;
-    this.Detalle.Precio = PrecioCordoba;
-    this.Detalle.PorcDescuento = this.cFunciones.Redondeo(PorDescuento * 100, "2");
+    this.Detalle.Precio = (this.cFunciones.MonedaLocal == this.MonedaCliente ? PrecioCordoba : PrecioDolar);
+    this.Detalle.PrecioCordoba = PrecioCordoba;
+    this.Detalle.PrecioDolar = PrecioDolar;
+    this.Detalle.PorcDescuento = PorDescuento;
     this.Detalle.PorcImpuesto = PorcImpuesto;
     this.Detalle.Cantidad = Cantidad;
     this.Detalle.SubTotal = this.SubTotal;
     this.Detalle.Descuento = this.Descuento;
     this.Detalle.SubTotalNeto = this.SubTotalNeto;
     this.Detalle.Impuesto = this.Impuesto;
+    this.Detalle.ImpuestoExo = ImpuestoExo;
     this.Detalle.TotalCordoba = this.TotalCordoba;
     this.Detalle.TotalDolar = this.TotalDolar;
-
+    this.Detalle.EsBonif = true;
+    this.Detalle.EsExonerado = this.TipoExoneracion == "Exonerado" ? true : false;
+    this.Detalle.IndexUnion = -1;
 
   }
 

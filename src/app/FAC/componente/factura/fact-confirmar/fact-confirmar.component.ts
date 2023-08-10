@@ -17,6 +17,7 @@ export class FactConfirmarComponent {
   public TipoPago: string = 'Contado';
   public TipoImpuesto: string = 'Iva';
 
+
   public constructor(public dialog: MatDialog) {
 
     this.val.add("txtPlazo", "1", "LEN>=", "0", "Plazo", "No se ha definido un plazo");
@@ -68,15 +69,16 @@ export class FactConfirmarComponent {
   }
 
   public v_TipoExoneracion(event: any): void {
-    if (event.target.checked) {
+    if (!event.target.checked) {
       this.TipoExoneracion = 'Sin Exoneración';
       return;
     }
 
-    if (!event.target.checked) {
+    if (event.target.checked) {
       this.TipoExoneracion = 'Exonerado';
       return;
     }
+    
   }
 
 

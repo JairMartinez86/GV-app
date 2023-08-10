@@ -77,6 +77,29 @@ td i {
   }
 }
 
+
+
+.valores{
+  .bonif, .exo{
+    display: inline-block;
+    width: 50%;
+    font-weight: bold;
+  }
+  
+  .bonif{
+    color: var(--escan-primario);
+  }
+  
+  .exo{
+    color: var(--escan-secundario);
+  }
+}
+
+
+
+
+
+
 @include Tamano(xs) {
   .etiqueta {
     width: 40%;
@@ -85,6 +108,11 @@ td i {
   .valores {
     width: 60%;
   }
+
+  .pie-fila{
+    width: 50%;
+  }
+
 }
 
 @include Tamano(lg) {
@@ -95,11 +123,15 @@ td i {
   .valores {
     width: 20%;
   }
+
 }
 
 .linea {
   border-bottom: 2px dashed var(--escan-secundario);
 }
+
+
+
 
 //████████████████████████████████████████████TOTALES██████████████████████████████████████████████████████████████████████
 

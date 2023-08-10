@@ -34,7 +34,7 @@
                             <td class="col-sm-12">
                                 <div class="etiqueta">Descuento:</div>
                                 <div class="valores">
-                                    <div class="valores-descuento"><span class="porc">{{det.PorcDescuento| number :
+                                    <div class="valores-descuento"><span class="porc">{{det.PorcDescuento * 100| number :
                                             '1.2-2'}} %</span><span>{{det.Descuento| number : '1.2-2'}}</span></div>
                                 </div>
                             </td>
@@ -43,15 +43,15 @@
                                 <div class="valores">{{det.SubTotalNeto| number : '1.2-2'}}</div>
                             </td>
 
-                            <td class="col-sm-12">
-                                <div class="etiqueta">Bonificado</div>
-                                <div class="valores">No</div>
+                            <td class="col-sm-12" *ngIf="det.EsBonif || det.EsExonerado">
+                                <div class="etiqueta pie-fila"></div>
+                                <div class="valores pie-fila"> <span *ngIf="det.EsBonif" class="bonif">BO</span> <span *ngIf="det.EsExonerado" class="exo">EXO</span></div>
                             </td>
 
                             <td class="col-sm-12 linea">
                                 <span class="input-group-text">
                                     <button type="button" class="btn"><i class="fa-solid fa-trash fa-beat-fade"
-                                            (click)="v_Eliminar(det.Index);"></i>
+                                            (click)="v_Eliminar(det.IndexUnion);"></i>
                                     </button>
                                 </span>
 
