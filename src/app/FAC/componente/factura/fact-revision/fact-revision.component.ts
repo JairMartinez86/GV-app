@@ -34,11 +34,15 @@ export class FactRevisionComponent {
 
   public v_Eliminar(index : number): void {
 
-    let i : number = this.lstDetalle.findIndex(f=> f.IndexUnion == index && f.EsBonif);
-    if(i != -1)this.lstDetalle.splice(i, 1);
+    let i : number = this.lstDetalle.findIndex(f=> f.Index == index);
+    let det = this.lstDetalle[i];
 
-    i =  this.lstDetalle.findIndex(f=> f.Index == index && !f.EsBonif);
-    if(i != -1)this.lstDetalle.splice(i, 1);
+    this.lstDetalle.splice(i, 1);
+
+    if(!det.EsBonif){
+      i = this.lstDetalle.findIndex(f=> f.IndexUnion == det.Index);
+      if(i != -1)this.lstDetalle.splice(i, 1);
+    }
 
 
     this.Calcular();
@@ -96,7 +100,7 @@ export class FactRevisionComponent {
       f.ImpuestoDolar = this.cFunciones.Redondeo(f.ImpuestoCordoba / this.TC,"2");
 
 
-      if(this.TipoExoneracion == "Exonerado")
+      if(this.TipoExoneracion == "Exonerado" && !f.EsBonif)
       {
         f.ImpuestoExo = f.Impuesto;
         f.ImpuestoExoCordoba = f.ImpuestoCordoba;
@@ -120,7 +124,7 @@ export class FactRevisionComponent {
       f.ImpuestoDolar = f.Impuesto;
       f.ImpuestoCordoba = this.cFunciones.Redondeo(f.ImpuestoCordoba * this.TC,"2");
 
-      if(this.TipoExoneracion == "Exonerado")
+      if(this.TipoExoneracion == "Exonerado" && !f.EsBonif)
       {
         f.ImpuestoExo = f.Impuesto;
         f.ImpuestoExoCordoba = f.ImpuestoCordoba;

@@ -409,7 +409,11 @@ export class FactFichaProductoComponent {
 
     let MsjError : string = "";
     let index : number = 1;
-    let det : iDetalleFactura = JSON.parse(JSON.stringify(this.Detalle));;
+    let det : iDetalleFactura = JSON.parse(JSON.stringify(this.Detalle));
+    let Existencia  = this.lstExistencia.find(f => f.Bodega == this.CodBodega && f.CodProducto == this.CodProducto);
+    let Bonificado = this.lstBonificacion.find(f =>  det.Cantidad >= f.Desde);
+    let AgregarBonificado : boolean = false;
+    let DetalleBonificado : iDetalleFactura = {} as iDetalleFactura;
 
     if(this.lstDetalle.length > 0) index = Math.max(...this.lstDetalle.map(o => o.Index)) + 1
 
@@ -420,7 +424,42 @@ export class FactFichaProductoComponent {
 
     if(det.Precio == 0) MsjError += "<li class='error-etiqueta'>Precio<ul><li class='error-mensaje'>El producto no tiene precio.</li></ul>";
     if(det.PorcDescuento > 100) MsjError += "<li class='error-etiqueta'>Descuento<ul><li class='error-mensaje'>Por favor revise el descuento.</li></ul>";
+
+    if(Number(Existencia?.Existencia) <= 0) MsjError += "<li class='error-etiqueta'>Existencia<ul><li class='error-mensaje'>El producto no tiene existencia.</li></ul>";
+    if(Number(Existencia?.Existencia) > 0 && Number(Existencia?.Existencia) < det.Cantidad ) MsjError += "<li class='error-etiqueta'>Cantidad<ul><li class='error-mensaje'>La Cantidad supera la existencia.</li></ul>";
     
+
+    if(Bonificado != undefined ){
+      if(Bonificado.Bonifica + det.Cantidad <= Number(Existencia?.Existencia))
+      {
+
+        index += 1;
+        DetalleBonificado.Index = index;
+        DetalleBonificado.Codigo = this.CodProducto;
+        DetalleBonificado.Producto = det.Producto;
+        DetalleBonificado.Precio = det.Precio;
+        DetalleBonificado.PrecioCordoba = det.PrecioCordoba;
+        DetalleBonificado.PrecioDolar = det.PrecioDolar;
+        DetalleBonificado.PorcDescuento = 1;
+        DetalleBonificado.PorcImpuesto = det.PorcImpuesto;
+        DetalleBonificado.Cantidad = Bonificado.Bonifica;
+        DetalleBonificado.SubTotal = 0;
+        DetalleBonificado.Descuento = 0;
+        DetalleBonificado.SubTotalNeto = 0;
+        DetalleBonificado.Impuesto = 0;
+        DetalleBonificado.ImpuestoExo = 0;
+        DetalleBonificado.TotalCordoba = 0;
+        DetalleBonificado.TotalDolar = 0;
+        DetalleBonificado.EsBonif = true;
+        DetalleBonificado.EsExonerado = false;
+        DetalleBonificado.IndexUnion = det.Index;
+
+        AgregarBonificado = true;
+
+      }
+    }
+
+
 
     if(MsjError != "" ||  this.val.Errores)
     {
@@ -438,6 +477,7 @@ export class FactFichaProductoComponent {
     
    
     this.lstDetalle.push(det);
+    if(AgregarBonificado) this.lstDetalle.push(DetalleBonificado);
 
     this._Evento("Limpiar");
   }
@@ -562,7 +602,7 @@ export class FactFichaProductoComponent {
     this.Detalle.ImpuestoExo = ImpuestoExo;
     this.Detalle.TotalCordoba = this.TotalCordoba;
     this.Detalle.TotalDolar = this.TotalDolar;
-    this.Detalle.EsBonif = true;
+    this.Detalle.EsBonif = false;
     this.Detalle.EsExonerado = this.TipoExoneracion == "Exonerado" ? true : false;
     this.Detalle.IndexUnion = -1;
 
