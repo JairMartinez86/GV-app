@@ -251,6 +251,7 @@ export class FactFichaProductoComponent {
       (f) => f.EsPrincipal
     );
 
+
     if (PrecioProd.length > 0) {
       this.val
         .Get("txtPrecioCor")

@@ -128,6 +128,7 @@ export class FacturaComponent {
         this.val.Get("chkExportacion").setValue(false);
         this.val.Get("txtBodega").setValue([this.CodBodega]);
         this.val.Get("txtVendedor").setValue([]);
+        this.FichaProducto?.lstDetalle.splice(0, this.FichaProducto.lstDetalle.length);
 
 
         this.val.Get("txtLimite").disable();
@@ -200,6 +201,7 @@ export class FacturaComponent {
   public v_Select_Cliente(event: any): void {
 
 
+    this.FichaProducto.lstDetalle.splice(0, this.FichaProducto.lstDetalle.length);
     this.CodCliente = "";
     this.val.Get("txtCliente").setValue("");
     this.val.Get("txtIdentificacion").setValue("");
@@ -215,6 +217,7 @@ export class FacturaComponent {
 
   public v_Borrar_Cliente(): void {
     this.CodCliente = "";
+    this.FichaProducto.lstDetalle.splice(0, this.FichaProducto.lstDetalle.length);
     this.val.Get("txtCliente").setValue("");
     this.val.Get("txtIdentificacion").setValue("");
     this.val.Get("txtLimite").setValue("0.00");
