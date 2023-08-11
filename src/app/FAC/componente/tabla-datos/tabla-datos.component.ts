@@ -4,6 +4,7 @@ import { iExistencia } from '../../interface/i-Existencia';
 import { iBonificacion } from '../../interface/i-Bonificacion';
 import { Funciones } from 'src/app/SHARED/class/cls_Funciones';
 import { iPrecio } from '../../interface/i-Precio';
+import { iDescuento } from '../../interface/i-Descuento';
 
 export interface iTabla{
   col1: any;
@@ -85,6 +86,14 @@ export class TablaDatosComponent {
         this.Encabezado_1 = "Descuento";
         this.Encabezado_2 = "%";
         this.Encabezado_3 = "";
+
+        let lstDescuento : iDescuento[] = data[1];
+
+        lstDescuento.forEach(f =>{
+          this.lstDetalle.push({col1 : f.Descripcion, col2 : this.cFunciones.NumFormat(f.PorcDescuento, "2") + " %", col3 : "", EsPrincipal : false});
+        });
+
+
       break;
     }
 

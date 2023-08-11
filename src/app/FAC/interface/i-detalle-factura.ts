@@ -6,6 +6,7 @@ export interface iDetalleFactura{
     PrecioCordoba: number;
     PrecioDolar: number;
     PorcDescuento: number;
+    PorcDescuentoAdicional: number;
     PorcImpuesto: number;
     Cantidad: number;
     SubTotal:number;
@@ -14,6 +15,9 @@ export interface iDetalleFactura{
     Descuento:number;
     DescuentoCordoba:number;
     DescuentoDolar:number;
+    DescuentoAdicional:number;
+    DescuentoAdicionalCordoba:number;
+    DescuentoAdicionalDolar:number;
     SubTotalNeto:number;
     SubTotalNetoCordoba:number;
     SubTotalNetoDolar:number;
@@ -23,6 +27,7 @@ export interface iDetalleFactura{
     ImpuestoExo:number;
     ImpuestoExoCordoba:number;
     ImpuestoExoDolar:number;
+    Total:number;
     TotalCordoba:number;
     TotalDolar:number;
     EsBonif : boolean;

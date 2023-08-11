@@ -12,6 +12,7 @@ export class FactRevisionComponent {
 
   public SubTotal: number = 0;
   public Descuento: number = 0;
+  public Adicional: number = 0;
   public SubTotalNeto: number = 0;
   public Impuesto: number = 0;
   public TotalCordoba: number = 0;
@@ -81,6 +82,7 @@ export class FactRevisionComponent {
     let PrecioDolar: number = f.PrecioDolar;
     let Cantidad: number = f.Cantidad;
     let PorDescuento: number = f.PorcDescuento;
+    let PorcAdicional: number = f.PorcDescuentoAdicional;
     let PorcImpuesto: number = f.PorcImpuesto;
  
 
@@ -93,8 +95,22 @@ export class FactRevisionComponent {
 
     if (this.cFunciones.MonedaLocal == this.MonedaCliente) {
       f.SubTotal = this.cFunciones.Redondeo(PrecioCordoba * Cantidad, "2");
+      f.SubTotalCordoba = f.SubTotal;
+      f.SubTotalDolar = this.cFunciones.Redondeo(f.SubTotalCordoba / this.TC,"2");
+     
+     
       f.Descuento = this.cFunciones.Redondeo(f.SubTotal * PorDescuento, "2");
-      f.SubTotalNeto = this.cFunciones.Redondeo(f.SubTotal - f.Descuento, "2");
+      f.DescuentoCordoba = f.Descuento;
+      f.DescuentoDolar = this.cFunciones.Redondeo(f.DescuentoCordoba / this.TC,"2");
+
+      f.DescuentoAdicional = this.cFunciones.Redondeo(this.cFunciones.Redondeo(f.SubTotal - f.Descuento, "2") *  PorcAdicional, "2");
+      f.DescuentoAdicionalCordoba = f.DescuentoAdicional;
+      f.DescuentoAdicionalDolar = this.cFunciones.Redondeo(f.DescuentoAdicionalCordoba / this.TC,"2");
+
+      f.SubTotalNeto = this.cFunciones.Redondeo(f.SubTotal - (f.Descuento + f.DescuentoAdicional), "2");
+      f.SubTotalNetoCordoba = f.SubTotalNeto;
+      f.SubTotalNetoDolar = this.cFunciones.Redondeo(f.SubTotalNetoCordoba / this.TC,"2");
+
       f.Impuesto = this.cFunciones.Redondeo(f.SubTotalNeto * PorcImpuesto,"2");
       f.ImpuestoCordoba = f.Impuesto;
       f.ImpuestoDolar = this.cFunciones.Redondeo(f.ImpuestoCordoba / this.TC,"2");
@@ -112,14 +128,28 @@ export class FactRevisionComponent {
         f.ImpuestoDolar = 0;
       }
 
-      f.TotalCordoba = this.cFunciones.Redondeo(f.SubTotalNeto + f.Impuesto, "2");
+      f.Total = this.cFunciones.Redondeo(f.SubTotalNeto + f.Impuesto, "2");
+      f.TotalCordoba = f.Total;
       f.TotalDolar = this.cFunciones.Redondeo(f.TotalCordoba / this.TC,"2");
       
     } 
     else {
       f.SubTotal = this.cFunciones.Redondeo(PrecioDolar * Cantidad, "2");
+      f.SubTotalDolar = f.SubTotal;
+      f.SubTotalCordoba = this.cFunciones.Redondeo(f.SubTotalDolar * this.TC,"2");
+
       f.Descuento = this.cFunciones.Redondeo(f.SubTotal * PorDescuento,"2");
-      f.SubTotalNeto = this.cFunciones.Redondeo(f.SubTotal - f.Descuento, "2");
+      f.DescuentoDolar = f.Descuento;
+      f.DescuentoCordoba = this.cFunciones.Redondeo(f.DescuentoDolar * this.TC,"2");
+
+      f.DescuentoAdicional = this.cFunciones.Redondeo(this.cFunciones.Redondeo(f.SubTotal - f.Descuento, "2") *  PorcAdicional, "2");
+      f.DescuentoAdicionalDolar = f.DescuentoAdicional;
+      f.DescuentoAdicionalCordoba = this.cFunciones.Redondeo(f.DescuentoAdicionalDolar * this.TC,"2");
+
+      f.SubTotalNeto = this.cFunciones.Redondeo(f.SubTotal - (f.Descuento + f.DescuentoAdicional), "2");
+      f.SubTotalDolar = f.SubTotalNeto;
+      f.SubTotalCordoba = this.cFunciones.Redondeo(f.SubTotalDolar * this.TC,"2");
+
       f.Impuesto = this.cFunciones.Redondeo(f.SubTotalNeto * PorcImpuesto,"2");
       f.ImpuestoDolar = f.Impuesto;
       f.ImpuestoCordoba = this.cFunciones.Redondeo(f.ImpuestoCordoba * this.TC,"2");
@@ -137,7 +167,8 @@ export class FactRevisionComponent {
       }
 
 
-      f.TotalDolar = this.cFunciones.Redondeo(f.SubTotalNeto + f.Impuesto, "2");
+      f.Total = this.cFunciones.Redondeo(f.SubTotalNeto + f.Impuesto, "2");
+      f.TotalDolar = f.Total;
       f.TotalCordoba = this.cFunciones.Redondeo(f.TotalDolar * this.TC,"2");
     }
 
@@ -146,6 +177,7 @@ export class FactRevisionComponent {
 
       this.SubTotal += this.cFunciones.Redondeo(f.SubTotal, "2");
       this.Descuento += this.cFunciones.Redondeo(f.Descuento, "2");
+      this.Adicional += this.cFunciones.Redondeo(f.DescuentoAdicional, "2");
       this.SubTotalNeto += this.cFunciones.Redondeo(f.SubTotalNeto, "2");
       this.Impuesto += this.cFunciones.Redondeo(f.Impuesto, "2");
       this.TotalCordoba += this.cFunciones.Redondeo(f.TotalCordoba, "2");

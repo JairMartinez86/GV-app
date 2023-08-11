@@ -14,6 +14,7 @@ import { Funciones } from "src/app/SHARED/class/cls_Funciones";
 import { iDetalleFactura } from "src/app/FAC/interface/i-detalle-factura";
 import { iExistencia } from "src/app/FAC/interface/i-Existencia";
 import { iBonificacion } from "src/app/FAC/interface/i-Bonificacion";
+import { iDescuento } from "src/app/FAC/interface/i-Descuento";
 
 @Component({
   selector: "app-fact-ficha-producto",
@@ -39,10 +40,12 @@ export class FactFichaProductoComponent {
   private lstPrecios: iPrecio[] = [];
   private lstExistencia: iExistencia[] = [];
   private lstBonificacion: iBonificacion[] = [];
+  private lstDescuento: iDescuento[] = [];
   private TipoExoneracion : string;
 
   public SubTotal: number = 0;
   public Descuento: number = 0;
+  public Adicional: number = 0;
   public SubTotalNeto: number = 0;
   public Impuesto: number = 0;
   public TotalCordoba: number = 0;
@@ -245,7 +248,7 @@ export class FactFichaProductoComponent {
 
   private LlenarPrecio(): void {
     let PrecioProd: iPrecio[] = this.lstPrecios.filter(
-      (f) => f.CodProducto == this.CodProducto && f.EsPrincipal
+      (f) => f.EsPrincipal
     );
 
     if (PrecioProd.length > 0) {
@@ -289,6 +292,7 @@ export class FactFichaProductoComponent {
           this.lstExistencia = Datos[0].d;
           this.lstBonificacion = Datos[1].d;
           this.lstPrecios = Datos[2].d;
+          this.lstDescuento = Datos[3].d;
 
 
           this.lstExistencia.filter(f => f.Bodega == this.CodBodega && f.CodProducto == this.CodProducto).forEach(f => {
@@ -310,7 +314,7 @@ export class FactFichaProductoComponent {
       (err) => {
 
 
-        dialogRef.close();
+        dialogRef.close(); 
 
         this.dialog.open(DialogErrorComponent, {
           data: "<b class='error'>" + err.message + "</b>",
@@ -362,7 +366,9 @@ export class FactFichaProductoComponent {
 
     if(p == "E") data = this.lstExistencia;
     if(p == "B") data = this.lstBonificacion;
-    if(p == "P") data = this.lstPrecios.filter(f => f.CodProducto == this.CodProducto);
+    if(p == "P") data = this.lstPrecios;
+    if(p == "D") data = this.lstDescuento;
+
 
     let dialogRef: MatDialogRef<TablaDatosComponent> = this.dialog.open(
       TablaDatosComponent,
@@ -422,6 +428,14 @@ export class FactFichaProductoComponent {
     let Bonificado = this.lstBonificacion.find(f => det.Cantidad <= f.Hasta && det.Cantidad >= f.Desde);
     let AgregarBonificado : boolean = false;
     let DetalleBonificado : iDetalleFactura = {} as iDetalleFactura;
+    let Descuento  = this.lstDescuento.find(f => f.Descripcion == "GENERAL");
+
+    if(Descuento == undefined) Descuento  = this.lstDescuento.find(f => f.Descripcion == "MARGEN");
+    if(Descuento != undefined){
+      if(Descuento.PorcDescuento == 0) Descuento  = this.lstDescuento.find(f => f.Descripcion == "MARGEN");
+    }
+
+    
 
     if(this.lstDetalle.length > 0) index = Math.max(...this.lstDetalle.map(o => o.Index)) + 1
 
@@ -436,6 +450,13 @@ export class FactFichaProductoComponent {
     if(Number(Existencia?.Existencia) <= 0) MsjError += "<li class='error-etiqueta'>Existencia<ul><li class='error-mensaje'>El producto no tiene existencia.</li></ul>";
     if(Number(Existencia?.Existencia) > 0 && Number(Existencia?.Existencia) < det.Cantidad ) MsjError += "<li class='error-etiqueta'>Cantidad<ul><li class='error-mensaje'>La cantidad supera la existencia.</li></ul>";
     
+    if(Descuento == undefined && det.PorcDescuento != 0) MsjError += "<li class='error-etiqueta'>Descuento<ul><li class='error-mensaje'>No se permite el descuento.</li></ul>";
+    if(Descuento != undefined ){
+      if(this.cFunciones.Redondeo(Descuento.PorcDescuento / 100, "4") < det.PorcDescuento) MsjError += "<li class='error-etiqueta'>Descuento<ul><li class='error-mensaje'>El descuento permitido es max: <b>"+ Descuento.PorcDescuento +"%</b></li></ul>";
+    }
+    
+
+
 
     if(Bonificado != undefined ){
       if(Bonificado.Bonifica + det.Cantidad <= Number(Existencia?.Existencia))
@@ -507,10 +528,12 @@ export class FactFichaProductoComponent {
   public Calcular(): void {
 
     this.Detalle = {} as iDetalleFactura;
+    let iDesc  = this.lstDescuento.find(f => f.Descripcion == "ADICIONAL");
 
 
     this.SubTotal = 0;
     this.Descuento = 0;
+    this.Adicional = 0;
     this.SubTotalNeto = 0;
     this.Impuesto = 0;
     this.TotalCordoba = 0;
@@ -529,8 +552,10 @@ export class FactFichaProductoComponent {
     let PrecioDolar: number = Number(String(this.val.Get("txtPrecioDol").value).replaceAll(",", ""));
     let Cantidad: number = Number(this.val.Get("txtCantidad").value.replaceAll(",", ""));
     let PorDescuento: number = Number(String(this.val.Get("txtProcDescuento").value.replaceAll(",", ""))) / 100;
+    let PorcDescuentoAdicional : number = this.cFunciones.Redondeo(Number(iDesc?.PorcDescuento) / 100, "4");
     let PorcImpuesto: number = Producto[0].ConImpuesto ? 0.15 : 0;
     let ImpuestoExo : number = 0;
+
 
     this.Detalle.Precio = PrecioCordoba;
     this.Detalle.PorcDescuento = this.cFunciones.Redondeo(PorDescuento * 100, "2");
@@ -545,7 +570,12 @@ export class FactFichaProductoComponent {
         this.SubTotal * PorDescuento,
         "2"
       );
-      this.SubTotalNeto = this.cFunciones.Redondeo(this.SubTotal - this.Descuento, "2");
+
+      this.Adicional = this.cFunciones.Redondeo(this.cFunciones.Redondeo(this.SubTotal - this.Descuento, "2") *  PorcDescuentoAdicional, "2");
+
+
+
+      this.SubTotalNeto = this.cFunciones.Redondeo(this.SubTotal - (this.Descuento + this.Adicional), "2");
       this.Impuesto = this.cFunciones.Redondeo(
         this.SubTotalNeto * PorcImpuesto,
         "2"
@@ -569,7 +599,11 @@ export class FactFichaProductoComponent {
         this.SubTotal * PorDescuento,
         "2"
       );
-      this.SubTotalNeto = this.cFunciones.Redondeo(this.SubTotal - this.Descuento, "2");
+
+      this.Adicional = this.cFunciones.Redondeo(this.cFunciones.Redondeo(this.SubTotal - this.Descuento, "2") *  PorcDescuentoAdicional, "2");
+
+
+      this.SubTotalNeto = this.cFunciones.Redondeo(this.SubTotal - (this.Descuento + this.Adicional), "2");
       this.Impuesto = this.cFunciones.Redondeo(
         this.SubTotalNeto * PorcImpuesto,
         "2"
@@ -601,13 +635,16 @@ export class FactFichaProductoComponent {
     this.Detalle.PrecioCordoba = PrecioCordoba;
     this.Detalle.PrecioDolar = PrecioDolar;
     this.Detalle.PorcDescuento = PorDescuento;
+    this.Detalle.PorcDescuentoAdicional = PorcDescuentoAdicional;
     this.Detalle.PorcImpuesto = PorcImpuesto;
     this.Detalle.Cantidad = Cantidad;
     this.Detalle.SubTotal = this.SubTotal;
     this.Detalle.Descuento = this.Descuento;
+    this.Detalle.DescuentoAdicional = this.Adicional;
     this.Detalle.SubTotalNeto = this.SubTotalNeto;
     this.Detalle.Impuesto = this.Impuesto;
     this.Detalle.ImpuestoExo = ImpuestoExo;
+    this.Detalle.Total = 0;
     this.Detalle.TotalCordoba = this.TotalCordoba;
     this.Detalle.TotalDolar = this.TotalDolar;
     this.Detalle.EsBonif = false;
