@@ -299,10 +299,12 @@ public customSettings: OverlaySettings = {
   public cmbBodega: IgxComboComponent;
 
   public v_Select_Bodega(event: any) {
+    
     if (event.added.length) {
       event.newSelection = event.added;
       this.val.Get("txtBodega").setValue(event.added);
       this.CodBodega = event.added[0];
+      this.FichaProducto.lstDetalle.splice(1 , this.FichaProducto.lstDetalle.length);
     }
   }
 

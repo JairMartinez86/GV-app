@@ -291,6 +291,12 @@ export class FactFichaProductoComponent {
           this.lstPrecios = Datos[2].d;
 
 
+          this.lstExistencia.filter(f => f.Bodega == this.CodBodega && f.CodProducto == this.CodProducto).forEach(f => {
+
+            let CantFact : number = this.lstDetalle.filter(item => item.Codigo === f.CodProducto).reduce((sum, current) => sum + current.Cantidad, 0);
+            f.Existencia = this.cFunciones.Redondeo(f.Existencia - CantFact , "0");
+          });
+
           this.lstPrecios.forEach((f) => {
             f.PrecioCordoba = this.cFunciones.Redondeo(f.PrecioCordoba, "4");
             f.PrecioDolar = this.cFunciones.Redondeo(f.PrecioDolar, "4");
@@ -405,13 +411,15 @@ export class FactFichaProductoComponent {
       });
   }
 
+
+
   public v_Agregar_Producto(): void {
 
     let MsjError : string = "";
     let index : number = 1;
     let det : iDetalleFactura = JSON.parse(JSON.stringify(this.Detalle));
     let Existencia  = this.lstExistencia.find(f => f.Bodega == this.CodBodega && f.CodProducto == this.CodProducto);
-    let Bonificado = this.lstBonificacion.find(f =>  det.Cantidad >= f.Desde);
+    let Bonificado = this.lstBonificacion.find(f => det.Cantidad <= f.Hasta && det.Cantidad >= f.Desde);
     let AgregarBonificado : boolean = false;
     let DetalleBonificado : iDetalleFactura = {} as iDetalleFactura;
 
@@ -426,7 +434,7 @@ export class FactFichaProductoComponent {
     if(det.PorcDescuento > 100) MsjError += "<li class='error-etiqueta'>Descuento<ul><li class='error-mensaje'>Por favor revise el descuento.</li></ul>";
 
     if(Number(Existencia?.Existencia) <= 0) MsjError += "<li class='error-etiqueta'>Existencia<ul><li class='error-mensaje'>El producto no tiene existencia.</li></ul>";
-    if(Number(Existencia?.Existencia) > 0 && Number(Existencia?.Existencia) < det.Cantidad ) MsjError += "<li class='error-etiqueta'>Cantidad<ul><li class='error-mensaje'>La Cantidad supera la existencia.</li></ul>";
+    if(Number(Existencia?.Existencia) > 0 && Number(Existencia?.Existencia) < det.Cantidad ) MsjError += "<li class='error-etiqueta'>Cantidad<ul><li class='error-mensaje'>La cantidad supera la existencia.</li></ul>";
     
 
     if(Bonificado != undefined ){
