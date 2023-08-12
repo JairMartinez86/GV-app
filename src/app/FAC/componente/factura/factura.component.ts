@@ -2,7 +2,6 @@ import { Component, ViewChild } from "@angular/core";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
-import { TablaDatosComponent } from "../tabla-datos/tabla-datos.component";
 import { WaitComponent } from "src/app/SHARED/componente/wait/wait.component";
 import { Validacion } from "src/app/SHARED/class/validacion";
 import { getFactura } from "../../GET/get-factura";
@@ -101,7 +100,7 @@ export class FacturaComponent {
     this._Evento("Iniciar");
   }
 
-  private _Evento(e: string): void {
+  public _Evento(e: string): void {
     switch (e) {
       case "Iniciar":
         this.CargarDatos();
@@ -113,7 +112,7 @@ export class FacturaComponent {
         this.bol_Referescar = false;
         this.Plazo = 0;
         this.SimboloMonedaCliente = "U$";
-        this.CodBodega = "B-01"
+        this.CodBodega = "B-01";
         this.val.Get("txtCliente").setValue("");
         this.val.Get("txtNombre").setValue("");
         this.val.Get("txtIdentificacion").setValue("");
@@ -128,11 +127,28 @@ export class FacturaComponent {
         this.val.Get("chkExportacion").setValue(false);
         this.val.Get("txtBodega").setValue([this.CodBodega]);
         this.val.Get("txtVendedor").setValue([]);
+        
         this.FichaProducto?.lstDetalle.splice(0, this.FichaProducto.lstDetalle.length);
+        this.ConfirmarFactura?._Evento("Limpiar");
+        this.RevisionFactura?.lstDetalle.splice(0, this.FichaProducto.lstDetalle.length);
 
 
+        this.CodCliente == "";
+        this.val.Get("txtCliente").enable();
         this.val.Get("txtLimite").disable();
         this.val.Get("txtDisponible").disable();
+
+
+        let cl  = this.lstClientes.find(f => f.Codigo == "V0001");
+
+            if(cl != undefined){
+              this.CodCliente = cl.Codigo;
+              this.MonedaCliente = cl.Moneda;
+              this.val.Get("txtCliente").setValue(cl.Cliente);
+              this.val.Get("txtVendedor").setValue([cl.CodVendedor]);
+              this.val.Get("txtCliente").disable();
+            }
+            
         break;
     }
   }
@@ -169,6 +185,22 @@ export class FacturaComponent {
           this.lstClientes = Datos[0].d;
           this.lstBodega = Datos[1].d;
           this.lstVendedores = Datos[2].d;
+
+          this.cmbBodega.setSelectedItem(this.CodBodega);
+
+       
+          if(this.CodCliente == "")
+          {
+            let cl  = this.lstClientes.find(f => f.Codigo == "V0001");
+
+            if(cl != undefined){
+              this.CodCliente = cl.Codigo;
+              this.MonedaCliente = cl.Moneda;
+              this.val.Get("txtCliente").setValue(cl.Cliente);
+              this.val.Get("txtVendedor").setValue([cl.CodVendedor]);
+              this.val.Get("txtCliente").disable();
+            }
+          }
     
 
           //LLENAR DATOS AL REFRESCAR
@@ -483,7 +515,7 @@ public customSettings: OverlaySettings = {
   }
 
   public v_TipoImpuesto(event: any): void {
-    let chk: any = document.querySelector("#chkImpuesto");
+    let chk: any = document.querySelector("#chkImpuesto_Confirmar");
     chk.bootstrapToggle("on");
     /*
 
@@ -575,6 +607,8 @@ public customSettings: OverlaySettings = {
         "display:initial;"
       );
 
+      if(this.ConfirmarFactura.Vizualizado)this.val.Get("txtNombre").setValue(this.ConfirmarFactura.Nombre);
+
       return;
     }
 
@@ -657,10 +691,9 @@ public customSettings: OverlaySettings = {
   public ConfirmarFactura: FactConfirmarComponent;
 
   private LlenarDatosConfirmacion(): void {
-    this.ConfirmarFactura.val.Get("txtPlazo").setValue(this.Plazo);
-    this.ConfirmarFactura.val
-      .Get("txtVence")
-      .setValue(this.cFunciones.DateAddDay("Year",this.cFunciones.FechaServidor(), this.Plazo + (this.Plazo != 0 ? 1 : 0)));
+    this.ConfirmarFactura.lstBodega = this.lstBodega;
+    this.ConfirmarFactura.lstVendedores = this.lstVendedores;
+    this.ConfirmarFactura.Iniciar(this.CodBodega, this.CodCliente, this.Plazo,  this.val.Get("txtCliente").value, this.val.Get("txtNombre").value, this.val.Get("txtVendedor").value[0], this.MonedaCliente);
   }
 
 

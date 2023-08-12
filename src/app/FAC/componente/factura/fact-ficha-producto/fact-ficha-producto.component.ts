@@ -113,7 +113,7 @@ export class FactFichaProductoComponent {
     this.v_Cargar_Productos();
   }
 
-  private _Evento(e: string): void {
+  public _Evento(e: string): void {
     switch (e) {
       case "Limpiar":
         this.Detalle = {} as iDetalleFactura;

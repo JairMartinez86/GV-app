@@ -21,9 +21,9 @@
                                                 (change)="v_TipoFactura($event)">
                                         </span>
                                         <div class="form-floating">
-                                            <input type="text" id="chkEsFactura" class="form-control"
-                                                placeholder="No" aria-label="No">
-                                            <label for="chkEsFactura">No {{TipoFactura}}</label>
+                                            <input type="text" id="txtNoDoc" class="form-control"
+                                                placeholder="No" aria-label="No" formControlName="txtNoDoc">
+                                            <label for="txtNoDoc">No {{TipoFactura}}</label>
 
                                         </div>
 
@@ -36,50 +36,16 @@
 
 
 
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i
+                                            class="bi bi-calendar"></i></span>
+                                        <div class="form-floating">
+                                            <input type="date" id="txtFecha"
+                                                class="form-control" placeholder="Vence" aria-label="Fecha" formControlName="txtFecha">
+                                            <label for="txtFecha">Fecha</label>
 
-                                    <div class="row mb-1 g-1">
-                                        <div class="col-4">
-
-                                            <div class="input-group">
-                                                <span class="input-group-text"><i
-                                                        class="bi bi-calendar"></i></span>
-                                                <div class="form-floating">
-                                                    <input type="text" id="txtDia"
-                                                        class="form-control" placeholder="Dia" aria-label="Dia">
-                                                    <label for="txtDia">Dia</label>
-
-                                                </div>
-
-                                            </div>
                                         </div>
 
-                                        <div class="col-4">
-
-
-
-                                            <div class="input-group">
-                                                <div class="form-floating">
-                                                    <input type="text" id="txtMes"
-                                                        class="form-control" placeholder="Mes" aria-label="Mes">
-                                                    <label for="txtMes">Mes</label>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                        <div class="col-4">
-
-                                            <div class="input-group">
-                                                <div class="form-floating">
-                                                    <input type="text" id="txtAnio"
-                                                        class="form-control" placeholder="Año" aria-label="Año">
-                                                    <label for="txtAnio">Año</label>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
                                     </div>
 
                                 </div>
@@ -134,30 +100,34 @@
 
                             <div class="row mt-1">
                                 <div class="col-12 col-sm-12 col-md-6 mb-1">
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
-                                        <div class="form-floating">
-                                            <textarea type="text" id="txtCliente_Confirmar" class="form-control"
-                                                placeholder="Cliente" aria-label="Cliente"> </textarea>
-                                            <label for="txtCliente">Cod. Cliente</label>
+                                  
+                            <div class="input-group">
 
-                                        </div>
+                                <span class="input-group-text"><button type="button" class="btn i-boton"><i
+                                            class="bi bi-people-fill"></i> {{CodCliente}}</button></span>
+                                <div class="form-floating">
 
-                                    </div>
+                                    <textarea type="text" id="txtCliente" class="form-control"
+                                        placeholder="Seleccione un cliente." aria-label="Cliente" matInput
+                                        formControlName="txtCliente"> </textarea>
+                                    <label for="txtCliente">Cliente</label>
+
+    
+                                </div>
+
+                            </div>
 
                                 </div>
 
                                 <div class="col-12 col-sm-12 col-md-6 mb-1">
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
-                                        <div class="form-floating">
-                                            <textarea type="text" id="txtVendedor" class="form-control"
-                                                placeholder="Vendedor" aria-label="Vendedor"></textarea>
-                                            <label for="txtVendedor">Vendedor</label>
-
-                                        </div>
-
-                                    </div>
+                                    <igx-combo #cmbVendedor [data]="lstVendedores" valueKey="Codigo"
+                                    displayKey="Key" id="txtVendedor" formControlName="txtVendedor"
+                                    placeholder="Vendedor" searchPlaceholder="Seleccione un vendedor..."
+                                    (selectionChanging)="v_Select_Vendedor($event)"
+                                        (keyup)="v_Enter_Vendedor($event);">
+                                    <label igxLabel>Vendedor</label>
+                                    <igx-prefix><i class="bi bi-person-fill"></i></igx-prefix>
+                                </igx-combo>
                                 </div>
                             </div>
 
@@ -167,7 +137,7 @@
                                     <div class="input-group">
                                         <div class="form-floating">
                                             <textarea type="text" id="txtNombre" class="form-control"
-                                                placeholder="Cliente" aria-label="Nombre"> </textarea>
+                                                placeholder="Cliente" aria-label="Nombre" formControlName="txtNombre" [(ngModel)]="Nombre"> </textarea>
                                             <label for="txtNombre">Nombre</label>
 
                                         </div>
@@ -176,16 +146,13 @@
                                 </div>
 
                                 <div class="col-12 col-sm-12 col-md-6 mb-1">
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-shop"></i></span>
-                                        <div class="form-floating">
-                                            <input type="text" id="txtBodega" class="form-control"
-                                                placeholder="Bodega" aria-label="Bodega">
-                                            <label for="txtBodega">Bodega</label>
-
-                                        </div>
-
-                                    </div>
+                                    <igx-combo #cmbBodega [data]="lstBodega" valueKey="Codigo"
+                                        displayKey="Key" id="txtBodega" formControlName="txtBodega"
+                                        placeholder="Bodega" searchPlaceholder="Seleccione una bodega..."
+                                        (selectionChanging)="v_Select($event)">
+                                        <label igxLabel>Bodega</label>
+                                        <igx-prefix><i class="bi bi-shop"></i></igx-prefix>
+                                    </igx-combo>
                                 </div>
 
 
@@ -207,7 +174,7 @@
                                                     data-offstyle="off" data-onlabel="Crédito" data-offlabel="Contado"
                                                     data-width="120" data-height="100%" (change)="v_TipoPago($event)">
 
-                                                <input type="checkbox" id="chkImpuesto" data-toggle="toggle"
+                                                <input type="checkbox" id="chkImpuesto_Confirmar" data-toggle="toggle"
                                                     data-style="on" data-onstyle="on" data-offstyle="off"
                                                     data-onlabel="Iva" data-offlabel="Sin Iva" data-width="120"
                                                     data-height="100%" checked (change)="v_TipoImpuesto($event)">
@@ -218,7 +185,7 @@
                                             <div class="input-group">
                                                 <div class="form-floating">
                                                     <input type="text" id="txtMoneda" class="form-control"
-                                                        placeholder="Moneda" aria-label="Moneda">
+                                                        placeholder="Moneda" aria-label="Moneda" formControlName="txtMoneda">
                                                     <label for="txtMoneda">Moneda</label>
 
                                                 </div>
@@ -249,7 +216,7 @@
                                             </span>
                                             <div class="form-floating">
                                                 <input type="text" id="txtNoExoneracion" class="form-control"
-                                                    placeholder="No Exoneracion" aria-label="No Exoneracion">
+                                                    placeholder="No Exoneracion" aria-label="No Exoneracion" formControlName="txtNoExoneracion">
                                                 <label for="txtNoExoneracion">No Exoneración</label>
 
                                             </div>
@@ -267,7 +234,7 @@
                                     <div class="input-group">
                                         <div class="form-floating">
                                             <textarea type="text" id="txtObservaciones" class="form-control"
-                                                placeholder="Observaciones" aria-label="Observacion"></textarea>
+                                                placeholder="Observaciones" aria-label="Observacion" formControlName="txtObservaciones"></textarea>
                                             <label for="txtObservaciones">Observaciones</label>
 
                                         </div>
@@ -279,16 +246,16 @@
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <input id="chkDelivery" class="form-check-input check-escasan"
-                                                type="checkbox">
+                                                type="checkbox" formControlName="chkDelivery" (change)="v_ActivarDelivery($event)">
                                             <label for="chkDelivery" class="form-check-label"></label>
                                         </span>
-                                        <span class="input-group-text"><button type="button" class="btn i-boton">
+                                        <span class="input-group-text"><button type="button" class="btn i-boton" id="btnDelivery">
                                                 <i class="fa-solid fa-truck-fast fa-beat-fade fa-lg"
                                                     (click)="v_Delivery();"></i></button></span>
-
+                                                    
                                         <div class="form-floating">
                                             <textarea type="text" id="txtDelivery" class="form-control"
-                                                placeholder="Dirección" aria-label="Direccion"></textarea>
+                                                placeholder="Dirección" aria-label="Direccion" formControlName="txtDelivery"></textarea>
                                             <label for="txtDelivery">Dirección</label>
 
                                         </div>

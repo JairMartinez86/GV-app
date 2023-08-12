@@ -70,6 +70,10 @@ $custom-drop-down-theme: drop-down-theme(
     --error-secondary-color: var(--escan-primario);
   }
 
+  .igx-input-group--disabled .igx-input-group__input{
+    font-weight: bold;
+    color: black !important;
+  }
 
 
 }
@@ -124,7 +128,7 @@ auto - for classes that set the margin to auto, like mx-auto
 
   --escan-fondo: white;
 
-  --min-width: 300px;
+  --min-width: 300px;;
 }
 
 

@@ -24,6 +24,30 @@ span{
 }
 
 
+.btn-contenedor {
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    margin-right: 5px;
+  }
+
+  @include Tamano(xs) {
+    button {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  @include Tamano(lg) {
+    button {
+      display: initial;
+      width: auto;
+    }
+  }
+}
+
+/*
 .btn-contenedor{
   margin-bottom: 35px;
   text-align: left;
@@ -44,7 +68,7 @@ span{
  
   
 }
-
+*/
 
 
 //████████████████████████████████████████████FOOTER████████████████████████████████████████████████████████████████████████

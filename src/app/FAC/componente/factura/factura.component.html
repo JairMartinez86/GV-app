@@ -149,7 +149,7 @@
 
                         <div class="row mb-1">
 
-                            <igx-combo #cmbBodega #withValueKey [data]="lstBodega" valueKey="Codigo"
+                            <igx-combo #cmbBodega [data]="lstBodega" valueKey="Codigo"
                                         displayKey="Key" id="txtBodega" formControlName="txtBodega"
                                         placeholder="Bodega" searchPlaceholder="Seleccione una bodega..."
                                         [autoFocusSearch]="true"
@@ -185,12 +185,12 @@
 
                         <div class="row mb-1">
 
-                            <igx-combo #cmbVendedor #withValueKey [data]="lstVendedores" valueKey="Codigo"
+                            <igx-combo #cmbVendedor [data]="lstVendedores" valueKey="Codigo"
                             displayKey="Key" id="txtVendedor" formControlName="txtVendedor"
                             placeholder="Vendedor" searchPlaceholder="Seleccione un vendedor..."
                             [autoFocusSearch]="true"
                             (selectionChanging)="v_Select_Vendedor($event)"
-                            (keyup)="v_Enter_Vendedor($event);" (closed)="v_Close_Vendedor()">
+                            (keyup)="v_Enter_Vendedor($event);">
                             <label igxLabel>Vendedor</label>
                             <igx-prefix><i class="bi bi-person-fill"></i></igx-prefix>
                         </igx-combo>
@@ -288,6 +288,7 @@
         <div class="row">
             <div class="btn-contenedor">
                 <button type="button" class="btn btn-secundario" id="btnRefrescar" (click)="v_Refrescar();"><i class="fa-solid fa-arrows-rotate fa-spin fa-lg"></i> Refrescar</button>
+                <button type="button" class="btn btn-secundario" id="btnCanclar" (click)="_Evento('Limpiar');"><i class="fa-solid fa-arrow-left fa-beat fa-lg"></i> Cancelar</button>
             </div>
         </div>
 
