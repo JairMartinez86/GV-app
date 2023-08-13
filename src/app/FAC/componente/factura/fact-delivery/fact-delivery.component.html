@@ -8,67 +8,72 @@
     <div>
         <p>DIRECCIONES DE ENVIO</p>
 
-        <div class="row mx-1">
-            <div class="row">
-                <!--
-                <div class="col-12 col-sm-12 col-md-6 mb-1">
-                    <div class="input-group">
-                        <div class="form-floating">
-                            <input type="text" id="txtDepartamento" class="form-control" placeholder="Departamento"
-                                aria-label="Departamento">
-                            <label for="txtDepartamento">Departamento</label>
-
+        <form [formGroup]="val.ValForm" autocomplete="off">
+            <div class="row mx-1">
+                <div class="row">
+                    <!--
+                    <div class="col-12 col-sm-12 col-md-6 mb-1">
+                        <div class="input-group">
+                            <div class="form-floating">
+                                <input type="text" id="txtDepartamento" class="form-control" placeholder="Departamento"
+                                    aria-label="Departamento">
+                                <label for="txtDepartamento">Departamento</label>
+    
+                            </div>
+    
                         </div>
-
+    
                     </div>
-
-                </div>
-
-                <div class="col-12 col-sm-12 col-md-6 mb-1">
-                    <div class="input-group">
-                        <div class="form-floating">
-                            <input type="text" id="txtMunicipio" class="form-control" placeholder="Municipio"
-                                aria-label="Municipio">
-                            <label for="txtMunicipio">Municipio</label>
-
+    
+                    <div class="col-12 col-sm-12 col-md-6 mb-1">
+                        <div class="input-group">
+                            <div class="form-floating">
+                                <input type="text" id="txtMunicipio" class="form-control" placeholder="Municipio"
+                                    aria-label="Municipio">
+                                <label for="txtMunicipio">Municipio</label>
+    
+                            </div>
+    
+    
                         </div>
-
-
                     </div>
+    
+           
+                   
                 </div>
-
-       
-               
-            </div>
-
-            <div class="row">
-                <div class="form-floating">
-                    <textarea type="text" id="txtDireccion" style="height: 100px" class="form-control"
-                        placeholder="Dirección" aria-label="Direccion"></textarea>
-                    <label for="txtDireccion">Dirección</label>
-
-                </div>
-            </div>
-
-        -->
-
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
-
+    
+                <div class="row">
                     <div class="form-floating">
-                        <input type="text" id="txtDireccion" class="form-control" placeholder="Dirección"
-                            aria-label="Dirección">
-                        <label for="txtDireccion">Buscar Dirección</label>
-
+                        <textarea type="text" id="txtDireccion" style="height: 100px" class="form-control"
+                            placeholder="Dirección" aria-label="Direccion"></textarea>
+                        <label for="txtDireccion">Dirección</label>
+    
                     </div>
-
                 </div>
-            </div>
-
-            <div class="ros">
-                <p>Direcciones</p>
-            </div>
-        </div>
+    
+            -->
+    
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+    
+                        <div class="form-floating">
+                            <input type="text" id="txtDireccion" class="form-control" placeholder="Dirección"
+                            aria-label="Dirección" formControlName="txtDireccion" (keyup)="v_Filtrar($event);">
+                        <label for="txtDireccion">Buscar Dirección</label>
+                           
+                           
+    
+                        </div>
+    
+                    </div>
+                </div>
+    
+                <div class="ros">
+                    <p>Direcciones</p>
+                </div>
+            </div>          
+        </form>
+       
 
 
 
@@ -76,7 +81,7 @@
 
             <div class="row escan-table">
                 <table class="table table-hover table-bordered table-sm tabla-direccion">
-                    <tbody  *ngFor="let det of lstDirecciones">
+                    <tbody  *ngFor="let det of lstFilter">
                         <tr class="row">
 
                             <td scope="row" class="col-sm-12">

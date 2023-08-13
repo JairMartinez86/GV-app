@@ -5,4 +5,5 @@ export interface iDireccion{
     Direccion : string;
     Descripcion : string;
     Seleccionar : boolean;
+    Filtro : string;
 }
