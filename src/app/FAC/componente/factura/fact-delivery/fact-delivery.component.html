@@ -76,36 +76,7 @@
 
             <div class="row escan-table">
                 <table class="table table-hover table-bordered table-sm tabla-direccion">
-                    <tbody>
-                        <tr class="row">
-
-                            <td scope="row" class="col-sm-12">
-                                <div class="aa">
-
-                                    <div class="contenedor-depto-muni input-group-text">
-
-                                        <div>
-                                            <input id="txt1" class="form-check-input check-escasan" type="checkbox">
-                                        </div>
-
-                                        <div class="contenedor-depto-muni">
-                                            <div class="depto-muni"> Principal </div>
-                                            <div class="depto-muni">MANAGUA - MANAGUA</div>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-
-                            </td>
-                            <td class="col-sm-12 linea">
-                                <div class="text-ajustar">asdasdsadsadsadsadsadasdahdksadlkhsalkdhsaldhlkja
-                                    hdkjsahkjdsakjdkjsadkjasdsa
-                                </div>
-                            </td>
-
-                        </tr>
-
+                    <tbody  *ngFor="let det of lstDirecciones">
                         <tr class="row">
 
                             <td scope="row" class="col-sm-12">
@@ -114,12 +85,12 @@
                                     <div class="contenedor-depto-muni input-group-text">
 
                                         <div>
-                                            <input id="txt1" class="form-check-input check-escasan" type="checkbox">
+                                            <input  class="form-check-input check-escasan" [(ngModel)] = "det.Seleccionar" type="checkbox" (change)="v_Seleccionar(det)">
                                         </div>
 
                                         <div class="contenedor-depto-muni">
-                                            <div class="depto-muni"> Negocio </div>
-                                            <div class="depto-muni">MASAYA - MANAGUA</div>
+                                            <div class="depto-muni"> {{det.Descripcion}} </div>
+                                            <div class="depto-muni">{{det.Departamento}} - {{det.Municipio}} </div>
                                         </div>
 
 
@@ -128,132 +99,13 @@
 
                             </td>
                             <td class="col-sm-12 linea">
-                                <div class="text-ajustar">asdasdsadsadsadsadsadasdahdksadlkhsalkdhsaldhlkja
-                                    hdkjsahkjdsakjdkjsadkjasdsa
+                                <div class="text-ajustar">{{det.Direccion}}
                                 </div>
                             </td>
 
                         </tr>
 
-                        <tr class="row">
-
-                            <td scope="row" class="col-sm-12">
-                                <div>
-
-                                    <div class="contenedor-depto-muni input-group-text">
-
-                                        <div>
-                                            <input id="txt1" class="form-check-input check-escasan" type="checkbox">
-                                        </div>
-
-                                        <div class="contenedor-depto-muni">
-                                            <div class="depto-muni"> Otro </div>
-                                            <div class="depto-muni">DIARIO - MATAGALPA</div>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-
-                            </td>
-                            <td class="col-sm-12 linea">
-                                <div class="text-ajustar">asdasdsadsadsadsadsadasdahdksadlkhsalkdhsaldhlkja
-                                    hdkjsahkjdsakjdkjsadkjasdsa
-                                </div>
-                            </td>
-
-                        </tr>
-
-
-                        <tr class="row">
-
-                            <td scope="row" class="col-sm-12">
-                                <div>
-
-                                    <div class="contenedor-depto-muni input-group-text">
-
-                                        <div>
-                                            <input id="txt1" class="form-check-input check-escasan" type="checkbox">
-                                        </div>
-
-                                        <div class="contenedor-depto-muni">
-                                            <div class="depto-muni"> Otro </div>
-                                            <div class="depto-muni">DIARIO - MATAGALPA</div>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-
-                            </td>
-                            <td class="col-sm-12 linea">
-                                <div class="text-ajustar">asdasdsadsadsadsadsadasdahdksadlkhsalkdhsaldhlkja
-                                    hdkjsahkjdsakjdkjsadkjasdsa
-                                </div>
-                            </td>
-
-                        </tr>
-
-
-                        <tr class="row">
-
-                            <td scope="row" class="col-sm-12">
-                                <div>
-
-                                    <div class="contenedor-depto-muni input-group-text">
-
-                                        <div>
-                                            <input id="txt1" class="form-check-input check-escasan" type="checkbox">
-                                        </div>
-
-                                        <div class="contenedor-depto-muni">
-                                            <div class="depto-muni"> Otro </div>
-                                            <div class="depto-muni">DIARIO - MATAGALPA</div>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-
-                            </td>
-                            <td class="col-sm-12 linea">
-                                <div class="text-ajustar">asdasdsadsadsadsadsadasdahdksadlkhsalkdhsaldhlkja
-                                    hdkjsahkjdsakjdkjsadkjasdsa
-                                </div>
-                            </td>
-
-                        </tr>
-
-
-                        <tr class="row">
-
-                            <td scope="row" class="col-sm-12">
-                                <div>
-
-                                    <div class="contenedor-depto-muni input-group-text">
-
-                                        <div>
-                                            <input id="txt1" class="form-check-input check-escasan" type="checkbox">
-                                        </div>
-
-                                        <div class="contenedor-depto-muni">
-                                            <div class="depto-muni"> Otro </div>
-                                            <div class="depto-muni">DIARIO - MATAGALPA</div>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-
-                            </td>
-                            <td class="col-sm-12 linea">
-                                <div class="text-ajustar">asdasdsadsadsadsadsadasdahdksadlkhsalkdhsaldhlkja
-                                    hdkjsahkjdsakjdkjsadkjasdsa
-                                </div>
-                            </td>
-
-                        </tr>
-
+               
 
 
                     </tbody>
@@ -263,8 +115,8 @@
 
         </div>
         <div mat-dialog-actions class="btn-contenedor ">
-            <button type="button" class="btn btn-primario" (click)="dialogRef.close();">Aceptar</button>
-            <button type="button" class="btn btn-secundario" (click)="dialogRef.close();"
+            <button type="button" class="btn btn-primario" (click)="v_Aceptar()">Aceptar</button>
+            <button type="button" class="btn btn-secundario" (click)="v_Cancelar();"
                 cdkFocusInitial>Cerrar</button>
         </div>
     </div>

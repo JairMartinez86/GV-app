@@ -48,5 +48,9 @@ export class getFactura{
      }
      
      
+     public Direcciones(CodCliente : string) : Observable<string>{
+      return this.http.get<any>(this._Cnx.Url() + "Factura/Direcciones?CodCliente=" + CodCliente);
+   }
+   
 
 }

@@ -14,6 +14,7 @@ import { iDatos } from "src/app/SHARED/interface/i-Datos";
 import { WaitComponent } from "src/app/SHARED/componente/wait/wait.component";
 import { iCredito } from "src/app/FAC/interface/i-Credito";
 import { iDetalleFactura } from "src/app/FAC/interface/i-detalle-factura";
+import { iDireccion } from "src/app/FAC/interface/i-Direccion";
 
 @Component({
   selector: "app-fact-confirmar",
@@ -53,6 +54,7 @@ export class FactConfirmarComponent {
 
   public lstBodega: iBodega[] = [];
   public lstVendedores: iVendedor[] = [];
+  private lstDirecciones: iDireccion[] = [];
 
   @ViewChild("cmbBodega", { static: false })
   public cmbBodega: IgxComboComponent;
@@ -78,7 +80,7 @@ export class FactConfirmarComponent {
     this.val.add("txtNoExoneracion", "1", "LEN>=", "0", "Exoneracion", "");
     this.val.add("txtObservaciones", "1", "LEN>=", "0", "Observaciones", "");
     this.val.add("chkDelivery", "1", "LEN>=", "0", "Delivery", "");
-    this.val.add("txtDelivery", "1", "LEN>=", "0", "Dirección", "");
+    this.val.add("txtDireccion", "1", "LEN>=", "0", "Dirección", "");
     
   }
 
@@ -111,7 +113,7 @@ export class FactConfirmarComponent {
       this.val.Get("txtBodega").setValue([this.CodBodega]);
       this.val.Get("txtMoneda").setValue(this.MonedaCliente == "C"? "Cordoba": "Dolar");
       this.val.Get("txtObservaciones").setValue("");
-      this.val.Get("txtDelivery").setValue("");
+      this.val.Get("txtDireccion").setValue("");
       this.TipoPago = TipoPago;
     
 
@@ -151,7 +153,7 @@ export class FactConfirmarComponent {
       this.val.Get("txtDisponible_Confirmar").setValue("0.00");
       this.val.Get("txtObservaciones").setValue("");
       this.val.Get("chkDelivery").setValue(false);
-      this.val.Get("txtDelivery").setValue("");
+      this.val.Get("txtDireccion").setValue("");
 
       this.val.Get("txtNoDoc").disable();
       this.val.Get("txtFecha").disable();
@@ -160,7 +162,7 @@ export class FactConfirmarComponent {
       this.val.Get("txtCliente").disable();
       this.val.Get("txtBodega").disable();
       this.val.Get("txtMoneda").disable();
-      this.val.Get("txtDelivery").disable();
+      this.val.Get("txtDireccion").disable();
       this.val.Get("txtNoExoneracion").disable();
       this.val.Get("txtLimite_Confirmar").disable();
       this.val.Get("txtDisponible_Confirmar").disable();
@@ -444,18 +446,75 @@ export class FactConfirmarComponent {
 
   v_ActivarDelivery(event: any) : void{
 
-    if (event.target.checked) {
-      document.getElementById("btnDelivery")?.removeAttribute("disabled");
-      this.val.Get("txtDelivery").enable();
-      return;
-    }
 
-    if (!event.target.checked) {
-      document.getElementById("btnDelivery")?.setAttribute("disabled", "disabled");
-      this.val.Get("txtDelivery").setValue("");
-      this.val.Get("txtDelivery").disable();
-      return;
-    }
+    
+    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+      WaitComponent,
+      {
+        panelClass: "escasan-dialog-full-blur",
+        data: "",
+      }
+    );
+
+
+    this.Conexion.Direcciones(this.CodCliente).subscribe(
+      (s) => {
+        document.getElementById("btnRefrescarConfirmar")?.removeAttribute("disabled");
+        dialogRef.close();
+        let _json = JSON.parse(s);
+
+        if (_json["esError"] == 1) {
+          this.dialog.open(DialogErrorComponent, {
+            data: _json["msj"].Mensaje,
+          });
+        } else {
+          let Datos: iDatos[] = _json["d"];
+
+          this.lstDirecciones = Datos[0].d;
+
+          let i : number = 0;
+          this.lstDirecciones.forEach(f =>{
+            f.index = i;
+            f.Seleccionar = false;
+            if(f.Descripcion == "PRINCIPAL") f.Seleccionar = true;
+            i++;
+          });
+          
+
+
+          if (event.target.checked) {
+
+
+            let Direccion = this.lstDirecciones.find(f => f.Descripcion == "PRINCIPAL");
+
+            this.val.Get("txtDireccion").setValue("");
+            if(Direccion != undefined) this.val.Get("txtDireccion").setValue(Direccion?.Direccion);
+            document.getElementById("btnDelivery")?.removeAttribute("disabled");
+            this.val.Get("txtDireccion").enable();
+            return;
+          }
+      
+          if (!event.target.checked) {
+            document.getElementById("btnDelivery")?.setAttribute("disabled", "disabled");
+            this.val.Get("txtDireccion").setValue("");
+            this.val.Get("txtDireccion").disable();
+            return;
+          }
+          
+        }
+      },
+      (err) => {
+        document.getElementById("btnRefrescarConfirmar")?.removeAttribute("disabled");
+        dialogRef.close();
+
+        this.dialog.open(DialogErrorComponent, {
+          data: "<b class='error'>" + err.message + "</b>",
+        });
+      }
+    );
+
+
+   
 
   
 
@@ -464,13 +523,20 @@ export class FactConfirmarComponent {
 
   public v_Delivery(): void {
 
-    const dialogRef: MatDialogRef<FactDeliveryComponent> = this.dialog.open(
+    let dialogRef: MatDialogRef<FactDeliveryComponent> = this.dialog.open(
       FactDeliveryComponent,
       {
         panelClass: window.innerWidth < 992 ? "escasan-dialog-full" : "",
-        data: "",
+        data: this.lstDirecciones,
       }
     );
+
+
+    dialogRef.afterClosed().subscribe(s =>{
+      this.val.Get("txtDireccion").setValue(dialogRef.componentInstance.Direccion);
+    });
+
+
   }
 
 
@@ -691,8 +757,8 @@ export class FactConfirmarComponent {
     ///CAMBIO DE FOCO
     this.val.addFocus("txtNombreConfirmar", "txtObservaciones", undefined);
     this.val.addFocus("txtObservaciones", "btnGuardarFactura", "click");
-    this.val.addFocus("txtNoExoneracion", "txtDelivery", undefined);
-    this.val.addFocus("txtDelivery", "btnGuardarFactura", "click");
+    this.val.addFocus("txtNoExoneracion", "txtDireccion", undefined);
+    this.val.addFocus("txtDireccion", "btnGuardarFactura", "click");
 
 
 

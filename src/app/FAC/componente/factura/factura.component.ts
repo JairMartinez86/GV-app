@@ -813,7 +813,6 @@ public customSettings: OverlaySettings = {
 
     ErrorFicha = this.val.Errores;
     ErrorConfirmar = this.ConfirmarFactura.val.Errores;
-    this.RevisionFactura.lstDetalle;
 
 
 
@@ -844,8 +843,10 @@ public customSettings: OverlaySettings = {
       Restante = this.cFunciones.Redondeo(this.ConfirmarFactura.Disponible - Total, "2");
       
 
-      if( Restante < 0) ErrorOtros = "<li class='error-etiqueta'>Disponible<ul><li class='error-mensaje'>No tiene disponible.</li></ul>";
+      if( Restante < 0) ErrorOtros += "<li class='error-etiqueta'>Disponible<ul><li class='error-mensaje'>No tiene disponible.</li></ul>";
     }
+
+    if( this.RevisionFactura.lstDetalle.length == 0) ErrorOtros += "<li class='error-etiqueta'>Productos<ul><li class='error-mensaje'>Registre al menos un producto para facturar.</li></ul>";
 
 
     if(ErrorOtros != "")
