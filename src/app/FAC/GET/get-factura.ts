@@ -19,8 +19,8 @@ export class getFactura{
 
     }
 
-    public TasaCambio() : Observable<string>{
-      return this.http.get<any>(this._Cnx.Url() + "Factura/TasaCambio");
+    public DatosSucursal(CodBodega : string) : Observable<string>{
+      return this.http.get<any>(this._Cnx.Url() + "Factura/DatosSucursal?CodBodega=" + CodBodega);
    }
     
     public Datos_Factura() : Observable<string>{

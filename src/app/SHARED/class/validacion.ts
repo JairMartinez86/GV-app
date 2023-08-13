@@ -135,7 +135,7 @@ export class Validacion {
 
     document?.getElementById(_element_next.IdNext)?.focus();
 
-    if(String(_element_next.Evento) != undefined) $("#" + _element_next.IdNext).trigger(_element_next.Evento);
+    if(String(_element_next.Evento) != undefined) $("#" + _element_next.IdNext)?.trigger(_element_next.Evento);
 
     /*
     if(String(event.target.value) == "") {

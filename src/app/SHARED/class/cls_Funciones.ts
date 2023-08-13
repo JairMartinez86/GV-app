@@ -5,21 +5,31 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class Funciones {
-  private _FechaServidor: Date = new Date();
+  private _FechaInicio: Date = new Date();
+  public FechaServer: Date;
 
   private datePipe: DatePipe = new DatePipe('en-US');
 
   public MonedaLocal = "C";
 
   constructor() {
-    this._FechaServidor = new Date(
+    this._FechaInicio = new Date(
       this.DateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss')
     );
   }
 
-  public FechaServidor(): Date {
-    return this._FechaServidor;
+  public FechaInicio(): Date {
+    return this._FechaInicio;
   }
+
+  public FechaServidor(f  : Date) {
+    this.FechaServer = new Date(
+      this.DateFormat(f, 'yyyy-MM-dd hh:mm:ss')
+    );
+  }
+
+
+
 
   public DateAddDay(Tipo: string, Fecha: Date, Num: number): string {
     switch (Tipo) {

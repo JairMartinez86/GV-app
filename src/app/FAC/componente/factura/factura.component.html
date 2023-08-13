@@ -326,7 +326,7 @@
         <div class="flechas">
 
             <div class="flechas-siguiente">
-                <button type="button" class="btn btn-success" (click)="v_FichaPanel('Siguiente')" *ngIf="Panel==''"><i
+                <button type="button" class="btn btn-success" id="btnSiguiente" (click)="v_FichaPanel('Siguiente')" *ngIf="Panel==''"><i
                         class="bi bi-plus-circle-fill"></i>Producto</button>
             </div>
             <div class="row" *ngIf="Panel!=''">
@@ -352,3 +352,7 @@
     </div>
 
 </div>
+
+<button id="btnGuardarFactura" (click)="v_Guardar();">
+
+</button>

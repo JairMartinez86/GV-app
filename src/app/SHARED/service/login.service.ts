@@ -54,7 +54,7 @@ export class LoginService {
 
   Diff(FechaLogin : Date){
 
-    let FechaServidor : Date = new Date(this.cFunciones.FechaServidor());
+    let FechaServidor : Date = new Date(this.cFunciones.FechaInicio());
 
     var Segundos = Math.abs((FechaLogin.getTime() - FechaServidor.getTime()) / 1000);
     return Segundos;

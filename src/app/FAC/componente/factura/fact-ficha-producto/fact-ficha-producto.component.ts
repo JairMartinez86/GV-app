@@ -449,7 +449,7 @@ export class FactFichaProductoComponent {
     if(det.PorcDescuento > 100) MsjError += "<li class='error-etiqueta'>Descuento<ul><li class='error-mensaje'>Por favor revise el descuento.</li></ul>";
 
     if(Number(Existencia?.Existencia) <= 0) MsjError += "<li class='error-etiqueta'>Existencia<ul><li class='error-mensaje'>El producto no tiene existencia.</li></ul>";
-    if(Number(Existencia?.Existencia) > 0 && Number(Existencia?.Existencia) < det.Cantidad ) MsjError += "<li class='error-etiqueta'>Cantidad<ul><li class='error-mensaje'>La cantidad supera la existencia.</li></ul>";
+    if(Number(Existencia?.Existencia) > 0 && Number(Existencia?.Existencia) < det.Cantidad ) MsjError += "<li class='error-etiqueta'>Cantidad<ul><li class='error-mensaje'>La cantidad supera la existencia. " + this.cFunciones.NumFormat(Number(Existencia?.Existencia), "0") +"</li></ul>";
     
     if(Descuento == undefined && det.PorcDescuento != 0) MsjError += "<li class='error-etiqueta'>Descuento<ul><li class='error-mensaje'>No se permite el descuento.</li></ul>";
     if(Descuento != undefined ){
@@ -471,6 +471,7 @@ export class FactFichaProductoComponent {
         DetalleBonificado.PrecioCordoba = det.PrecioCordoba;
         DetalleBonificado.PrecioDolar = det.PrecioDolar;
         DetalleBonificado.PorcDescuento = 1;
+        DetalleBonificado.PorcDescuentoAdicional = 0;
         DetalleBonificado.PorcImpuesto = det.PorcImpuesto;
         DetalleBonificado.Cantidad = Bonificado.Bonifica;
         DetalleBonificado.SubTotal = 0;
@@ -556,6 +557,12 @@ export class FactFichaProductoComponent {
     let PorcDescuentoAdicional : number = this.cFunciones.Redondeo(Number(iDesc?.PorcDescuento) / 100, "4");
     let PorcImpuesto: number = Producto[0].ConImpuesto ? 0.15 : 0;
     let ImpuestoExo : number = 0;
+
+    if(PorcDescuentoAdicional == undefined) PorcDescuentoAdicional = 0;
+    if(PorDescuento == undefined) PorDescuento = 0;
+    if(PorcImpuesto == undefined) PorcImpuesto = 0.15;
+    if(PrecioCordoba == undefined) PrecioCordoba = 0;
+    if(PrecioDolar == undefined) PrecioDolar = 0;
 
 
     this.Detalle.Precio = PrecioCordoba;

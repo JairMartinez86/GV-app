@@ -24,6 +24,10 @@
   margin-bottom: 35px;
 }
 
+span{
+  color: var(--escan-secundario);
+  font-weight: bold;
+}
 
 
 //████████████████████████████████████████████CHECBOX████████████████████████████████████████████████████████████████████████
@@ -59,3 +63,51 @@
     
   }
   
+
+//████████████████████████████████████████████TOTALES████████████████████████████████████████████████████████████████████████
+
+.contenedor {
+  text-align: right;
+  @include Tamano_Menor(lg) {
+    margin-bottom: 70px;
+  }
+}
+
+.contenedor-totales {
+  display: flex;
+  margin-bottom: 5px;
+
+  font-weight: bolder;
+
+  .etiqueta-totales {
+    width: 85%;
+
+    @include Tamano_Menor(lg) {
+      width: 50%;
+    }
+  }
+
+  .valores-totales {
+    width: 15%;
+    margin-right: 10px;
+
+    @include Tamano_Menor(lg) {
+      width: 50%;
+    }
+  }
+
+  b {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .cordoba,
+  .dolar {
+    background-color: var(--escan-primario);
+    color: var(--escan-fondo);
+  }
+  .tasa {
+    background-color: #1b364c;
+    color: var(--escan-fondo);
+  }
+}

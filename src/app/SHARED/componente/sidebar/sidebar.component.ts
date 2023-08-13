@@ -6,6 +6,12 @@ import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
 import { RegistroFacturaComponent } from 'src/app/FAC/componente/factura/registro-factura/registro-factura.component';
 import { LoginService } from '../../service/login.service';
+import { getServidor } from '../../GET/get-servidor';
+import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
+import { iDatos } from '../../interface/i-Datos';
+import { Funciones } from '../../class/cls_Funciones';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { WaitComponent } from '../wait/wait.component';
 
 const SCRIPT_PATH = 'ttps://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.0.4/css/bootstrap5-toggle.min.css';
 declare let gapi: any;
@@ -24,7 +30,10 @@ export class SidebarComponent {
   constructor(
     private renderer: Renderer2,
     @Inject(DOCUMENT) private document: HTMLDocument,
-    private _SrvLogin: LoginService
+    private _SrvLogin: LoginService,
+    private Conexion: getServidor,
+    private cFunciones : Funciones,
+    private dialog: MatDialog,
   ) {
 
    
@@ -79,10 +88,46 @@ export class SidebarComponent {
 */
     //FIN
 
+    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+      WaitComponent,
+      {
+        id: "wait",
+        panelClass: "escasan-dialog-full-blur",
+        data: "",
+      }
+    );
+    
+
     $("#btnMenu").trigger("click"); // MOSTRAR MENU DESDE EL INICIO
    
     
+    this.Conexion.FechaServidor().subscribe(
+      (s) => {
 
+        dialogRef.close();
+
+        let _json = JSON.parse(s);
+
+        if (_json["esError"] == 1) {
+          this.dialog.open(DialogErrorComponent, {
+            data: _json["msj"].Mensaje,
+          });
+        } else {
+          let Datos: iDatos[] = _json["d"];
+
+          this.cFunciones.FechaServidor(Datos[0].d);
+
+        }
+      },
+      (err) => {
+
+        dialogRef.close();
+
+        this.dialog.open(DialogErrorComponent, {
+          data: "<b class='error'>" + err.message + "</b>",
+        });
+      }
+    );
     
 
   }

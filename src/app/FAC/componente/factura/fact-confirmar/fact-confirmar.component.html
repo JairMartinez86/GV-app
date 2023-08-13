@@ -34,8 +34,6 @@
 
                                 <div class="col-md-12 col-lg-4">
 
-
-
                                     <div class="input-group">
                                         <span class="input-group-text"><i
                                             class="bi bi-calendar"></i></span>
@@ -136,9 +134,9 @@
                                 <div class="col-12 col-sm-12 col-md-6 mb-1">
                                     <div class="input-group">
                                         <div class="form-floating">
-                                            <textarea type="text" id="txtNombre" class="form-control"
-                                                placeholder="Cliente" aria-label="Nombre" formControlName="txtNombre" [(ngModel)]="Nombre"> </textarea>
-                                            <label for="txtNombre">Nombre</label>
+                                            <input type="text" id="txtNombre_Confirmar" class="form-control"
+                                                placeholder="Cliente" aria-label="Nombre" formControlName="txtNombre_Confirmar" [(ngModel)]="Nombre">
+                                            <label for="txtNombre_Confirmar">Nombre</label>
 
                                         </div>
 
@@ -167,20 +165,6 @@
 
                                     <div class="row">
 
-                                        <div class="col-md-12 col-lg-8 mb-1">
-                                            <div class="check-button-escasan">
-                                                <input type="checkbox" id="chkTipoFactura"
-                                                    data-toggle="toggle" data-style="on" data-onstyle="on"
-                                                    data-offstyle="off" data-onlabel="Crédito" data-offlabel="Contado"
-                                                    data-width="120" data-height="100%" (change)="v_TipoPago($event)">
-
-                                                <input type="checkbox" id="chkImpuesto_Confirmar" data-toggle="toggle"
-                                                    data-style="on" data-onstyle="on" data-offstyle="off"
-                                                    data-onlabel="Iva" data-offlabel="Sin Iva" data-width="120"
-                                                    data-height="100%" checked (change)="v_TipoImpuesto($event)">
-                                            </div>
-                                        </div>
-
                                         <div class="col-md-12 col-lg-4 mb-1">
                                             <div class="input-group">
                                                 <div class="form-floating">
@@ -190,6 +174,30 @@
 
                                                 </div>
 
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 col-lg-4 mb-1">
+                                            <div class="input-group">
+                                                <span class="input-group-text">{{SimboloMonedaCliente}}</span>
+                                                <div class="form-floating">
+                                                    <input type="text" id="txtLimite_Confirmar" class="form-control" placeholder="Limite"
+                                                        aria-label="Limite" formControlName="txtLimite_Confirmar">
+                                                    <label for="txtLimite_Confirmar">Limite</label>
+                                                </div>
+            
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 col-lg-4 mb-1">
+                                            <div class="input-group">
+                                                <span class="input-group-text">{{SimboloMonedaCliente}}</span>
+                                                <div class="form-floating">
+                                                    <input type="text" id="txtDisponible_Confirmar" class="form-control"
+                                                        placeholder="Disponible" aria-label="Disponible" formControlName="txtDisponible_Confirmar">
+                                                    <label for="txtDisponible_Confirmar">Disponible</label>
+                                                </div>
+            
                                             </div>
                                         </div>
 
@@ -205,23 +213,41 @@
 
                                     <div class="row mb-1">
 
-
-                                        <div class="input-group">
-                                            <span class="check-button-escasan">
-                                                <input type="checkbox" id="chkExoneracion"
+                                        <div class="col-md-12 col-lg-4 mb-1">
+                                            <div class="check-button-escasan">
+                                                
+                                                <input type="checkbox" id="chkTipoPago_Confirmar"
                                                     data-toggle="toggle" data-style="on" data-onstyle="on"
-                                                    data-offstyle="off" data-onlabel="Con Exoneración"
-                                                    data-offlabel="Sin Exoneración" data-width="130" data-height="100%"
-                                                    (change)="v_TipoExoneracion($event)">
-                                            </span>
-                                            <div class="form-floating">
-                                                <input type="text" id="txtNoExoneracion" class="form-control"
-                                                    placeholder="No Exoneracion" aria-label="No Exoneracion" formControlName="txtNoExoneracion">
-                                                <label for="txtNoExoneracion">No Exoneración</label>
+                                                    data-offstyle="off" data-onlabel="Crédito" data-offlabel="Contado"
+                                                    data-width="120" data-height="100%" (change)="v_TipoPago($event)">
 
+                                                <input type="checkbox" id="chkImpuesto_Confirmar" data-toggle="toggle"
+                                                    data-style="on" data-onstyle="on" data-offstyle="off"
+                                                    data-onlabel="Iva" data-offlabel="Sin Iva" data-width="120"
+                                                    data-height="100%" checked (change)="v_TipoImpuesto($event)">
                                             </div>
-
                                         </div>
+
+                                        <div class="col-md-12 col-lg-8 mb-1">
+                                            <div class="input-group">
+                                                <span class="check-button-escasan">
+                                                    <input type="checkbox" id="chkExoneracion"
+                                                        data-toggle="toggle" data-style="on" data-onstyle="on"
+                                                        data-offstyle="off" data-onlabel="Con Exoneración"
+                                                        data-offlabel="Sin Exoneración" data-width="130" data-height="100%"
+                                                        (change)="v_TipoExoneracion($event)">
+                                                </span>
+                                                <div class="form-floating">
+                                                    <input type="text" id="txtNoExoneracion" class="form-control"
+                                                        placeholder="No Exoneracion" aria-label="No Exoneracion" formControlName="txtNoExoneracion">
+                                                    <label for="txtNoExoneracion">No Exoneración</label>
+    
+                                                </div>
+    
+                                            </div>
+                                        </div>
+
+                                       
                                     </div>
 
                                 </div>
@@ -268,7 +294,7 @@
 
                             <div class="row">
                                 <div class="btn-contenedor">
-                                    <button type="button" class="btn btn-primario" id="btnRefrescarConfirmar"><i class="fa-solid fa-arrows-rotate fa-spin fa-lg"></i> Refrescar</button>
+                                    <button type="button" class="btn btn-primario" id="btnRefrescarConfirmar" (click)="v_Refrescar();"><i class="fa-solid fa-arrows-rotate fa-spin fa-lg"></i> Refrescar</button>
                                 </div>
                             </div>
 
@@ -279,6 +305,53 @@
 
         </div>
 
+        <div class="row">
+
+            <div class="contenedor">
+ 
+ 
+                <div class="row">
+                    <div class="col-12 contenedor-totales">
+                        <div class="etiqueta-totales">IMPUESTO {{SimboloMonedaCliente}}:</div>
+                        <div class="valores-totales"><b>{{Impuesto| number : '1.2-2'}}</b></div>
+                    </div>
+                </div>
+ 
+                     <div class="row">
+                         <div class="col-12 contenedor-totales">
+                             <div class="etiqueta-totales">EXONERADO {{SimboloMonedaCliente}}:</div>
+                             <div class="valores-totales"><b>{{ImpuestoExo| number : '1.2-2'}}</b></div>
+                         </div>
+                     </div>
+ 
+ 
+                     <div class="row">
+                         <div class="col-12 contenedor-totales">
+                             <div class="etiqueta-totales">TOTAL C$</div>
+                             <div class="valores-totales"><b class="cordoba">{{TotalCordoba| number : '1.2-2'}}</b></div>
+                         </div>
+                     </div>
+ 
+                     <div class="row">
+                         <div class="col-12 contenedor-totales">
+                             <div class="etiqueta-totales">TOTAL U$:</div>
+                             <div class="valores-totales"><b class="dolar">{{TotalDolar| number : '1.2-2'}}</b></div>
+                         </div>
+                     </div>
+ 
+         
+ 
+                     <div class="row">
+                         <div class="col-12 contenedor-totales">
+                             <div class="etiqueta-totales">TC:</div>
+                             <div class="valores-totales"><b class="tasa">{{TC| number : '1.4-4'}}</b></div>
+                         </div>
+                     </div>
+ 
+                 </div>
+            
+         </div>
+ 
        
     </form>
    
