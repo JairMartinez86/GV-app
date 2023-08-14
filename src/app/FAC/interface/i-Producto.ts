@@ -4,4 +4,5 @@ export interface iProducto{
     ConImpuesto : boolean;
     Filtro: string;
     Key: string;
+    Bonificable: boolean
 }

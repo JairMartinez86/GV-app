@@ -1,17 +1,30 @@
-form p{
-  text-align: center;
-}
-
 p{
-    font-size: 1.1em;
-    font-weight: bold;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 1.5em;
 }
 .btn-contenedor button{
-  margin-left: 10px;
-  margin-right: 10px;
-}
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 
-//████████████████████████████████████████████TEXT NUMBER████████████████████████████████████████████████████████████████████████
+  .text-ajustar {
+    float: left;
+    display: flex;
+    align-items: center;
+    word-break: break-all;
+    margin: 0 0 1em 1em;
+  }
+  
+  .linea {
+    border-bottom: 2px solid var(--escan-secundario);
+  }
+  
+
+
+  //████████████████████████████████████████████TEXT NUMBER████████████████████████████████████████████████████████████████████████
 
 .input-group-simbolo {
   padding: 0;
@@ -34,30 +47,14 @@ p{
       margin-top: 2px;
     }
   }
+
+  /* overflow: hidden; 
+    text-align: center;
+    span i{
+      display: block;
+      margin: 5px 5% 0 0;
+  
+    }*/
 }
 
-//████████████████████████████████████████████TABLA████████████████████████████████████████████████████████████████████████
 
-table {
-  margin-bottom: 60px;
-}
-
-.header-contenedor {
-    max-width:850px;
-    min-width:850px;
-
-  .header-table {
-    position: fixed;
-    top: 0px;
-    min-width: inherit;
-    max-width: inherit;
-  }
-}
-
-.text-ajustar {
-  float: left;
-  display: flex;
-  align-items: center;
-  word-break: break-all;
-  margin: 0 0 1em 1em;
-}

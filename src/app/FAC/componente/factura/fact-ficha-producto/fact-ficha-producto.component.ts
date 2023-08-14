@@ -15,6 +15,7 @@ import { iDetalleFactura } from "src/app/FAC/interface/i-detalle-factura";
 import { iExistencia } from "src/app/FAC/interface/i-Existencia";
 import { iBonificacion } from "src/app/FAC/interface/i-Bonificacion";
 import { iDescuento } from "src/app/FAC/interface/i-Descuento";
+import { iBonifLibre } from "src/app/FAC/interface/i-Bonif-Libre";
 
 @Component({
   selector: "app-fact-ficha-producto",
@@ -31,8 +32,10 @@ export class FactFichaProductoComponent {
   public CodCliente: string = "";
   public TC: number = 0;
   private bol_Referescar: boolean = false;
+  private bol_BonificacionLibre = false;
 
   public CodProducto: string = "";
+  private i_Bonif : any = undefined;
   public CodBodega: string = "";
   lstProductos: iProducto[] = [];
   filteredProductos: Observable<iProducto[]> | undefined;
@@ -116,8 +119,11 @@ export class FactFichaProductoComponent {
   public _Evento(e: string): void {
     switch (e) {
       case "Limpiar":
+        
         this.Detalle = {} as iDetalleFactura;
         this.bol_Referescar = false;
+        this.bol_BonificacionLibre = false;
+        this.i_Bonif = undefined;
         this.CodProducto = "";
         this.val.Get("txtCodProducto").setValue("");
         this.val.Get("txtProducto").setValue("");
@@ -309,6 +315,7 @@ export class FactFichaProductoComponent {
 
 
           this.LlenarPrecio();
+          if(this.bol_BonificacionLibre) this.v_Agregar_Producto();
 
         }
       },
@@ -338,7 +345,7 @@ export class FactFichaProductoComponent {
     this.val.Get("txtProducto").setValue("");
     this.val.Get("txtPrecioCor").setValue("0.0000");
     this.val.Get("txtPrecioDol").setValue("0.0000");
-    this.val.Get("txtCantidad").setValue("1");
+    if(!this.bol_BonificacionLibre) this.val.Get("txtCantidad").setValue("1");
     this.val.Get("txtProcDescuento").setValue("0.00");
 
     this.val.Get("txtCodProducto").enable();
@@ -348,14 +355,29 @@ export class FactFichaProductoComponent {
     this.val.Get("txtProcDescuento").disable();
     this.val.Get("txtCantidad").disable();
 
+
+
     this.SubTotal = 0;
     this.Descuento = 0;
+    this.Adicional = 0;
     this.SubTotalNeto = 0;
     this.Impuesto = 0;
-    this.SubTotal = 0;
+    this.TotalCordoba = 0;
+    this.TotalDolar = 0;
 
     document.getElementById("btnAgregarProducto")?.setAttribute("disabled", "disabled");
-    document?.getElementById("txtCodProducto")?.focus();
+
+    if(this.bol_BonificacionLibre)
+    {
+      this.v_Bonificacion_Libre();
+    }
+    else{
+      document?.getElementById("txtCodProducto")?.focus();
+    }
+
+
+
+   
   }
 
   public v_tabla_Producto(p: string): void {
@@ -414,8 +436,45 @@ export class FactFichaProductoComponent {
     let dialogRef: MatDialogRef<FactBonificacionLibreComponent> =
       this.dialog.open(FactBonificacionLibreComponent, {
         panelClass: window.innerWidth < 992 ? "escasan-dialog-full" : "",
-        data: "",
+        data: this.lstProductos,
+        disableClose: true
       });
+
+      dialogRef.afterOpened().subscribe(s =>{
+
+
+        if(this.bol_BonificacionLibre)
+        {
+          this.bol_BonificacionLibre = false;
+          
+          dialogRef.componentInstance.val.Get("txtCantidadBonif").setValue(this.val.Get("txtCantidad").value);
+          this.val.Get("txtCantidad").setValue("1");
+          dialogRef.componentInstance.v_ForzarSeleccionar(this.i_Bonif.Codigo);
+          this.i_Bonif = undefined;
+
+        }
+      });
+
+
+      dialogRef.afterClosed().subscribe(s => {
+
+        if(dialogRef.componentInstance.i_Bonif != undefined)
+        {
+          this.i_Bonif = dialogRef.componentInstance.i_Bonif;
+          this.CodProducto = this.i_Bonif.Codigo;
+          this.val.Get("txtCodProducto").setValue(this.i_Bonif.Producto)
+          this.val.Get("txtCantidad").setValue(dialogRef.componentInstance.val.Get("txtCantidadBonif").value);
+          this.bol_BonificacionLibre = true;
+          this.v_Datos_Producto();
+        }
+        else
+        {
+          this.bol_BonificacionLibre = false;
+          this.i_Bonif = undefined;
+        }
+
+      });
+
   }
 
 
@@ -459,7 +518,7 @@ export class FactFichaProductoComponent {
 
 
 
-    if(Bonificado != undefined ){
+    if(Bonificado != undefined && !this.bol_BonificacionLibre ){
       if(Bonificado.Bonifica + det.Cantidad <= Number(Existencia?.Existencia))
       {
 
@@ -482,6 +541,7 @@ export class FactFichaProductoComponent {
         DetalleBonificado.TotalCordoba = 0;
         DetalleBonificado.TotalDolar = 0;
         DetalleBonificado.EsBonif = true;
+        DetalleBonificado.EsBonifLibre = false;
         DetalleBonificado.EsExonerado = false;
         DetalleBonificado.IndexUnion = det.Index;
 
@@ -491,18 +551,66 @@ export class FactFichaProductoComponent {
     }
 
 
+  
 
     if(MsjError != "" ||  this.val.Errores)
     {
-      this.dialog.open(DialogErrorComponent, {
+
+      if(this.bol_BonificacionLibre){
+        this.SubTotal = 0;
+        this.Descuento = 0;
+        this.Adicional = 0;
+        this.SubTotalNeto = 0;
+        this.Impuesto = 0;
+        this.TotalCordoba = 0;
+        this.TotalDolar = 0;
+      }
+      
+
+
+     let Ref =  this.dialog.open(DialogErrorComponent, {
         data:
           "<ul>"+MsjError+"</ul>" + this.val.Errores,
       });
 
+
+      if(this.bol_BonificacionLibre)
+      {
+        Ref.afterClosed().subscribe(s =>{
+          this.v_Borrar_Producto();
+          
+        });
+        
+      }
       return;
   
     }
 
+
+    if(this.bol_BonificacionLibre)
+    {
+      det.PorcDescuento = 1;
+      det.SubTotal = 0;
+      det.Descuento = 0;
+      det.SubTotalNeto = 0;
+      det.Impuesto = 0;
+      det.ImpuestoExo = 0;
+      det.TotalCordoba = 0;
+      det.TotalDolar = 0;
+      det.EsBonif = true;
+      det.EsBonifLibre = true;
+      det.EsExonerado = false;
+      this.bol_BonificacionLibre = false;
+      this.i_Bonif = undefined;
+
+      this.SubTotal = 0;
+      this.Descuento = 0;
+      this.Adicional = 0;
+      this.SubTotalNeto = 0;
+      this.Impuesto = 0;
+      this.TotalCordoba = 0;
+      this.TotalDolar = 0;
+    }
 
 
     
@@ -516,8 +624,11 @@ export class FactFichaProductoComponent {
   public v_minus_mas(s : string, id : string) : void{
 
     if(this.CodProducto == "") return;
+    let valor : string = this.val.Get(id).value;
 
-    let num : number = Number(this.val.Get(id).value.replaceAll("," , ""))
+    if(valor == "" || valor == undefined) valor = "0";
+
+    let num : number = Number(valor.replaceAll("," , ""))
 
     if(s == "+") num += 1;
 
@@ -656,6 +767,7 @@ export class FactFichaProductoComponent {
     this.Detalle.TotalCordoba = this.TotalCordoba;
     this.Detalle.TotalDolar = this.TotalDolar;
     this.Detalle.EsBonif = false;
+    this.Detalle.EsBonifLibre = false;
     this.Detalle.EsExonerado = this.TipoExoneracion == "Exonerado" ? true : false;
     this.Detalle.IndexUnion = -1;
 

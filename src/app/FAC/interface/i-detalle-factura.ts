@@ -31,6 +31,7 @@ export interface iDetalleFactura{
     TotalCordoba:number;
     TotalDolar:number;
     EsBonif : boolean;
+    EsBonifLibre : boolean;
     EsExonerado : boolean;
     IndexUnion : number;
 }
