@@ -28,14 +28,9 @@ export class FactBonificacionLibreComponent {
 
     this.val.add("txtCantidadBonif", "1", "NUM>", "0", "Cantidad", "Ingrese una cantidad valida.");
 
-    let i :number = 0;
+    this.i_Bonif = undefined;
     data.filter((f:any) => f.Bonificable).forEach((f:any) =>{
-
-      var e : iBonifLibre = {Codigo: f.Codigo, Producto: f.Producto, Filtro : f.Key, Seleccionar : (i == 0 ? true : false)};
-      this.lstProductos.push(e);
-
-      if(i == 0) this.i_Bonif = e;
-      i++;
+      this.lstProductos.push({Codigo: f.Codigo, Producto: f.Producto, Filtro : f.Key, Seleccionar : false});
     });
 
     this.lstFilter = this.lstProductos.map((obj : any) => ({...obj}));
@@ -94,10 +89,12 @@ export class FactBonificacionLibreComponent {
 
     this.val.EsValido();
     let Error : string = "";
+    
+    
 
-    if(this.i_Bonif == null)Error = "<li class='error-etiqueta'>Producto<ul><li class='error-mensaje'>Seleccione al menos un producto a bonificar.</li></ul>";
+    if(this.i_Bonif == undefined) Error = "<li class='error-etiqueta'>Producto<ul><li class='error-mensaje'>Seleccione al menos un producto a bonificar.</li></ul>";
 
-    if(this.val.Errores != "" && Error == "")
+    if(this.val.Errores != "" || Error != "")
     {
       this.dialog.open(DialogErrorComponent, {
         data: this.val.Errores + Error,
