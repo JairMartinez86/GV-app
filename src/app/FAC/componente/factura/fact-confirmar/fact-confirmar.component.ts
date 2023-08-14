@@ -277,7 +277,7 @@ export class FactConfirmarComponent {
       this.Disponible = 0;
       this.Plazo = 0;
       this.val.Get("txtPlazo").setValue(this.Plazo);
-      this.val.Get("txtVence").setValue(this.cFunciones.DateAddDay("Month",this.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
+      this.val.Get("txtVence").setValue(this.cFunciones.DateAddDay("Day",this.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
 
       return;
     }
@@ -328,7 +328,7 @@ export class FactConfirmarComponent {
 
             this.val.Get("txtFecha").setValue(this.cFunciones.DateFormat(this.Fecha, "yyyy-MM-dd"));
             this.val.Get("txtPlazo").setValue(this.Plazo);
-            this.val.Get("txtVence").setValue(this.cFunciones.DateAddDay("Month",this.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
+            this.val.Get("txtVence").setValue(this.cFunciones.DateAddDay("Day",this.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
 
             this.Calcular();
 
@@ -340,7 +340,7 @@ export class FactConfirmarComponent {
               chk.bootstrapToggle("off");
 
               this.val.Get("txtPlazo").setValue(this.Plazo);
-              this.val.Get("txtVence").setValue(this.cFunciones.DateAddDay("Month",this.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
+              this.val.Get("txtVence").setValue(this.cFunciones.DateAddDay("Day",this.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
               this.Calcular();
 
               
@@ -574,7 +574,7 @@ export class FactConfirmarComponent {
       
           this.val.Get("txtFecha").setValue(this.cFunciones.DateFormat(this.Fecha, "yyyy-MM-dd"));
           this.val.Get("txtPlazo").setValue(this.Plazo);
-          this.val.Get("txtVence").setValue(this.cFunciones.DateAddDay("Month",this.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
+          this.val.Get("txtVence").setValue(this.cFunciones.DateAddDay("Day",this.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
 
 
           let chk: any = document.querySelector("#chkTipoPago_Confirmar");

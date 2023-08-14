@@ -32,27 +32,28 @@ export class Funciones {
 
 
   public DateAddDay(Tipo: string, Fecha: Date, Num: number): string {
+    let f = new Date(Fecha);
     switch (Tipo) {
       case 'Day':
-        return this.DateFormat(new Date(Number(Fecha) + Num), 'yyyy-MM-dd');
+        return this.DateFormat(new Date(f.setDate( f.getDate() + Num)), 'yyyy-MM-dd');
         break;
 
       case 'Month':
         return this.DateFormat(
-          new Date(Fecha.setMonth(Fecha.getMonth() + Num)),
+          new Date(f.setMonth(f.getMonth() + Num)),
           'yyyy-MM-dd'
         );
         break;
 
       case 'Year':
         return this.DateFormat(
-          new Date(Fecha.setFullYear(Fecha.getFullYear() + Num)),
+          new Date(f.setFullYear(f.getFullYear() + Num)),
           'yyyy-MM-dd'
         );
         break;
     }
 
-    return this.DateFormat(Fecha, 'yyyy-MM-dd');
+    return this.DateFormat(f, 'yyyy-MM-dd');
   }
 
   public DateFormat(fecha: Date, formart: string): string {
