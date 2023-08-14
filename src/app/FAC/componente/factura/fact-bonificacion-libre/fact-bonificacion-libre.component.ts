@@ -132,7 +132,7 @@ export class FactBonificacionLibreComponent {
    
   }
 
-  ngAfterViewChecked(): void {
+  ngAfterViewInit(): void {
     document?.getElementById("txtCantidadBonif")?.focus();
   }
 

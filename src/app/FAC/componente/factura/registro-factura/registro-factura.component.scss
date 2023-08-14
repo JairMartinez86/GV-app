@@ -2,7 +2,23 @@
 
 .RegistrosFactura{
     padding: 15px;
+    position: relative;
 }
+.contenedor-pag{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background: var(--escan-fondo);
+}
+
+.pagination{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
 
 thead{
     tr{

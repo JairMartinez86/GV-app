@@ -528,7 +528,7 @@ export class FactConfirmarComponent {
     let dialogRef: MatDialogRef<FactDeliveryComponent> = this.dialog.open(
       FactDeliveryComponent,
       {
-        panelClass: window.innerWidth < 992 ? "escasan-dialog-full" : "",
+        panelClass: "escasan-dialog-full",//window.innerWidth < 992 ? "escasan-dialog-full" : "",
         data: this.lstDirecciones,
       }
     );

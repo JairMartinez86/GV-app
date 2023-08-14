@@ -29,6 +29,7 @@ import { RegistroFacturaComponent } from './FAC/componente/factura/registro-fact
 import { DialogErrorComponent } from './SHARED/componente/dialog-error/dialog-error.component';
 import { IgxComboModule } from 'igniteui-angular';
 import { IgxIconModule } from 'igniteui-angular';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { IgxIconModule } from 'igniteui-angular';
     MatDialogModule,
     MatIconModule,
     IgxComboModule,
-    IgxIconModule
+    IgxIconModule,
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

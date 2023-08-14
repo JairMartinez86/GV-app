@@ -435,7 +435,7 @@ export class FactFichaProductoComponent {
   public v_Bonificacion_Libre(): void {
     let dialogRef: MatDialogRef<FactBonificacionLibreComponent> =
       this.dialog.open(FactBonificacionLibreComponent, {
-        panelClass: window.innerWidth < 992 ? "escasan-dialog-full" : "",
+        panelClass: "escasan-dialog-full",//window.innerWidth < 992 ? "escasan-dialog-full" : "",
         data: this.lstProductos,
         disableClose: true
       });
