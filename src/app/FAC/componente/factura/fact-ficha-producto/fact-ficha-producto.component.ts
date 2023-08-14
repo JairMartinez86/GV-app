@@ -442,12 +442,12 @@ export class FactFichaProductoComponent {
 
       dialogRef.afterOpened().subscribe(s =>{
 
-
+   
         if(this.bol_BonificacionLibre)
         {
           this.bol_BonificacionLibre = false;
           
-          dialogRef.componentInstance.val.Get("txtCantidadBonif").setValue(this.val.Get("txtCantidad").value);
+          dialogRef.componentInstance.valBonif.Get("txtCantidadBonif").setValue(this.val.Get("txtCantidad").value);
           this.val.Get("txtCantidad").setValue("1");
           dialogRef.componentInstance.v_ForzarSeleccionar(this.i_Bonif.Codigo);
           this.i_Bonif = undefined;
@@ -463,7 +463,7 @@ export class FactFichaProductoComponent {
           this.i_Bonif = dialogRef.componentInstance.i_Bonif;
           this.CodProducto = this.i_Bonif.Codigo;
           this.val.Get("txtCodProducto").setValue(this.i_Bonif.Producto)
-          this.val.Get("txtCantidad").setValue(dialogRef.componentInstance.val.Get("txtCantidadBonif").value);
+          this.val.Get("txtCantidad").setValue(dialogRef.componentInstance.valBonif.Get("txtCantidadBonif").value);
           this.bol_BonificacionLibre = true;
           this.v_Datos_Producto();
         }

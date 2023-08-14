@@ -114,11 +114,10 @@ export class Validacion {
     }
     else{
       lstFocus.push({Id: id, IdNext : idNext, Evento : evento});
-
-      document.querySelector('#' + id)?.addEventListener('keypress', this.onKeyEnter);
     }
 
 
+    document.querySelector('#' + id)?.addEventListener('keypress', this.onKeyEnter);
    
   }
 

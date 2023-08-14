@@ -13,7 +13,7 @@ import { DialogErrorComponent } from 'src/app/SHARED/componente/dialog-error/dia
 })
 export class FactBonificacionLibreComponent {
 
-  public val = new Validacion();
+  public valBonif = new Validacion();
   
   private lstProductos: iBonifLibre[] = [];
   public lstFilter: iBonifLibre[] = [];
@@ -26,7 +26,7 @@ export class FactBonificacionLibreComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
   ){
 
-    this.val.add("txtCantidadBonif", "1", "NUM>", "0", "Cantidad", "Ingrese una cantidad valida.");
+    this.valBonif.add("txtCantidadBonif", "1", "NUM>", "0", "Cantidad", "Ingrese una cantidad valida.");
 
     this.i_Bonif = undefined;
     data.filter((f:any) => f.Bonificable).forEach((f:any) =>{
@@ -34,12 +34,12 @@ export class FactBonificacionLibreComponent {
     });
 
     this.lstFilter = this.lstProductos.map((obj : any) => ({...obj}));
-    this.val.Get("txtCantidadBonif").setValue("1");
+    this.valBonif.Get("txtCantidadBonif").setValue("1");
   }
 
   public v_minus_mas(s : string) : void{
 
-    let valor : string = this.val.Get("txtCantidadBonif").value;
+    let valor : string = this.valBonif.Get("txtCantidadBonif").value;
 
    if(valor == "" || valor == undefined) valor = "0";
 
@@ -52,13 +52,13 @@ export class FactBonificacionLibreComponent {
 
     if(s == "-") num -= 1;
 
-    this.val.Get("txtCantidadBonif").setValue(this.cFunciones.NumFormat(num, "0"));
+    this.valBonif.Get("txtCantidadBonif").setValue(this.cFunciones.NumFormat(num, "0"));
 
   }
 
 
   public v_FocusOut(): void {
-    this.val.Get("txtCantidadBonif").setValue(this.cFunciones.NumFormat(this.val.Get("txtCantidadBonif").value.replaceAll(",", ""), "0"));
+    this.valBonif.Get("txtCantidadBonif").setValue(this.cFunciones.NumFormat(this.valBonif.Get("txtCantidadBonif").value.replaceAll(",", ""), "0"));
   }
 
   public v_Seleccionar(det : iBonifLibre): void{
@@ -87,17 +87,17 @@ export class FactBonificacionLibreComponent {
 
   public v_Aceptar() :void{
 
-    this.val.EsValido();
+    this.valBonif.EsValido();
     let Error : string = "";
     
     
 
     if(this.i_Bonif == undefined) Error = "<li class='error-etiqueta'>Producto<ul><li class='error-mensaje'>Seleccione al menos un producto a bonificar.</li></ul>";
 
-    if(this.val.Errores != "" || Error != "")
+    if(this.valBonif.Errores != "" || Error != "")
     {
       this.dialog.open(DialogErrorComponent, {
-        data: this.val.Errores + Error,
+        data: this.valBonif.Errores + Error,
       });
 
       return;
@@ -124,11 +124,16 @@ export class FactBonificacionLibreComponent {
 
   }
 
+  
   private ngOnInit() {
 
     ///CAMBIO DE FOCO
-    this.val.addFocus("txtCantidadBonif", "btnAgregarBonif", "click");
+    this.valBonif.addFocus("txtCantidadBonif", "btnAgregarBonif", "click");
+   
+  }
 
+  ngAfterViewChecked(): void {
+    document?.getElementById("txtCantidadBonif")?.focus();
   }
 
 

@@ -1,13 +1,13 @@
 <div class="escasan-dialog">
     <div class="btn-contenedor">
-        <button class="close-button custom-cerrar" [mat-dialog-close]="true">
+        <button class="close-button custom-cerrar"  (click)="v_Cancelar()" [mat-dialog-close]="true">
             <mat-icon class="close-icon" color="warn">close</mat-icon>
         </button>
     </div>
 
     <div>
 
-        <form class="mx-2" [formGroup]="val.ValForm" autocomplete="off">
+        <form class="mx-2" [formGroup]="valBonif.ValForm" autocomplete="off">
             <div class="row mb-1">
                 <div class="input-group">
 
