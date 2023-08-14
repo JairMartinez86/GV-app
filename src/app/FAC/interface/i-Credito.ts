@@ -5,4 +5,6 @@ export interface iCredito{
     Gracia : number;
     Moneda: string;
     Disponible: number;
+    FacturarVencido :boolean;
+    SaldoVencido : number;
 }

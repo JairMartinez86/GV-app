@@ -49,6 +49,7 @@ export class FactConfirmarComponent {
   public TotalDolar : number = 0;
   public Restante : number = 0;
   public TC : number = 1;
+  public i_Credito : iCredito[];
 
 
 
@@ -131,6 +132,7 @@ export class FactConfirmarComponent {
     switch (e) {
       case "Limpiar":
 
+      this.i_Credito = [];
       this.Restante = 0;
       this.TipoPago = "Contado";
       this.Disponible = 0;
@@ -307,24 +309,24 @@ export class FactConfirmarComponent {
           });
         } else {
           let Datos: iDatos[] = _json["d"];
-          let Credito: iCredito[] = Datos[0].d;
+          this.i_Credito = Datos[0].d;
 
           this.val.Get("txtLimite_Confirmar").setValue("0.00");
           this.val.Get("txtDisponible_Confirmar").setValue("0.00");
           this.Disponible = 0;
     
 
-          if (Credito.length > 0) {
+          if (this.i_Credito.length > 0) {
             this.TipoPago = "Credito";
-            this.val.Get("txtLimite_Confirmar").setValue(this.cFunciones.NumFormat(Credito[0].Limite, "2"));
-            this.val.Get("txtDisponible_Confirmar").setValue(this.cFunciones.NumFormat(Credito[0].Disponible, "2"));
-            this.Disponible = this.cFunciones.Redondeo(Credito[0].Disponible, "2");
+            this.val.Get("txtLimite_Confirmar").setValue(this.cFunciones.NumFormat(this.i_Credito[0].Limite, "2"));
+            this.val.Get("txtDisponible_Confirmar").setValue(this.cFunciones.NumFormat(this.i_Credito[0].Disponible, "2"));
+            this.Disponible = this.cFunciones.Redondeo(this.i_Credito[0].Disponible, "2");
              //this.Plazo = Number(Credito[0].Plazo) + Number(Credito[0].Gracia);
-            this.Plazo = Number(Credito[0].Plazo);
+            this.Plazo = Number(this.i_Credito[0].Plazo);
 
-            this.MonedaCliente = Credito[0].Moneda;
+            this.MonedaCliente = this.i_Credito[0].Moneda;
             this.SimboloMonedaCliente = "U$";
-            if (Credito[0].Moneda == "C") this.SimboloMonedaCliente = "C$";
+            if (this.i_Credito[0].Moneda == "C") this.SimboloMonedaCliente = "C$";
 
             this.val.Get("txtFecha").setValue(this.cFunciones.DateFormat(this.Fecha, "yyyy-MM-dd"));
             this.val.Get("txtPlazo").setValue(this.Plazo);
@@ -334,7 +336,7 @@ export class FactConfirmarComponent {
 
 
 
-            if (Credito[0].Plazo == 0) {
+            if (this.i_Credito[0].Plazo == 0) {
               this.Plazo = 0;
               this.TipoPago = "Contado";
               chk.bootstrapToggle("off");

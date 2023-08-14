@@ -24,7 +24,7 @@ declare let gapi: any;
 export class SidebarComponent {
 
   @ViewChild(DynamicFormDirective, { static: true }) DynamicFrom!: DynamicFormDirective;
-  
+  public ErrorServidor : boolean = true;
   
 
   constructor(
@@ -35,8 +35,6 @@ export class SidebarComponent {
     private cFunciones : Funciones,
     private dialog: MatDialog,
   ) {
-
-   
 }
   
 
@@ -88,10 +86,10 @@ export class SidebarComponent {
 */
     //FIN
 
+    this.ErrorServidor = true;
     let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
       WaitComponent,
       {
-        id: "wait",
         panelClass: "escasan-dialog-full-blur",
         data: "",
       }
@@ -116,11 +114,12 @@ export class SidebarComponent {
           let Datos: iDatos[] = _json["d"];
 
           this.cFunciones.FechaServidor(Datos[0].d);
-
+          this.ErrorServidor = false;
         }
       },
       (err) => {
 
+        this.ErrorServidor = true;
         dialogRef.close();
 
         this.dialog.open(DialogErrorComponent, {
@@ -135,6 +134,17 @@ export class SidebarComponent {
 
   
   public v_Abrir_Form(id : string) : void{
+
+    if(id == "") return;
+    if(id == "btnMenu") return;
+
+
+    if(this.ErrorServidor && id != "aSalir"){
+      this.dialog.open(DialogErrorComponent, {
+        data: "<b class='error'>" + "Error al conectar con el servidor, por favor recargue la pagina o cierre sessión." + "</b>",
+      });
+      return;
+    }
     
     if(id == "aNuevaFactura"){
       $("#btnMenu").trigger("click");
@@ -163,6 +173,7 @@ export class SidebarComponent {
     }
 
     if(id == "aSalir"){
+      this.ErrorServidor = true;
      this._SrvLogin.CerrarSession();
   
     }

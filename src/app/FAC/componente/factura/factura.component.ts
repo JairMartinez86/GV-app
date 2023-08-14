@@ -713,6 +713,8 @@ public customSettings: OverlaySettings = {
         this.Disponible = this.ConfirmarFactura.Disponible;
         this.val.Get("txtDisponible").setValue(this.cFunciones.NumFormat(this.ConfirmarFactura.Disponible, "2"));
         if(this.TipoPago == "Credito") this.val.Get("txtDisponible").setValue(this.cFunciones.NumFormat(this.ConfirmarFactura.Restante, "2") );
+        this.cmbVendedor.setSelectedItem(this.ConfirmarFactura.val.Get("txtVendedor").value);
+        this.val.Get("txtVendedor").setValue(this.ConfirmarFactura.val.Get("txtVendedor").value);
      
       }
 
@@ -844,10 +846,25 @@ public customSettings: OverlaySettings = {
       
 
       if( Restante < 0) ErrorOtros += "<li class='error-etiqueta'>Disponible<ul><li class='error-mensaje'>No tiene disponible.</li></ul>";
+
+      if(this.ConfirmarFactura.i_Credito.length == 0)
+      {
+        ErrorOtros += "<li class='error-etiqueta'>Credito<ul><li class='error-mensaje'>El cliente no tiene configurado el credito.</li></ul>";
+      }
+      else
+      {
+        if(this.ConfirmarFactura.i_Credito[0].SaldoVencido >0 && !this.ConfirmarFactura.i_Credito[0].FacturarVencido)
+        {
+          ErrorOtros += "<li class='error-etiqueta'>Credito<ul><li class='error-mensaje'>El cliente tiene saldo vencido.</li></ul>";
+        }
+      }
+
+
     }
 
     if( this.RevisionFactura.lstDetalle.length == 0) ErrorOtros += "<li class='error-etiqueta'>Productos<ul><li class='error-mensaje'>Registre al menos un producto para facturar.</li></ul>";
 
+   
 
     if(ErrorOtros != "")
     {
