@@ -636,6 +636,7 @@ export class FactFichaProductoComponent {
 
     this.val.Get(id).setValue(this.cFunciones.NumFormat(num, (id == "txtCantidad" ? "0": "2")));
 
+    this.Calcular();
   }
 
   public Calcular(): void {

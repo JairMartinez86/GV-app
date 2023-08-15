@@ -50,7 +50,7 @@ export class SidebarComponent {
     ) {
      
 
-      
+
       if (element.tagName.toString().toLocaleLowerCase() == "a" && element.getAttribute("href") == "#" || element.tagName.toString().toLocaleLowerCase()  == "i") {
        
         if(element.tagName.toString().toLocaleLowerCase()  == "i"){
@@ -61,9 +61,10 @@ export class SidebarComponent {
         this.v_Abrir_Form(element.id);
       }
 
-      if (element.tagName.toString().toLocaleLowerCase() == "span") {
-        return;
-      }
+
+
+      
+      if (element.tagName.toString().toLocaleLowerCase() == "span") event.preventDefault();
 
       if(element.tagName.toString().toLocaleLowerCase() == "a")event.preventDefault();
      
