@@ -6,53 +6,58 @@
                     <div class="titulo">
                         REGISTROS FACTURAS
                     </div>
-                    <div class="row gx-0 contenedor-buscar">
-                        <div class="col-6 col-md-6 col-lg-4 mb-1">
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-calendar"></i></span>
-                                <div class="form-floating">
-                                    <input type="date" id="txtFecha1" class="form-control" placeholder="Fecha Inicio"
-                                        aria-label="Fecha Final">
-                                    <label for="txtFecha1">Desde</label>
-
+                    <form [formGroup]="val.ValForm" autocomplete="off">
+                        <div class="row gx-0 contenedor-buscar">
+                            <div class="col-6 col-md-6 col-lg-4 mb-1">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                    <div class="form-floating">
+                                        <input type="date" id="txtFecha1" class="form-control" placeholder="Fecha Inicio"
+                                            aria-label="Fecha Final" formControlName="txtFecha1">
+                                        <label for="txtFecha1">Desde</label>
+    
+                                    </div>
+    
                                 </div>
-
+                            </div>
+                            <div class="col-6 col-md-6 col-lg-4 px-1 mb-1">
+                                <div class="input-group">
+    
+                                    <div class="form-floating">
+                                        <input type="date" id="txtFecha2" class="form-control" placeholder="Fecha Final"
+                                            aria-label="Fecha Final" formControlName="txtFecha2">
+                                        <label for="txtFecha2">Hasta</label>
+    
+                                    </div>
+    
+                                    <span class="input-group-text"> <button type="button" class="btn btn-refescar" id="btnBuscarFactura"
+                                        (click)="CargarDocumentos();"><i
+                                                class="fa-solid fa-arrows-rotate fa-beat-fade fa-lg"></i></button></span>
+                                </div>
+                            </div>
+                            <div class="col-12col-md-12 col-lg-4 mb-1">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+    
+                                    <div class="form-floating">
+                                        <input type="text" id="txtBuscar" class="form-control" placeholder="Buscar"
+                                            aria-label="Buscar" formControlName="txtBuscar"
+                                            (keyup)="v_Filtrar($event)">
+                                        <label for="txtBuscar">Buscar</label>
+    
+                                    </div>
+    
+                                </div>
                             </div>
                         </div>
-                        <div class="col-6 col-md-6 col-lg-4 px-1 mb-1">
-                            <div class="input-group">
-
-                                <div class="form-floating">
-                                    <input type="date" id="txtFecha2" class="form-control" placeholder="Fecha Final"
-                                        aria-label="Fecha Final">
-                                    <label for="txtFecha2">Hasta</label>
-
-                                </div>
-
-                                <span class="input-group-text"> <button type="button" class="btn btn-refescar"><i
-                                            class="fa-solid fa-arrows-rotate fa-beat-fade fa-lg"></i></button></span>
-                            </div>
-                        </div>
-                        <div class="col-12col-md-12 col-lg-4 mb-1">
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
-
-                                <div class="form-floating">
-                                    <input type="text" id="txtBuscar" class="form-control" placeholder="Buscar"
-                                        aria-label="Buscar">
-                                    <label for="txtBuscar">Buscar</label>
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
+                    </form>
+                  
                 </th>
             </tr>
         </thead>
         <tbody>
             
-            <tr class="row mb-3 linea" *ngFor="let det of lstDocumentos">
+            <tr class="row mb-3 linea" *ngFor="let det of lstFilter">
                 <td class="col-12">
 
                     <div class="row g-1 mb-2 header-table-doc">
@@ -165,7 +170,7 @@
                             <div class="row">
                                 <div class="aling-right">
                                     <span><b>Estado: </b></span>
-                                    <span>{{det.Estado}}</span>
+                                    <span class="estado">{{det.Estado}}</span>
                                 </div>
                                 <div class="aling-right">
                                     <span><b>Usuario: </b></span>
@@ -180,7 +185,8 @@
                         <span class="input-group-text btn-contenedor">
                             <button type="button" class="btn"><i class="fa-solid fa-eye fa-beat-fade fa-lg"></i>
                             </button>
-                            <button type="button" class="btn"><i class="fa-solid fa-ban fa-beat-fade fa-lg"></i>
+                            <button type="button" class="btn"><i class="fa-solid fa-ban fa-beat-fade fa-lg" (click)="v_Anular(det)"
+                                *ngIf="det.Estado!='Anulado'"></i>
                             </button>
                         </span>
 
@@ -201,16 +207,18 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination">
               <li class="page-item">
-                <a class="page-link" href="#" aria-label="Atras">
+                <a class="page-link" href="#" aria-label="Atras" (click)="v_Pag('A');">
                   <span aria-hidden="true">&laquo;</span>
                   <span class="sr-only">Atras</span>
                 </a>
               </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item" [ngClass]="(Pag == 1) ? 'activo': '' " *ngIf="PagMax>=1" ><a class="page-link" href="#" (click)="v_Pag('1');">1</a></li>
+              <li class="page-item" [ngClass]="(Pag == 2) ? 'activo': '' " *ngIf="PagMax>=2"><a class="page-link" href="#" (click)="v_Pag('2');">2</a></li>
+              <li class="page-item" [ngClass]="(Pag == 3) ? 'activo': '' " *ngIf="PagMax>=3"><a class="page-link" href="#" (click)="v_Pag('3');">3</a></li>
+              <li class="page-item" [ngClass]="(Pag == 4) ? 'activo': '' " *ngIf="PagMax>=4"><a class="page-link" href="#" (click)="v_Pag('4');">4</a></li>
+              <li class="page-item" [ngClass]="(Pag == 5) ? 'activo': '' " *ngIf="PagMax>=5"><a class="page-link" href="#" (click)="v_Pag('5');">5</a></li>
               <li class="page-item">
-                <a class="page-link" href="#" aria-label="Siguiente">
+                <a class="page-link" href="#" aria-label="Siguiente" (click)="v_Pag('S');">
                   <span aria-hidden="true">&raquo;</span>
                   <span class="sr-only">Siguiente</span>
                 </a>

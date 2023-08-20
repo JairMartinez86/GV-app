@@ -30,6 +30,7 @@ import { DialogErrorComponent } from './SHARED/componente/dialog-error/dialog-er
 import { IgxComboModule } from 'igniteui-angular';
 import { IgxIconModule } from 'igniteui-angular';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { AnularComponent } from './SHARED/anular/anular.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     DynamicFormDirective,
     RegistroFacturaComponent,
     DialogErrorComponent,
+    AnularComponent,
   ],
   imports: [
     BrowserModule,

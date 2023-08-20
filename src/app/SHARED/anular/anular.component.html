@@ -1,0 +1,103 @@
+
+<div class="escasan-dialog">
+    <div class="btn-contenedor">
+        <button class="close-button custom-cerrar"  (click)="v_Cancelar()" [mat-dialog-close]="true">
+            <mat-icon class="close-icon" color="warn">close</mat-icon>
+        </button>
+    </div>
+
+    <p>ANULAR DOCUMENTO</p>
+
+    <div>
+
+        <form class="mx-2" [formGroup]="val.ValForm" autocomplete="off">
+            <div class="row">
+       
+                <div class="col-6 mb-1">
+                    <div class="input-group">
+                        <div class="form-floating">
+                            <input type="text" id="txtNoDoc" class="form-control" placeholder="Documento"
+                                aria-label="NoDocumento" formControlName="txtNoDoc">
+                            <label for="txtNoDoc">No Documento</label>
+                        </div>
+            
+                    </div>
+                </div>
+        
+                <div class="col-6 mb-1">
+                    <div class="input-group">
+                        <div class="form-floating">
+                            <input type="text" id="txtSerie" class="form-control" placeholder="Serie"
+                                aria-label="Serie" formControlName="txtSerie">
+                            <label for="txtSerie">Serie</label>
+                        </div>
+            
+                    </div>
+                </div>
+            </div>
+        
+
+            <div class="row">
+
+                <div class="col-6 mb-1">
+                    <div class="input-group">
+                        <div class="form-floating">
+                            <input type="text" id="txtBodega" class="form-control" placeholder="Serie"
+                                aria-label="Bodega" formControlName="txtBodega">
+                            <label for="txtBodega">Bodega</label>
+                        </div>
+            
+                    </div>
+                </div>
+
+                <div class="col-6 mb-1">
+                    <div class="input-group">
+                        <span class="input-group-text"><i
+                            class="bi bi-calendar"></i></span>
+                        <div class="form-floating">
+                            <input type="date" id="txtFecha"
+                                class="form-control" placeholder="Vence" aria-label="Fecha" formControlName="txtFecha">
+                            <label for="txtFecha">Fecha</label>
+        
+                        </div>
+        
+                    </div>
+                </div>
+
+            </div>
+
+          
+
+        
+            <div class="row mb-1">
+                <div class="input-group">
+                    <div class="form-floating">
+                        <textarea type="textarea" id="txtMotivo" class="form-control" placeholder="Motivo"
+                            aria-label="Motivo" formControlName="txtMotivo" ></textarea>
+                        <label for="txtMotivo">Motivo</label>
+                    </div>
+        
+                </div>
+            </div>
+        
+        
+            <div class="row mb-1 linea-top">
+                <div mat-dialog-actions class="btn-contenedor">
+                    <button type="button" class="btn btn-primario" id="btnAnular" (click)="v_Aceptar()">
+                        Aceptar
+                    </button>
+                    <button type="button" class="btn btn-secundario" id="btnCancelarAnular" (click)="v_Cancelar()">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+    
+        </form>
+
+
+    </div>
+
+
+</div>
+
+

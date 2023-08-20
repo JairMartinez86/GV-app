@@ -936,9 +936,18 @@ public customSettings: OverlaySettings = {
     this.Fila_Doc.UsuarioRegistra = "jmg";
     this.Fila_Doc.TasaCambio = this.ConfirmarFactura.TC;
     this.Fila_Doc.Estado = "";
+    this.Fila_Doc.MotivoAnulacion = "";
     this.Fila_Doc.VentaDetalle = this.RevisionFactura.lstDetalle;
 
 
+ 
+    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+      WaitComponent,
+      {
+        panelClass: "escasan-dialog-full-blur",
+        data: "",
+      }
+    );
 
    
     this.POST.GuardarFactura(this.Fila_Doc).subscribe(
@@ -985,20 +994,7 @@ public customSettings: OverlaySettings = {
       }
     );
 
-    
-    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
-      WaitComponent,
-      {
-        panelClass: "escasan-dialog-full-blur",
-        data: "",
-      }
-    );
-
-
-
-
-    
-
+   
 
 
   }

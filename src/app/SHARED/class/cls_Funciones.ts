@@ -28,6 +28,10 @@ export class Funciones {
     );
   }
 
+  public ShortFechaServidor() : string {
+    return this.DateFormat(this.FechaServer, 'yyyy-MM-dd')
+  }
+
 
 
 

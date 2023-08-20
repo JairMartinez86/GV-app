@@ -25,4 +25,9 @@ export class postFactura{
 
     }
 
+    AnularFactura(IdDoc : string, Motivo: string, Usuario: string) : Observable<string> { 
+        return this.http.post<any>(this._Cnx.Url() + "Factura/Anular?IdDoc=" + IdDoc + "&Motivo=" + Motivo + "&Usuario=" + Usuario, { headers: { 'content-type': 'application/text' } });
+
+    }
+
 }

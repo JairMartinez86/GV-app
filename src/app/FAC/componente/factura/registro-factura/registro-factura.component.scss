@@ -130,3 +130,14 @@ tbody tr:first-child {
         }
     }
   }
+
+  .estado{
+    font-weight: bold;
+    color: blue;
+  }
+
+  .activo{
+    a{
+        color: var(--escan-primario);
+    }
+  }
