@@ -121,6 +121,7 @@
                                     <igx-combo #cmbVendedor [data]="lstVendedores" valueKey="Codigo"
                                     displayKey="Key" id="txtVendedor" formControlName="txtVendedor"
                                     placeholder="Vendedor" searchPlaceholder="Seleccione un vendedor..."
+                                    [autoFocusSearch]="true" [overlaySettings]="overlaySettings"
                                     (selectionChanging)="v_Select_Vendedor($event)"
                                         (keyup)="v_Enter_Vendedor($event);">
                                     <label igxLabel>Vendedor</label>
@@ -147,6 +148,7 @@
                                     <igx-combo #cmbBodega [data]="lstBodega" valueKey="Codigo"
                                         displayKey="Key" id="txtBodega" formControlName="txtBodega"
                                         placeholder="Bodega" searchPlaceholder="Seleccione una bodega..."
+                                        [autoFocusSearch]="true" [overlaySettings]="overlaySettings"
                                         (selectionChanging)="v_Select($event)">
                                         <label igxLabel>Bodega</label>
                                         <igx-prefix><i class="bi bi-shop"></i></igx-prefix>
@@ -280,7 +282,7 @@
                                                     (click)="v_Delivery();"></i></button></span>
                                                     
                                         <div class="form-floating">
-                                            <textarea type="text" id="txtDelivery" class="form-control"
+                                            <textarea type="text" id="txtDireccion" class="form-control"
                                                 placeholder="Dirección" aria-label="Direccion" formControlName="txtDireccion"></textarea>
                                             <label for="txtDireccion">Dirección</label>
 

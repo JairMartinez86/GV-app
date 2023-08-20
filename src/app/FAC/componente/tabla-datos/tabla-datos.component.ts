@@ -11,6 +11,7 @@ export interface iTabla{
   col2: any;
   col3: any;
   EsPrincipal : boolean;
+  Liberado : boolean;
 }
 
 
@@ -27,12 +28,14 @@ export class TablaDatosComponent {
   public Encabezado_1 : String = "";
   public Encabezado_2 : String = "";
   public Encabezado_3 : String = "";
+  public MostrarCandado : boolean;
 
   constructor( private cFunciones : Funciones,
     public dialogRef: MatDialogRef<TablaDatosComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any[],
   ) {
 
+    this.MostrarCandado = false;
    
     switch(data[0]){
 
@@ -45,7 +48,7 @@ export class TablaDatosComponent {
         let lstExistencia : iExistencia[] = data[1];
 
         lstExistencia.forEach(f =>{
-          this.lstDetalle.push({col1 : f.Bodega, col2 : this.cFunciones.NumFormat(f.Existencia, "0"), col3 : "", EsPrincipal : f.EsPrincipal});
+          this.lstDetalle.push({col1 : f.Bodega, col2 : this.cFunciones.NumFormat(f.Existencia, "0"), col3 : "", EsPrincipal : f.EsPrincipal, Liberado: false});
         });
 
 
@@ -61,7 +64,7 @@ export class TablaDatosComponent {
         let lstBonificacion : iBonificacion[] = data[1];
 
         lstBonificacion.forEach(f =>{
-          this.lstDetalle.push({col1 : f.Descripcion, col2 : f.Escala, col3 : "", EsPrincipal : false});
+          this.lstDetalle.push({col1 : f.Descripcion, col2 : f.Escala, col3 : "", EsPrincipal : false, Liberado: false});
         });
 
       break;
@@ -71,11 +74,12 @@ export class TablaDatosComponent {
         this.Encabezado_1 = "Precio";
         this.Encabezado_2 = "C$";
         this.Encabezado_3 = "U$";
+        this.MostrarCandado = true;
 
         let lstPrecios : iPrecio[] = data[1];
 
         lstPrecios.forEach(f =>{
-          this.lstDetalle.push({col1 : f.Tipo, col2 : this.cFunciones.NumFormat(f.PrecioCordoba, "4"), col3 : this.cFunciones.NumFormat(f.PrecioDolar, "4"), EsPrincipal : f.EsPrincipal});
+          this.lstDetalle.push({col1 : f.Tipo, col2 : this.cFunciones.NumFormat(f.PrecioCordoba, "4"), col3 : this.cFunciones.NumFormat(f.PrecioDolar, "4"), EsPrincipal : f.EsPrincipal, Liberado: f.Liberado});
         });
 
       
@@ -90,7 +94,7 @@ export class TablaDatosComponent {
         let lstDescuento : iDescuento[] = data[1];
 
         lstDescuento.forEach(f =>{
-          this.lstDetalle.push({col1 : f.Descripcion, col2 : this.cFunciones.NumFormat(f.PorcDescuento, "2") + " %", col3 : "", EsPrincipal : false});
+          this.lstDetalle.push({col1 : f.Descripcion, col2 : this.cFunciones.NumFormat(f.PorcDescuento, "2") + " %", col3 : "", EsPrincipal : false, Liberado: false});
         });
 
 

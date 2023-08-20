@@ -52,7 +52,7 @@
         </thead>
         <tbody>
             
-            <tr class="row mb-3 linea">
+            <tr class="row mb-3 linea" *ngFor="let det of lstDocumentos">
                 <td class="col-12">
 
                     <div class="row g-1 mb-2 header-table-doc">
@@ -60,7 +60,7 @@
                         <div class="col-4">
                             <div class="aling-block center">
                                 <span><b>No Factura</b></span>
-                                <span>A00000000</span>
+                                <span>{{det.NoFactura}}</span>
                             </div>
                         </div>
 
@@ -68,7 +68,7 @@
                             <div class="row">
                                 <div class="aling-block center">
                                     <span><b>Fecha</b></span>
-                                    <span>01-01-2023</span>
+                                    <span>{{det.Fecha | date:'dd/MM/yyyy'}}</span>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                             <div class="row">
                                 <div class="aling-block center">
                                     <span><b>No Pedido</b></span>
-                                    <span>P999999999</span>
+                                    <span>{{det.NoPedido}}</span>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                         <div class="col-6">
                             <div class="aling-block center">
                                 <span><b>Cliente</b></span>
-                                <span>00000000 - Nombre Principal</span>
+                                <span>{{det.CodCliente}} - {{det.NomCliente}}</span>
                             </div>
 
                         </div>
@@ -100,7 +100,7 @@
                         <div class="col-6">
                             <div class="aling-block center">
                                 <span><b>Nombre</b></span>
-                                <span>Nombre Prueba 2</span>
+                                <span>{{det.Nombre}}</span>
                             </div>
 
                         </div>
@@ -111,7 +111,7 @@
                         <div class="col-6 col-md-6 col-lg-6">
                             <div class="aling-block">
                                 <span><b>Bodega</b></span>
-                                <span>B-01 Mostrador Casa Matriz</span>
+                                <span>{{det.CodBodega}} - {{det.NomBodega}}</span>
                             </div>
 
                         </div>
@@ -119,7 +119,7 @@
                         <div class="col-6 col-md-6 col-lg-6">
                             <div class="aling-block right">
                                 <span><b>Vendedor</b></span>
-                                <span>0000 Vendedor Mostrador Casa Matriz</span>
+                                <span>{{det.CodVendedor}} - {{det.NomVendedor}}</span>
                             </div>
 
                         </div>
@@ -130,14 +130,14 @@
                         <div class="col-6">
                             <div class="aling-block">
                                 <span><b>Tipo Venta</b></span>
-                                <span>Credito</span>
+                                <span>{{det.TipoVenta}}</span>
                             </div>
 
                         </div>
                         <div class="col-6">
                             <div class="aling-block right">
                                 <span><b>Vence</b></span>
-                                <span>01-02-2023</span>
+                                <span>{{det.Vence | date:'dd/MM/yyyy'}}</span>
                             </div>
 
                         </div>
@@ -150,14 +150,14 @@
                         <div class="col-4">
                             <div class="aling-block">
                                 <span><b>Total U$</b></span>
-                                <span>100,000.00</span>
+                                <span>{{det.TotalDolar | number:'1.2-2'}}</span>
                             </div>
                         </div>
 
                         <div class="col-4">
                             <div class="aling-block">
                                 <span><b>Total C$</b></span>
-                                <span>3,600,000.00</span>
+                                <span>{{det.TotalCordoba | number:'1.2-2' }}</span>
                             </div>
                         </div>
 
@@ -165,11 +165,11 @@
                             <div class="row">
                                 <div class="aling-right">
                                     <span><b>Estado: </b></span>
-                                    <span>Facturada</span>
+                                    <span>{{det.Estado}}</span>
                                 </div>
                                 <div class="aling-right">
                                     <span><b>Usuario: </b></span>
-                                    <span>jmg</span>
+                                    <span>{{det.UsuarioRegistra}}</span>
                                 </div>
                             </div>
                         </div>

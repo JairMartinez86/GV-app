@@ -36,3 +36,21 @@ th, td{
   }
   
 }
+
+.liberado{
+  display: flex;
+  align-content: space-between;
+
+  span{
+    width: 90%;
+  }
+
+  i{
+    width: 10%;
+  }
+
+  .unlock{
+    color: var(--escan-primario);
+  }
+
+}

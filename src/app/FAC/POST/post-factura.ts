@@ -2,6 +2,7 @@ import { HttpClient, HttpXhrBackend } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/internal/Observable";
 import { Conexion } from "src/app/SHARED/class/Cadena_Conexion";
+import { iFactPed } from "../interface/i-Factura-Pedido";
 
 @Injectable({
     providedIn: 'root',
@@ -19,8 +20,7 @@ export class postFactura{
 
     }
 
-    GuardarFactura(d : any) : Observable<string> { 
-
+    GuardarFactura(d : iFactPed) : Observable<string> { 
         return this.http.post<any>(this._Cnx.Url() + "Factura/Guardar", JSON.stringify(d), { headers: { 'content-type': 'application/json' } });
 
     }

@@ -4,4 +4,5 @@ export interface iPrecio{
     PrecioCordoba: number;
     PrecioDolar: number;
     EsPrincipal: boolean;
+    Liberado: boolean;
 }

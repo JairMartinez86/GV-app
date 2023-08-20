@@ -8,7 +8,7 @@ import { iCliente } from "src/app/FAC/interface/i-Cliente";
 import { Observable } from "rxjs";
 import { iBodega } from "src/app/FAC/interface/i-Bodega";
 import { iVendedor } from "src/app/FAC/interface/i-venedor";
-import { IgxComboComponent } from "igniteui-angular";
+import { GlobalPositionStrategy, IgxComboComponent, OverlaySettings, scaleInCenter, scaleOutCenter } from "igniteui-angular";
 import { DialogErrorComponent } from "src/app/SHARED/componente/dialog-error/dialog-error.component";
 import { iDatos } from "src/app/SHARED/interface/i-Datos";
 import { WaitComponent } from "src/app/SHARED/componente/wait/wait.component";
@@ -23,13 +23,15 @@ import { iDireccion } from "src/app/FAC/interface/i-Direccion";
 })
 export class FactConfirmarComponent {
   public val = new Validacion();
+  public overlaySettings: OverlaySettings = {};
 
   public lstDetalle: iDetalleFactura[] = [];
   
-  public TipoFactura: string = "Factura";
+  public TipoFactura: string = "Pedido";
   public TipoExoneracion: string = "Sin Exoneración";
   public TipoPago: string = "Contado";
   public TipoImpuesto: string = "Iva";
+  public Serie : string = "";
   public Fecha: Date;
 
   public CodCliente : string = "";
@@ -132,6 +134,7 @@ export class FactConfirmarComponent {
     switch (e) {
       case "Limpiar":
 
+      this.Serie = "";
       this.i_Credito = [];
       this.Restante = 0;
       this.TipoPago = "Contado";
@@ -404,11 +407,13 @@ export class FactConfirmarComponent {
    
     if (event.target.checked) {
       this.TipoFactura = "Factura";
+      this.v_Refrescar();
       return;
     }
 
     if (!event.target.checked) {
       this.TipoFactura = "Pedido";
+      this.v_Refrescar();
       return;
     }
   }
@@ -557,7 +562,7 @@ export class FactConfirmarComponent {
 
     this.isEvent = true;
 
-    this.Conexion.DatosSucursal(this.CodBodega).subscribe(
+    this.Conexion.DatosSucursal(this.CodBodega, this.TipoFactura).subscribe(
       (s) => {
         document.getElementById("btnRefrescarConfirmar")?.removeAttribute("disabled");
         dialogRef.close();
@@ -572,7 +577,8 @@ export class FactConfirmarComponent {
 
           this.Fecha =  new Date(this.cFunciones.DateFormat(Datos[0].d, 'yyyy-MM-dd hh:mm:ss'));
           this.TC = Datos[1].d;
-          this.val.Get("txtNoDoc").setValue(Datos[2].d);
+          this.val.Get("txtNoDoc").setValue(Datos[2].d.split(";")[0]);
+          this.Serie = Datos[2].d.split(";")[1];
       
           this.val.Get("txtFecha").setValue(this.cFunciones.DateFormat(this.Fecha, "yyyy-MM-dd"));
           this.val.Get("txtPlazo").setValue(this.Plazo);
@@ -766,6 +772,20 @@ export class FactConfirmarComponent {
 
 
 
+  }
+
+  
+  ngDoCheck() {
+
+    this.overlaySettings = {};
+
+    if(window.innerWidth <= 992)
+    {
+      this.overlaySettings = {positionStrategy: new GlobalPositionStrategy({ openAnimation: scaleInCenter  , closeAnimation: scaleOutCenter }),
+      modal: true,
+      closeOnOutsideClick: true};
+    }
+   
   }
 
 

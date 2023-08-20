@@ -20,10 +20,10 @@
                 <th  *ngIf="Encabezado_3 !=''">{{Encabezado_3}}</th>
               </tr>
             </thead>
-          
+         
           <tbody>
             <tr *ngFor="let det of lstDetalle" [ngClass]="(det.EsPrincipal ==true) ? 'Seleccionar': '' ">
-              <th scope="row">{{det.col1}}</th>
+              <th scope="row"><span class="liberado"><span>{{det.col1}}</span><i [ngClass]="det.Liberado ? 'fa-solid fa-unlock unlock': 'fa-solid fa-lock' "  *ngIf="MostrarCandado"></i></span></th>
               <td class="aling-number">{{det.col2}}</td>
               <td class="aling-number" *ngIf="Encabezado_3 !=''">{{det.col3}}</td>
             </tr>

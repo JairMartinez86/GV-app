@@ -28,6 +28,7 @@ import { FactFichaProductoComponent } from "./fact-ficha-producto/fact-ficha-pro
 import { iDetalleFactura } from "../../interface/i-detalle-factura";
 import { FactRevisionComponent } from "./fact-revision/fact-revision.component";
 import { postFactura } from "../../POST/post-factura";
+import { iFactPed } from "../../interface/i-Factura-Pedido";
 
 @Component({
   selector: "app-factura",
@@ -41,6 +42,7 @@ export class FacturaComponent {
   public CodCliente: string = "";
   lstClientes: iCliente[] = [];
   filteredClientes: Observable<iCliente[]> | undefined;
+  public Fila_Doc : iFactPed = {} as iFactPed;
 
   lstBodega: iBodega[] = [];
   lstVendedores: iVendedor[] = [];
@@ -59,6 +61,11 @@ export class FacturaComponent {
 
   public SimboloMonedaCliente: string = "U$";
   private MonedaCliente: string;
+
+  
+  public overlaySettings: OverlaySettings = {};
+
+
 
   constructor(
     private dialog: MatDialog,
@@ -114,6 +121,9 @@ export class FacturaComponent {
         break;
 
       case "Limpiar":
+        this.Fila_Doc.IdVenta = "00000000-0000-0000-0000-000000000000";
+        this.Fila_Doc.NoFactura = "";
+        this.Fila_Doc.NoPedido = "";
         this.Panel = "";
         this.bol_Referescar = false;
         this.Plazo = 0;
@@ -809,6 +819,7 @@ public customSettings: OverlaySettings = {
     let ErrorFicha : string = "";
     let ErrorConfirmar : string = "";
     let ErrorOtros : string = "";
+    let PedirAutorizacion : boolean = false;
 
     this.val.EsValido();
     this.ConfirmarFactura.val.EsValido();
@@ -864,7 +875,8 @@ public customSettings: OverlaySettings = {
 
     if( this.RevisionFactura.lstDetalle.length == 0) ErrorOtros += "<li class='error-etiqueta'>Productos<ul><li class='error-mensaje'>Registre al menos un producto para facturar.</li></ul>";
 
-   
+    if( this.RevisionFactura.lstDetalle.filter(f => !f.EsBonif && !f.EsBonifLibre).length == 0) ErrorOtros += "<li class='error-etiqueta'>Productos<ul><li class='error-mensaje'>Registre al menos un producto que no sea bonificado.</li></ul>";
+
 
     if(ErrorOtros != "")
     {
@@ -878,8 +890,58 @@ public customSettings: OverlaySettings = {
     }
 
 
+    let iBodega = this.lstBodega.find(f => f.Codigo == this.CodBodega);
+    let iCLiente = this.lstClientes.find(f => f.Codigo == this.CodCliente);
+    let iVendedor = this.lstVendedores.find(f => f.Codigo == this.cmbVendedor.selection[0]);
+    if( this.RevisionFactura.lstDetalle.filter(f => f.PrecioLiberado).length > 0 &&  this.Fila_Doc.IdVenta == "00000000-0000-0000-0000-000000000000") PedirAutorizacion = true;
+
+    //this.Fila_Doc.IdVenta = "";
+    //this.Fila_Doc.NoFactura = "";
+    //this.Fila_Doc.NoPedido = "";
+    this.Fila_Doc.TipoDocumento = this.ConfirmarFactura.TipoFactura;
+    this.Fila_Doc.Serie = this.ConfirmarFactura.Serie;
+    if(this.ConfirmarFactura.TipoFactura == "Factura")this.Fila_Doc.NoFactura = this.ConfirmarFactura.val.Get("txtNoDoc").value;
+    if(this.ConfirmarFactura.TipoFactura == "Pedido")this.Fila_Doc.NoPedido = this.ConfirmarFactura.val.Get("txtNoDoc").value;
+    this.Fila_Doc.CodCliente = this.ConfirmarFactura.CodCliente;
+    this.Fila_Doc.NomCliente = iCLiente!.Cliente;
+    this.Fila_Doc.Nombre = this.ConfirmarFactura.val.Get("txtNombre_Confirmar").value;
+    this.Fila_Doc.RucCedula = this.val.Get("txtIdentificacion").value;
+    this.Fila_Doc.Contanto = this.val.Get("txtContacto").value;
+    this.Fila_Doc.Limite = this.ConfirmarFactura.val.Get("txtLimite_Confirmar").value;
+    this.Fila_Doc.Disponible = this.ConfirmarFactura.val.Get("txtDisponible_Confirmar").value;
+    this.Fila_Doc.CodBodega = this.CodBodega;
+    this.Fila_Doc.NomBodega = iBodega!.Bodega;
+    this.Fila_Doc.CodVendedor = iVendedor!.Codigo;
+    this.Fila_Doc.NomVendedor = iVendedor!.Vendedor;
+    this.Fila_Doc.EsContraentrega = this.EsContraEntrega;
+    this.Fila_Doc.EsExportacion = this.EsExportacion;
+    this.Fila_Doc.OrdenCompra = this.val.Get("txtOC").value;
+    this.Fila_Doc.Fecha = this.ConfirmarFactura.val.Get("txtFecha").value;
+    this.Fila_Doc.Plazo = this.ConfirmarFactura.Plazo;
+    this.Fila_Doc.Vence = this.ConfirmarFactura.val.Get("txtVence").value;
+    this.Fila_Doc.Moneda = this.ConfirmarFactura.MonedaCliente;
+    this.Fila_Doc.TipoVenta = this.ConfirmarFactura.TipoPago;
+    this.Fila_Doc.TipoImpuesto = this.ConfirmarFactura.TipoImpuesto;
+    this.Fila_Doc.TipoExoneracion = this.ConfirmarFactura.TipoExoneracion;
+    this.Fila_Doc.NoExoneracion = this.ConfirmarFactura.val.Get("txtNoExoneracion").value;
+    this.Fila_Doc.EsDelivery = this.ConfirmarFactura.val.Get("chkDelivery").value;
+    this.Fila_Doc.Direccion = this.ConfirmarFactura.val.Get("txtDireccion").value;
+    this.Fila_Doc.Observaciones = this.ConfirmarFactura.val.Get("txtObservaciones").value;
+    this.Fila_Doc.Impuesto = this.ConfirmarFactura.Impuesto;
+    this.Fila_Doc.Exonerado = this.ConfirmarFactura.ImpuestoExo;
+    this.Fila_Doc.TotalCordoba = this.ConfirmarFactura.TotalCordoba;
+    this.Fila_Doc.TotalDolar = this.ConfirmarFactura.TotalDolar;
+    this.Fila_Doc.PedirAutorizacion = PedirAutorizacion;
+    this.Fila_Doc.FechaRegistro = new Date();
+    this.Fila_Doc.UsuarioRegistra = "jmg";
+    this.Fila_Doc.TasaCambio = this.ConfirmarFactura.TC;
+    this.Fila_Doc.Estado = "";
+    this.Fila_Doc.VentaDetalle = this.RevisionFactura.lstDetalle;
+
+
+
    
-    this.POST.GuardarFactura("").subscribe(
+    this.POST.GuardarFactura(this.Fila_Doc).subscribe(
       (s) => {
         dialogRef.close();
         let _json = JSON.parse(s);
@@ -890,6 +952,15 @@ public customSettings: OverlaySettings = {
           });
         } 
         else {
+
+
+          let Datos: iDatos[] = _json["d"];
+          let Consecutivo: string = Datos[0].d;
+
+          this.dialog.open(DialogErrorComponent, {
+            data: "<p>Documento Generado: <b class='error'>" + Consecutivo + "</b></p>"
+          });
+
 
             this._Evento("Limpiar");
 
@@ -932,7 +1003,24 @@ public customSettings: OverlaySettings = {
 
   }
 
+  ngDoCheck() {
+
+    this.overlaySettings = {};
+
+    if(window.innerWidth <= 992)
+    {
+      this.overlaySettings = {positionStrategy: new GlobalPositionStrategy({ openAnimation: scaleInCenter  , closeAnimation: scaleOutCenter }),
+      modal: true,
+      closeOnOutsideClick: true};
+    }
+   
+  }
+
   private ngOnInit() {
+
+
+    
+
 
 
     ///CAMBIO DE FOCO

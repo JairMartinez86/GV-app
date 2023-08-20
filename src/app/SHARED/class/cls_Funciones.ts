@@ -79,7 +79,9 @@ export class Funciones {
 
   public v_Prevent_IsNumber(event : any, tipo : string) : void{
 
-    if(event.key === "Backspace" || event.key === "Enter") return;
+    if(event.key === "Backspace" || event.key === "Enter" || event.key === "ArrowRight" || event.key === "ArrowLeft" || event.key === "ArrowUp" || event.key == "ArrowDown" ||
+    event.key === "F1" || event.key === "F2" || event.key === "F3" || event.key === "F4" || event.key === "F5" || event.key === "F6" || event.key === "F7" ||
+    event.key === "F8" || event.key === "F9" || event.key === "F10" || event.key === "F11" || event.key === "F12") return;
 
     if(event.key == ",") {
       event.preventDefault();
