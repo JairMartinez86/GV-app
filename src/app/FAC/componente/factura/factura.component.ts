@@ -43,6 +43,7 @@ export class FacturaComponent {
   lstClientes: iCliente[] = [];
   filteredClientes: Observable<iCliente[]> | undefined;
   public Fila_Doc : iFactPed = {} as iFactPed;
+  public TipoFactura : string = "Factura";
 
   lstBodega: iBodega[] = [];
   lstVendedores: iVendedor[] = [];
@@ -121,6 +122,7 @@ export class FacturaComponent {
         break;
 
       case "Limpiar":
+        this.isEvent = true;
         this.Fila_Doc.IdVenta = "00000000-0000-0000-0000-000000000000";
         this.Fila_Doc.NoFactura = "";
         this.Fila_Doc.NoPedido = "";
@@ -179,6 +181,29 @@ export class FacturaComponent {
           }
         }
 
+        
+       
+
+        let chk: any = document.querySelector("#chkImpuesto");
+        if(chk != undefined)chk.bootstrapToggle("on");
+
+        let chk2: any = document.querySelector("#chkTipoFactura");
+        if(chk2 != undefined) chk2.bootstrapToggle("off");
+        this.isEvent = false;
+
+        let chk3: any = document.querySelector("#chkExportacion");
+        if(chk3 != undefined)chk3.bootstrapToggle("off");
+
+        let chk4: any = document.querySelector("#chkContraEntrega");
+        if(chk4 != undefined) chk4.bootstrapToggle("off");
+
+        let chk5: any = document.querySelector("#chkExoneracion");
+        if(chk5 != undefined) chk5.bootstrapToggle("off");
+
+
+        this.isEvent = false;
+    
+    
         
 
         break;
@@ -589,7 +614,7 @@ public customSettings: OverlaySettings = {
     }
     else{
      
-      chk.bootstrapToggle("off")
+      chk.bootstrapToggle("off");
     }
     
 
@@ -735,7 +760,7 @@ public customSettings: OverlaySettings = {
 
     if (evento == "Siguiente" && this.Panel == "Revision") {
       this.Panel = "Confirmar";
-      this.BotonSiguienteLabel = "Facturar";
+      this.BotonSiguienteLabel = this.TipoFactura == "Factura"?  "Facturar" : "Pedido";
 
       (
         document.querySelector("#frmConfirmarFactura") as HTMLElement
@@ -798,7 +823,9 @@ public customSettings: OverlaySettings = {
   private LlenarDatosConfirmacion(): void {
     this.ConfirmarFactura.lstBodega = this.lstBodega;
     this.ConfirmarFactura.lstVendedores = this.lstVendedores;
+
     this.ConfirmarFactura.Iniciar(
+      this.TipoFactura,
       this.CodBodega,
       this.CodCliente,
       this.Plazo,

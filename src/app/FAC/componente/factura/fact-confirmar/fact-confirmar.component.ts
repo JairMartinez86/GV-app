@@ -67,8 +67,9 @@ export class FactConfirmarComponent {
 
 
   public constructor(private dialog: MatDialog, private cFunciones : Funciones, private Conexion : getFactura) {
+    
 
-
+    this.val.add("chkEsPedido", "1", "LEN>=", "0", "Tipo Doc", "");
     this.val.add("txtNoDoc", "1", "LEN>", "0", "No", "No se ha configurado el consecutivo.");
     this.val.add("txtFecha", "1", "LEN>", "0", "Fecha", "No se ha configurado la fecha.");
     this.val.add("txtPlazo", "1", "LEN>=", "0", "Plazo", "No se ha definido un plazo");
@@ -87,8 +88,10 @@ export class FactConfirmarComponent {
     
   }
 
-  public Iniciar(CodBodega : string, CodCliente: string,  Plazo :number, NombreCliente : string, Nombre : string,  CodVendedor : string, Moneda : string,
+  public Iniciar( TipoFactura : string, CodBodega : string, CodCliente: string,  Plazo :number, NombreCliente : string, Nombre : string,  CodVendedor : string, Moneda : string,
     TipoPago : string, TC : number, lst : iDetalleFactura[]): void {
+
+
     this._Evento("Limpiar");
     this.CodBodega = CodBodega;
     this.CodCliente = CodCliente;
@@ -99,6 +102,7 @@ export class FactConfirmarComponent {
     this.Plazo = Plazo;
     this.TC = TC;
     this.TipoPago = TipoPago;
+    this.TipoFactura = TipoFactura;
 
     this.lstDetalle = lst;
     
@@ -124,6 +128,13 @@ export class FactConfirmarComponent {
       this.cmbVendedor.setSelectedItem(this.CodVendedor);
       document?.getElementById("txtCliente")?.focus();
  
+
+      this.isEvent = true;
+      let chk: any = document.querySelector("#chkEsPedido");
+      chk.bootstrapToggle(this.TipoFactura == "Factura" ? "on" : "off");
+      this.isEvent = false;
+      this.val.Get("chkEsPedido").disable();
+
       
       this.v_Refrescar();
    
@@ -159,7 +170,8 @@ export class FactConfirmarComponent {
       this.val.Get("txtObservaciones").setValue("");
       this.val.Get("chkDelivery").setValue(false);
       this.val.Get("txtDireccion").setValue("");
-
+      
+      this.val.Get("chkEsPedido").enable();
       this.val.Get("txtNoDoc").disable();
       this.val.Get("txtFecha").disable();
       this.val.Get("txtPlazo").disable();
@@ -405,6 +417,11 @@ export class FactConfirmarComponent {
 
   public v_TipoFactura(event: any): void {
    
+    if(this.isEvent){
+      this.isEvent = false;
+      return;
+    }
+    
     if (event.target.checked) {
       this.TipoFactura = "Factura";
       this.v_Refrescar();

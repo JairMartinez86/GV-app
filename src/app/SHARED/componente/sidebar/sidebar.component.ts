@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, Inject, Renderer2, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, Inject, Renderer2, ViewChild, ComponentRef } from '@angular/core';
 import { DynamicFormDirective } from '../../directive/dynamic-form.directive';
 import { FacturaComponent } from 'src/app/FAC/componente/factura/factura.component';
 import * as $ from 'jquery';
@@ -147,31 +147,33 @@ export class SidebarComponent {
       return;
     }
     
-    if(id == "aNuevaFactura"){
+    if(id == "aNewFactura"){
       $("#btnMenu").trigger("click");
-
-     /* let link: HTMLLinkElement = this.document.createElement('link');
-      link.setAttribute('rel', 'stylesheet');
-      link.setAttribute('href', 'https://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.0.6/css/bootstrap5-toggle.min.css');
-      this.document.head.appendChild(link);
-  
-      let  script = this.document.createElement('script');
-      script.setAttribute('src', 'https://cdn.jsdelivr.net/npm/bootstrap5-toggle@5.0.6/js/bootstrap5-toggle.jquery.min.js');
-      this.document.head.appendChild(script);
-      */
       this.DynamicFrom.viewContainerRef.clear();
-      this.DynamicFrom.viewContainerRef.createComponent(FacturaComponent);
 
-     
-    
+      let Factura: ComponentRef<FacturaComponent> = this.DynamicFrom.viewContainerRef.createComponent(FacturaComponent);
+      Factura.instance.TipoFactura = "Factura";
+    }
 
+    if(id == "aNewPedido"){
+      $("#btnMenu").trigger("click");
+      this.DynamicFrom.viewContainerRef.clear();
+      let Pedido: ComponentRef<FacturaComponent> = this.DynamicFrom.viewContainerRef.createComponent(FacturaComponent);
+      Pedido.instance.TipoFactura = "Pedido";
     }
 
     if(id == "aRegistroFactura"){
       this.DynamicFrom.viewContainerRef.clear();
-      this.DynamicFrom.viewContainerRef.createComponent(RegistroFacturaComponent);
-
+      let RegFactura: ComponentRef<RegistroFacturaComponent> = this.DynamicFrom.viewContainerRef.createComponent(RegistroFacturaComponent);
+      RegFactura.instance.TipoDocumento = "Factura";
     }
+
+    if(id == "aRegistroPedido"){
+      this.DynamicFrom.viewContainerRef.clear();
+      let RegPedido: ComponentRef<RegistroFacturaComponent> = this.DynamicFrom.viewContainerRef.createComponent(RegistroFacturaComponent);
+      RegPedido.instance.TipoDocumento = "Pedido";
+    }
+
 
     if(id == "aSalir"){
       this.ErrorServidor = true;

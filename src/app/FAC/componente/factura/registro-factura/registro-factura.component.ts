@@ -16,6 +16,7 @@ import { iDatos } from 'src/app/SHARED/interface/i-Datos';
 export class RegistroFacturaComponent {
 
   public val = new Validacion();
+  public TipoDocumento: string;
   
   private lstDocumentos : any[];
   public lstFilter: any[] = [];
@@ -36,7 +37,7 @@ export class RegistroFacturaComponent {
     this.val.Get("txtFecha1").setValue(this.cFunciones.ShortFechaServidor());
     this.val.Get("txtFecha2").setValue(this.cFunciones.ShortFechaServidor());
 
-    this.CargarDocumentos();
+    
   }
 
   public CargarDocumentos(): void {
@@ -49,7 +50,7 @@ export class RegistroFacturaComponent {
       }
     );
 
-    this.Conexion.Get(this.val.Get("txtFecha1").value, this.val.Get("txtFecha2").value).subscribe(
+    this.Conexion.Get(this.val.Get("txtFecha1").value, this.val.Get("txtFecha2").value, this.TipoDocumento).subscribe(
       (s) => {
         dialogRef.close();
         let _json = JSON.parse(s);
@@ -209,6 +210,7 @@ export class RegistroFacturaComponent {
     this.val.addFocus("txtFecha1", "txtFecha2", undefined);
     this.val.addFocus("txtFecha2", "btnBuscarFactura", "click");
 
+    this.CargarDocumentos();
   }
 
 
