@@ -155,8 +155,9 @@ export class RegistroFacturaComponent {
   
   public v_Paginar(){
 
-    this.PagMax = Math.trunc(this.lstFilter.length / this.NumRegMax);
-    if((this.lstFilter.length % this.NumRegMax) != 0) this.PagMax++;
+    this.PagMax = Math.trunc(this.lstDocumentos.length / this.NumRegMax);
+    if((this.lstDocumentos.length % this.NumRegMax) != 0) this.PagMax++;
+  
     
 
     this.lstFilter.splice(0, this.lstFilter.length);
@@ -184,7 +185,7 @@ export class RegistroFacturaComponent {
     if(p =="A")
     {
       IndexMax =  ((this.Pag - 1) * this.NumRegMax);
-      if(this.lstFilter.length < IndexMax) return;
+      if(this.lstDocumentos.length < IndexMax) return;
 
       if(this.Pag > 1)this.Pag -=1;
       this.v_Paginar();
@@ -194,7 +195,7 @@ export class RegistroFacturaComponent {
     if(p =="S")
     {
       IndexMax = ((this.Pag + 1) * this.NumRegMax);
-      if(this.lstFilter.length < IndexMax) return;
+      if(this.lstDocumentos.length < IndexMax) return;
 
       if(this.Pag < 5)this.Pag +=1;
       this.v_Paginar();
