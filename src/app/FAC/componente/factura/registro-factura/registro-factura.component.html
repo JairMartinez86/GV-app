@@ -4,7 +4,7 @@
             <tr class="row">
                 <th scope="col" class="col-12 linea">
                     <div class="titulo">
-                        REGISTROS {{(TipoDocumento == "Factura" ? "FACTURA": "PEDIDO")}}
+                        {{(TipoDocumento == "Factura"  || EsCola ? (EsCola ? "COLA DE IMPRESIÓN" : "REGISTROS FACTURA"): "REGISTROS PEDIDO")}}
                     </div>
                     <form [formGroup]="val.ValForm" autocomplete="off">
                         <div class="row gx-0 contenedor-buscar">
@@ -183,7 +183,8 @@
 
                     <div class="row">
                         <span class="input-group-text btn-contenedor">
-                            <button type="button" class="btn"><i class="fa-solid fa-eye fa-beat-fade fa-lg"></i>
+                            
+                            <button type="button" class="btn"><i [ngClass]="(EsCola ==true) ? 'fa-solid fa-print fa-fade fa-lg': 'fa-solid fa-eye fa-beat-fade fa-lg'"></i>
                             </button>
                             <button type="button" class="btn"><i class="fa-solid fa-ban fa-beat-fade fa-lg" (click)="v_Anular(det)"
                                 *ngIf="det.Estado!='Anulado'"></i>

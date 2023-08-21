@@ -49,10 +49,9 @@ export class SidebarComponent {
       (this.href && this.href.length === 0) || element.tagName.toString().toLocaleLowerCase()  == "i")
     ) {
      
-
-
+   
       if (element.tagName.toString().toLocaleLowerCase() == "a" && element.getAttribute("href") == "#" || element.tagName.toString().toLocaleLowerCase()  == "i") {
-       
+        
         if(element.tagName.toString().toLocaleLowerCase()  == "i"){
           element = <HTMLElement>event.target;
           element = <HTMLElement>element.parentElement;
@@ -173,6 +172,15 @@ export class SidebarComponent {
       let RegPedido: ComponentRef<RegistroFacturaComponent> = this.DynamicFrom.viewContainerRef.createComponent(RegistroFacturaComponent);
       RegPedido.instance.TipoDocumento = "Pedido";
     }
+
+    
+    if(id == "aRegistroCola"){
+      this.DynamicFrom.viewContainerRef.clear();
+      let RegPedido: ComponentRef<RegistroFacturaComponent> = this.DynamicFrom.viewContainerRef.createComponent(RegistroFacturaComponent);
+      RegPedido.instance.TipoDocumento = "Factura";
+      RegPedido.instance.EsCola = true;
+    }
+    
 
 
     if(id == "aSalir"){

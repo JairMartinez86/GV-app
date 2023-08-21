@@ -17,6 +17,7 @@ export class RegistroFacturaComponent {
 
   public val = new Validacion();
   public TipoDocumento: string;
+  public EsCola: boolean = false;
   
   private lstDocumentos : any[];
   public lstFilter: any[] = [];
@@ -50,7 +51,7 @@ export class RegistroFacturaComponent {
       }
     );
 
-    this.Conexion.Get(this.val.Get("txtFecha1").value, this.val.Get("txtFecha2").value, this.TipoDocumento).subscribe(
+    this.Conexion.Get(this.val.Get("txtFecha1").value, this.val.Get("txtFecha2").value, this.TipoDocumento, this.EsCola).subscribe(
       (s) => {
         dialogRef.close();
         let _json = JSON.parse(s);
