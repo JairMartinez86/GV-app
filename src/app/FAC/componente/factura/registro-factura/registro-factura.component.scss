@@ -1,5 +1,8 @@
 @import '/src/assets/scss/media.scss';
 
+
+  
+
 .RegistrosFactura{
     padding: 15px;
     position: relative;
@@ -27,6 +30,7 @@
 .linea-top{
     border-top: 1px solid var(--escan-secundario);
 }
+
 
 
 thead{
@@ -114,7 +118,8 @@ tbody tr:first-child {
     }
   }
 
-  
+
+
 .linea {
     border-bottom: 2px dashed var(--escan-secundario);
   }

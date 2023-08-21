@@ -5,6 +5,12 @@
   overflow: hidden;
 }
 
+.linea{
+  display: block;
+  margin-bottom: 5px;
+  border-bottom: 2px solid var(--escan-primario);
+}
+
 .i-bonif {
   margin-right: 1px;
 }
@@ -24,9 +30,11 @@ span{
 }
 
 
+
 .btn-contenedor {
   display: flex;
   justify-content: space-between;
+  margin-top: 10px;
 
   button {
     margin-right: 5px;

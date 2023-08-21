@@ -96,8 +96,7 @@ export class SidebarComponent {
     );
     
 
-    $("#btnMenu").trigger("click"); // MOSTRAR MENU DESDE EL INICIO
-   
+ 
     
     this.Conexion.FechaServidor().subscribe(
       (s) => {
@@ -115,6 +114,9 @@ export class SidebarComponent {
 
           this.cFunciones.FechaServidor(Datos[0].d);
           this.ErrorServidor = false;
+
+          $("#btnMenu").trigger("click"); // MOSTRAR MENU DESDE EL INICIO
+   
         }
       },
       (err) => {
@@ -125,6 +127,9 @@ export class SidebarComponent {
         this.dialog.open(DialogErrorComponent, {
           data: "<b class='error'>" + err.message + "</b>",
         });
+
+        $("#btnMenu").trigger("click"); // MOSTRAR MENU DESDE EL INICIO
+   
       }
     );
     

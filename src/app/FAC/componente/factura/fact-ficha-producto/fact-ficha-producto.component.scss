@@ -4,6 +4,16 @@
   min-width: var(--min-width);
 }
 
+
+
+
+.linea{
+  display: block;
+  margin-bottom: 5px;
+  border-bottom: 2px solid var(--escan-primario);
+}
+
+
 .btn-contenedor {
   display: flex;
   justify-content: space-between;
