@@ -181,44 +181,53 @@ export class FactFichaProductoComponent {
     );
 
     this.Conexion.Cargar_Productos().subscribe(
-      (s) => {
-        document
-          .getElementById("btnRefrescarProductos")
-          ?.removeAttribute("disabled");
-        dialogRef.close();
-        let _json = JSON.parse(s);
+      {
+        next: (s) => {
 
-        if (_json["esError"] == 1) {
-          this.dialog.open(DialogErrorComponent, {
-            data: _json["msj"].Mensaje,
-          });
-        } else {
-          let Datos: iDatos[] = _json["d"];
+          document
+            .getElementById("btnRefrescarProductos")
+            ?.removeAttribute("disabled");
+          dialogRef.close();
+          let _json = JSON.parse(s);
 
-          this.lstProductos = Datos[0].d;
-          this.TC = Datos[1].d;
+          if (_json["esError"] == 1) {
+            this.dialog.open(DialogErrorComponent, {
+              data: _json["msj"].Mensaje,
+            });
+          } else {
+            let Datos: iDatos[] = _json["d"];
+
+            this.lstProductos = Datos[0].d;
+            this.TC = Datos[1].d;
 
 
 
-          //LLENAR DATOS AL REFRESCAR
-          if (this.bol_Referescar) {
+            //LLENAR DATOS AL REFRESCAR
+            if (this.bol_Referescar) {
 
-            if (this.CodProducto != "" && this.CodBodega != "") this.v_Datos_Producto();
-            this.bol_Referescar = false;
+              if (this.CodProducto != "" && this.CodBodega != "") this.v_Datos_Producto();
+              this.bol_Referescar = false;
+            }
           }
-        }
-      },
-      (err) => {
-        document
-          .getElementById("btnRefrescarProductos")
-          ?.removeAttribute("disabled");
-        dialogRef.close();
 
-        this.dialog.open(DialogErrorComponent, {
-          data: "<b class='error'>" + err.message + "</b>",
-        });
+        },
+        error: (err) => {
+          document
+            .getElementById("btnRefrescarProductos")
+            ?.removeAttribute("disabled");
+          dialogRef.close();
+
+          this.dialog.open(DialogErrorComponent, {
+            data: "<b class='error'>" + err.message + "</b>",
+          });
+        },
+        complete: () => {
+
+        }
       }
     );
+
+
   }
 
   public v_Select_Producto(event: any): void {
@@ -268,22 +277,20 @@ export class FactFichaProductoComponent {
       this.val
         .Get("txtPrecioDol")
         .setValue(this.cFunciones.NumFormat(PrecioProd[0].PrecioDolar, "4"));
-   
-        this.bol_EsPrecioLiberado = PrecioProd[0].Liberado;
-        if(this.bol_EsPrecioLiberado)
-        {
-          this.val.Get("txtPrecioCor").enable();
-          this.val.Get("txtPrecioDol").enable();
-          document?.getElementById("txtPrecioCor")?.focus();
-        }
-        else
-        {
-          document?.getElementById("txtCantidad")?.focus();
-        }
-       
 
-   
+      this.bol_EsPrecioLiberado = PrecioProd[0].Liberado;
+      if (this.bol_EsPrecioLiberado) {
+        this.val.Get("txtPrecioCor").enable();
+        this.val.Get("txtPrecioDol").enable();
+        document?.getElementById("txtPrecioCor")?.focus();
       }
+      else {
+        document?.getElementById("txtCantidad")?.focus();
+      }
+
+
+
+    }
 
     this.Calcular();
 
@@ -300,54 +307,56 @@ export class FactFichaProductoComponent {
       }
     );
 
-
     this.Conexion.Datos_Producto(this.CodProducto, this.CodBodega, this.CodCliente).subscribe(
-      (s) => {
+      {
+        next: (s) => {
 
-        dialogRef.close();
-        let _json = JSON.parse(s);
+          dialogRef.close();
+          let _json = JSON.parse(s);
+  
+          if (_json["esError"] == 1) {
+            this.dialog.open(DialogErrorComponent, {
+              data: _json["msj"].Mensaje,
+            });
+          } else {
+            let Datos: iDatos[] = _json["d"];
+  
+            this.lstExistencia = Datos[0].d;
+            this.lstBonificacion = Datos[1].d;
+            this.lstPrecios = Datos[2].d;
+            this.lstDescuento = Datos[3].d;
+  
+  
+            this.lstExistencia.filter(f => f.Bodega == this.CodBodega && f.CodProducto == this.CodProducto).forEach(f => {
+  
+              let CantFact: number = this.lstDetalle.filter(item => item.Codigo === f.CodProducto).reduce((sum, current) => sum + current.Cantidad, 0);
+              f.Existencia = this.cFunciones.Redondeo(f.Existencia - CantFact, "0");
+            });
+  
+            this.lstPrecios.forEach((f) => {
+              f.PrecioCordoba = this.cFunciones.Redondeo(f.PrecioCordoba, "4");
+              f.PrecioDolar = this.cFunciones.Redondeo(f.PrecioDolar, "4");
+            });
+  
+  
+            this.LlenarPrecio();
+            if (this.bol_BonificacionLibre) this.v_Agregar_Producto();
+  
+          }
 
-        if (_json["esError"] == 1) {
+        },
+        error: (err) => {
+          dialogRef.close();
+
           this.dialog.open(DialogErrorComponent, {
-            data: _json["msj"].Mensaje,
+            data: "<b class='error'>" + err.message + "</b>",
           });
-        } else {
-          let Datos: iDatos[] = _json["d"];
-
-          this.lstExistencia = Datos[0].d;
-          this.lstBonificacion = Datos[1].d;
-          this.lstPrecios = Datos[2].d;
-          this.lstDescuento = Datos[3].d;
-
-
-          this.lstExistencia.filter(f => f.Bodega == this.CodBodega && f.CodProducto == this.CodProducto).forEach(f => {
-
-            let CantFact: number = this.lstDetalle.filter(item => item.Codigo === f.CodProducto).reduce((sum, current) => sum + current.Cantidad, 0);
-            f.Existencia = this.cFunciones.Redondeo(f.Existencia - CantFact, "0");
-          });
-
-          this.lstPrecios.forEach((f) => {
-            f.PrecioCordoba = this.cFunciones.Redondeo(f.PrecioCordoba, "4");
-            f.PrecioDolar = this.cFunciones.Redondeo(f.PrecioDolar, "4");
-          });
-
-
-          this.LlenarPrecio();
-          if (this.bol_BonificacionLibre) this.v_Agregar_Producto();
+        },
+        complete: () => {
 
         }
-      },
-      (err) => {
-
-
-        dialogRef.close();
-
-        this.dialog.open(DialogErrorComponent, {
-          data: "<b class='error'>" + err.message + "</b>",
-        });
       }
     );
-
 
 
   }
@@ -531,13 +540,12 @@ export class FactFichaProductoComponent {
       if (this.cFunciones.Redondeo(Descuento.PorcDescuento / 100, "4") < det.PorcDescuento) MsjError += "<li class='error-etiqueta'>Descuento<ul><li class='error-mensaje'>El descuento permitido es max: <b>" + Descuento.PorcDescuento + "%</b></li></ul>";
     }
 
-     if (PrecioProd == undefined){
+    if (PrecioProd == undefined) {
       MsjError += "<li class='error-etiqueta'>Precio<ul><li class='error-mensaje'>El producto no tiene precio.</li></ul>";
-     }
-     else
-     {
-      if(PrecioProd!.PrecioCordoba != det.PrecioCordoba && !PrecioProd!.Liberado) MsjError += "<li class='error-etiqueta'>Precio<ul><li class='error-mensaje'>No tiene permiso para modificar precio..</li></ul>";
-     }
+    }
+    else {
+      if (PrecioProd!.PrecioCordoba != det.PrecioCordoba && !PrecioProd!.Liberado) MsjError += "<li class='error-etiqueta'>Precio<ul><li class='error-mensaje'>No tiene permiso para modificar precio..</li></ul>";
+    }
 
     if (Bonificado != undefined && !this.bol_BonificacionLibre) {
       if (Bonificado.Bonifica + det.Cantidad <= Number(Existencia?.Existencia)) {

@@ -1,66 +1,73 @@
-
 <div class="RegistrosFactura">
-  
-    <table class="table table-hover table-bordered table-sm">
-        <thead>
-            <tr class="row">
-                <th scope="col" class="col-12 linea">
-                    <div class="titulo">
-                        {{(TipoDocumento == "Factura"  || EsCola ? (EsCola ? "COLA DE IMPRESIÓN" : "REGISTROS FACTURA"): "REGISTROS PEDIDO")}}
-                    </div>
-                    <form [formGroup]="val.ValForm" autocomplete="off">
-                        <div class="row gx-0 contenedor-buscar">
-                            <div class="col-6 col-md-6 col-lg-4 mb-1" *ngIf="!EsCola">
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-calendar"></i></span>
-                                    <div class="form-floating">
-                                        <input type="date" id="txtFecha1" class="form-control" placeholder="Fecha Inicio"
-                                            aria-label="Fecha Final" formControlName="txtFecha1">
-                                        <label for="txtFecha1">Desde</label>
-    
-                                    </div>
-    
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-6 col-lg-4 px-1 mb-1" *ngIf="!EsCola">
-                                <div class="input-group">
-    
-                                    <div class="form-floating">
-                                        <input type="date" id="txtFecha2" class="form-control" placeholder="Fecha Final"
-                                            aria-label="Fecha Final" formControlName="txtFecha2">
-                                        <label for="txtFecha2">Hasta</label>
-    
-                                    </div>
-    
-                                    <span class="input-group-text"> <button type="button" class="btn btn-refescar" id="btnBuscarFactura"
-                                        (click)="CargarDocumentos();"><i
-                                                class="fa-solid fa-arrows-rotate fa-beat-fade fa-lg"></i></button></span>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-12 col-lg-4 mb-1">
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
-    
-                                    <div class="form-floating">
-                                        <input type="text" id="txtBuscar" class="form-control" placeholder="Buscar"
-                                            aria-label="Buscar" formControlName="txtBuscar"
-                                            (keyup)="v_Filtrar($event)">
-                                        <label for="txtBuscar">Buscar</label>
-    
-                                    </div>
+
+    <div class="row">
+        <div class="contenedor-filtro">
+            <div class="row">
+                <div class="titulo">
+                    {{(TipoDocumento == "Factura" || EsCola ? (EsCola ? "COLA DE IMPRESIÓN" : "REGISTROS FACTURA"):
+                    "REGISTROS PEDIDO")}}
+                </div>
+            </div>
+            <div class="row">
+                <form [formGroup]="val.ValForm" autocomplete="off">
+                    <div class="row gx-0 contenedor-buscar">
+                        <div class="col-6 col-md-6 col-lg-4 mb-1" *ngIf="!EsCola">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                <div class="form-floating">
+                                    <input type="date" id="txtFecha1" class="form-control" placeholder="Fecha Inicio"
+                                        aria-label="Fecha Final" formControlName="txtFecha1">
+                                    <label for="txtFecha1">Desde</label>
     
                                 </div>
+    
                             </div>
                         </div>
-                    </form>
-                  
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            
-            <tr class="row mb-3 linea" *ngFor="let det of lstFilter">
-                <td class="col-12">
+                        <div class="col-6 col-md-6 col-lg-4 px-1 mb-1" *ngIf="!EsCola">
+                            <div class="input-group">
+    
+                                <div class="form-floating">
+                                    <input type="date" id="txtFecha2" class="form-control" placeholder="Fecha Final"
+                                        aria-label="Fecha Final" formControlName="txtFecha2">
+                                    <label for="txtFecha2">Hasta</label>
+    
+                                </div>
+    
+                                <span class="input-group-text"> <button type="button" class="btn btn-refescar"
+                                        id="btnBuscarFactura" (click)="CargarDocumentos();"><i
+                                            class="fa-solid fa-arrows-rotate fa-beat-fade fa-lg"></i></button></span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-4 mb-1">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+    
+                                <div class="form-floating">
+                                    <input type="text" id="txtBuscar" class="form-control" placeholder="Buscar"
+                                        aria-label="Buscar" formControlName="txtBuscar" (keyup)="v_Filtrar($event)">
+                                    <label for="txtBuscar">Buscar</label>
+    
+                                </div>
+    
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+    
+    
+        </div>
+    </div>
+
+   
+
+    <div class="mat-elevation-z8  table-container">
+        <table class="table table-hover table-bordered table-sm tabla-custom mat-elevation-z8" mat-table
+            [dataSource]="lstDocumentos">
+
+            <ng-container matColumnDef="col1">
+
+                <td class="col-12" mat-cell *matCellDef="let det">
 
                     <div class="row g-1 mb-2 header-table-doc">
 
@@ -94,7 +101,7 @@
 
                     </div>
 
-                    
+
                     <div class="row g-1 mb-2">
                         <div class="col-6">
                             <div class="aling-block center">
@@ -185,11 +192,12 @@
 
                     <div class="row">
                         <span class="input-group-text btn-contenedor">
-                            
-                            <button type="button" class="btn"><i [ngClass]="(EsCola ==true) ? 'fa-solid fa-print fa-fade fa-lg': 'fa-solid fa-eye fa-beat-fade fa-lg'"></i>
+
+                            <button type="button" class="btn"><i
+                                    [ngClass]="(EsCola ==true) ? 'fa-solid fa-print fa-fade fa-lg': 'fa-solid fa-eye fa-beat-fade fa-lg'"></i>
                             </button>
-                            <button type="button" class="btn"><i class="fa-solid fa-ban fa-beat-fade fa-lg" (click)="v_Anular(det)"
-                                *ngIf="det.Estado!='Anulado'"></i>
+                            <button type="button" class="btn"><i class="fa-solid fa-ban fa-beat-fade fa-lg"
+                                    (click)="v_Anular(det)" *ngIf="det.Estado!='Anulado'"></i>
                             </button>
                         </span>
 
@@ -197,37 +205,19 @@
 
                 </td>
 
+            </ng-container>
 
 
-            </tr>
+            <div class="row mb-3 linea">
 
-        </tbody>
-    </table>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="linea-bottom-secundario dashed">
+                </tr>
 
-    
+            </div>
+        </table>
+        <mat-paginator [pageSizeOptions]="[100, 200]" class="mat-paginator-sticky"></mat-paginator>
 
-    <div class="contenedor-pag linea-top">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Atras" (click)="v_Pag('A');">
-                  <span aria-hidden="true">&laquo;</span>
-                  <span class="sr-only">Atras</span>
-                </a>
-              </li>
-              <li class="page-item" [ngClass]="(Pag == 1) ? 'activo': '' " *ngIf="PagMax>=1" ><a class="page-link" href="#" (click)="v_Pag('1');">1</a></li>
-              <li class="page-item" [ngClass]="(Pag == 2) ? 'activo': '' " *ngIf="PagMax>=2"><a class="page-link" href="#" (click)="v_Pag('2');">2</a></li>
-              <li class="page-item" [ngClass]="(Pag == 3) ? 'activo': '' " *ngIf="PagMax>=3"><a class="page-link" href="#" (click)="v_Pag('3');">3</a></li>
-              <li class="page-item" [ngClass]="(Pag == 4) ? 'activo': '' " *ngIf="PagMax>=4"><a class="page-link" href="#" (click)="v_Pag('4');">4</a></li>
-              <li class="page-item" [ngClass]="(Pag == 5) ? 'activo': '' " *ngIf="PagMax>=5"><a class="page-link" href="#" (click)="v_Pag('5');">5</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Siguiente" (click)="v_Pag('S');">
-                  <span aria-hidden="true">&raquo;</span>
-                  <span class="sr-only">Siguiente</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
     </div>
-   
+
+
 </div>

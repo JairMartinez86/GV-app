@@ -18,29 +18,28 @@ export class AnularComponent {
   public Tipo: string;
 
   constructor(private dialog: MatDialog, public dialogRef: MatDialogRef<AnularComponent>,
-    private POST: postFactura){
+    private POST: postFactura) {
 
     this.val.add("txtNoDoc", "1", "LEN>", "0", "No Documento", "Error con el número del documento.");
     this.val.add("txtSerie", "1", "LEN>", "0", "Serie", "Error con la serie del documento.");
     this.val.add("txtBodega", "1", "LEN>=", "0", "Bodega", "");
     this.val.add("txtFecha", "1", "LEN>=", "0", "Fecha", "");
     this.val.add("txtMotivo", "1", "LEN>", "0", "Motivo", "Ingrese un motivo.");
-    
+
     this.val.Get("txtNoDoc").disable()
     this.val.Get("txtSerie").disable()
     this.val.Get("txtBodega").disable()
     this.val.Get("txtFecha").disable()
 
   }
-  
 
-  
-  public v_Aceptar() :void{
+
+
+  public v_Aceptar(): void {
 
     this.val.EsValido();
-   
-    if(this.val.Errores != "")
-    {
+
+    if (this.val.Errores != "") {
       this.dialog.open(DialogErrorComponent, {
         data: this.val.Errores,
       });
@@ -51,7 +50,7 @@ export class AnularComponent {
 
     document.getElementById("btnAnular")?.setAttribute("disabled", "disabled");
     document.getElementById("btnCancelarAnular")?.setAttribute("disabled", "disabled");
-    
+
     let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
       WaitComponent,
       {
@@ -59,49 +58,58 @@ export class AnularComponent {
         data: "",
       }
     );
-    
+
+
 
     this.POST.AnularFactura(this.IdDoc, this.val.Get("txtMotivo").value, "jmg").subscribe(
-      (s) => {
-   
-        document.getElementById("btnAnular")?.removeAttribute("disabled");
-        document.getElementById("btnCancelarAnular")?.removeAttribute("disabled");
+      {
+        next: (s) => {
 
-        dialogRef.close();
-        let _json = JSON.parse(s);
+          document.getElementById("btnAnular")?.removeAttribute("disabled");
+          document.getElementById("btnCancelarAnular")?.removeAttribute("disabled");
+  
+          dialogRef.close();
+          let _json = JSON.parse(s);
+  
+          if (_json["esError"] == 1) {
+            this.dialog.open(DialogErrorComponent, {
+              data: _json["msj"].Mensaje,
+            });
+          }
+          else {
+  
+            this.dialogRef.close();
+  
+          }
 
-        if (_json["esError"] == 1) {
+        },
+        error: (err) => {
+
+          document.getElementById("btnAnular")?.removeAttribute("disabled");
+          document.getElementById("btnCancelarAnular")?.removeAttribute("disabled");
+  
+  
+          dialogRef.close();
+  
           this.dialog.open(DialogErrorComponent, {
-            data: _json["msj"].Mensaje,
+            data: "<b class='error'>" + err.message + "</b>",
           });
-        } 
-        else {
+        },
+        complete: () => {
 
-          this.dialogRef.close();
- 
         }
-      },
-      (err) => {
-
-        document.getElementById("btnAnular")?.removeAttribute("disabled");
-        document.getElementById("btnCancelarAnular")?.removeAttribute("disabled");
-
-        
-        dialogRef.close();
-      
-        this.dialog.open(DialogErrorComponent, {
-          data: "<b class='error'>" + err.message + "</b>",
-        });
       }
     );
-    
-    
-    
+
+
+
+
+
   }
 
-  public v_Cancelar() :void{
+  public v_Cancelar(): void {
     this.dialogRef.close();
   }
-  
+
 
 }

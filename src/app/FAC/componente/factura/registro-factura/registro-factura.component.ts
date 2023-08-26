@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { getFactura } from 'src/app/FAC/GET/get-factura';
+import { iFactPed } from 'src/app/FAC/interface/i-Factura-Pedido';
 import { AnularComponent } from 'src/app/SHARED/anular/anular.component';
 import { Funciones } from 'src/app/SHARED/class/cls_Funciones';
 import { Validacion } from 'src/app/SHARED/class/validacion';
@@ -16,15 +19,15 @@ import { iDatos } from 'src/app/SHARED/interface/i-Datos';
 export class RegistroFacturaComponent {
 
   public val = new Validacion();
+  displayedColumns: string[] = ["col1"];
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+
   public TipoDocumento: string;
   public EsCola: boolean = false;
   
-  private lstDocumentos : any[];
-  public lstFilter: any[] = [];
-  public Pag : number = 1;
-  public PagMax : number = 1;
-  private NumRegMax : number = 100;
-
+  public lstDocumentos :   MatTableDataSource<iFactPed[]>;
+ 
   constructor(
     private dialog: MatDialog,
     private Conexion: getFactura,
@@ -42,7 +45,7 @@ export class RegistroFacturaComponent {
   }
 
   public CargarDocumentos(): void {
-
+    
     let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
       WaitComponent,
       {
@@ -63,17 +66,12 @@ export class RegistroFacturaComponent {
         } else {
           let Datos: iDatos[] = _json["d"];
 
-          this.lstDocumentos = Datos[0].d;
-         
-          let i : number = 1;
-
-          this.lstDocumentos.forEach(f =>{
-            f.Index = i;
-            i++;
-          });
-
-          this.lstFilter = this.lstDocumentos.map((obj : any) => ({...obj}));
-          this.v_Paginar();
+ 
+          this.lstDocumentos = new MatTableDataSource(Datos[0].d);
+          this.lstDocumentos.paginator = this.paginator;
+       
+          //this.lstFilter = this.lstDocumentos.map((obj : any) => ({...obj}));
+ 
     
         }
       },
@@ -116,94 +114,10 @@ export class RegistroFacturaComponent {
 
   }
 
-
   public v_Filtrar(event : any){
-
-    this.lstFilter.splice(0, this.lstFilter.length);
-    let value : string = event.target.value.toLowerCase();
- 
-
-    let index : number = 1;
-    this.lstDocumentos.filter(f => f.Filtro.toLowerCase().includes(value)).forEach(f =>{
-      let ff = Object.assign({}, f);
-      ff.Index = index;
-      this.lstFilter.push(ff);
-      index++;
-    });
-
-    let Registros = this.lstFilter.map((obj : any) => ({...obj}));
-    this.lstFilter.splice(0, this.lstFilter.length);
-
-    this.PagMax = Math.trunc(Registros.length / this.NumRegMax);
-    if((Registros.length % this.NumRegMax) != 0) this.PagMax++;
-
-    let x : number = 1;
-    let IndexMin : number =  (this.Pag * this.NumRegMax) - (this.NumRegMax - 1);
-    let IndexMax : number =  (this.Pag * this.NumRegMax);
-
-
-    Registros.filter(f => f.Index >= IndexMin && f.Index <= IndexMax).forEach(f =>{
-      this.lstFilter.push(f);
-
-      if(x == this.NumRegMax) return;
-      x++;
-    });
-
-
+    this.lstDocumentos.filter = (event.target as HTMLInputElement).value.trim().toLowerCase();
   }
 
-  
-  public v_Paginar(){
-
-    this.PagMax = Math.trunc(this.lstDocumentos.length / this.NumRegMax);
-    if((this.lstDocumentos.length % this.NumRegMax) != 0) this.PagMax++;
-  
-    
-
-    this.lstFilter.splice(0, this.lstFilter.length);
-
-    let x : number = 1;
-    let IndexMin : number =  (this.Pag * this.NumRegMax) - (this.NumRegMax - 1);
-    let IndexMax : number =  (this.Pag * this.NumRegMax);
-
-    this.lstDocumentos.filter(f => f.Index >= IndexMin && f.Index <= IndexMax).forEach(f =>{
-      
-      let ff = Object.assign({}, f);
-      this.lstFilter.push(ff);
-
-      if(x == this.NumRegMax) return;
-      x++;
-    });
-
-  }
-
-  public v_Pag(p : string) :void{
-
-    let IndexMax : number =  0;
-
-
-    if(p =="A")
-    {
-      IndexMax =  ((this.Pag - 1) * this.NumRegMax);
-      if(this.lstDocumentos.length < IndexMax) return;
-
-      if(this.Pag > 1)this.Pag -=1;
-      this.v_Paginar();
-      return;
-    }
-
-    if(p =="S")
-    {
-      IndexMax = ((this.Pag + 1) * this.NumRegMax);
-      if(this.lstDocumentos.length < IndexMax) return;
-
-      if(this.Pag < 5)this.Pag +=1;
-      this.v_Paginar();
-      return;
-    }
-    this.Pag = Number(p);
-    this.v_Paginar();
-  }
 
   private ngOnInit() {
 

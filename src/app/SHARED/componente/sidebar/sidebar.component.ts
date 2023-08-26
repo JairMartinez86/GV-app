@@ -24,49 +24,49 @@ declare let gapi: any;
 export class SidebarComponent {
 
   @ViewChild(DynamicFormDirective, { static: true }) DynamicFrom!: DynamicFormDirective;
-  public ErrorServidor : boolean = true;
-  
+  public ErrorServidor: boolean = true;
+
 
   constructor(
     private renderer: Renderer2,
     @Inject(DOCUMENT) private document: HTMLDocument,
     private _SrvLogin: LoginService,
     private Conexion: getServidor,
-    private cFunciones : Funciones,
+    private cFunciones: Funciones,
     private dialog: MatDialog,
   ) {
-}
-  
+  }
+
 
   @Input() public href: string | undefined;
   @HostListener('click', ['$event']) public onClick(event: Event): void {
 
     var element = <HTMLElement>event.target;
-  
+
     if (
       (!this.href ||
-      this.href == '#' ||
-      (this.href && this.href.length === 0) || element.tagName.toString().toLocaleLowerCase()  == "i")
+        this.href == '#' ||
+        (this.href && this.href.length === 0) || element.tagName.toString().toLocaleLowerCase() == "i")
     ) {
-     
-   
-      if (element.tagName.toString().toLocaleLowerCase() == "a" && element.getAttribute("href") == "#" || element.tagName.toString().toLocaleLowerCase()  == "i") {
-        
-        if(element.tagName.toString().toLocaleLowerCase()  == "i"){
+
+
+      if (element.tagName.toString().toLocaleLowerCase() == "a" && element.getAttribute("href") == "#" || element.tagName.toString().toLocaleLowerCase() == "i") {
+
+        if (element.tagName.toString().toLocaleLowerCase() == "i") {
           element = <HTMLElement>event.target;
           element = <HTMLElement>element.parentElement;
-          
+
         }
         this.v_Abrir_Form(element.id);
       }
 
 
 
-      
+
       if (element.tagName.toString().toLocaleLowerCase() == "span") event.preventDefault();
 
-      if(element.tagName.toString().toLocaleLowerCase() == "a")event.preventDefault();
-     
+      if (element.tagName.toString().toLocaleLowerCase() == "a") event.preventDefault();
+
     }
   }
 
@@ -94,64 +94,68 @@ export class SidebarComponent {
         data: "",
       }
     );
-    
 
- 
-    
+
+
+
     this.Conexion.FechaServidor().subscribe(
-      (s) => {
+      {
+        next: (s) => {
 
-        dialogRef.close();
+          dialogRef.close();
 
-        let _json = JSON.parse(s);
+          let _json = JSON.parse(s);
+  
+          if (_json["esError"] == 1) {
+            this.dialog.open(DialogErrorComponent, {
+              data: _json["msj"].Mensaje,
+            });
+          } else {
+            let Datos: iDatos[] = _json["d"];
+  
+            this.cFunciones.FechaServidor(Datos[0].d);
+            this.ErrorServidor = false;
 
-        if (_json["esError"] == 1) {
+          }
+
+        },
+        error: (err) => {
+
+
+          this.ErrorServidor = true;
+          dialogRef.close();
+  
           this.dialog.open(DialogErrorComponent, {
-            data: _json["msj"].Mensaje,
+            data: "<b class='error'>" + err.message + "</b>",
           });
-        } else {
-          let Datos: iDatos[] = _json["d"];
-
-          this.cFunciones.FechaServidor(Datos[0].d);
-          this.ErrorServidor = false;
-
+  
+         
+  
+        },
+        complete: () => { 
           $("#btnMenu").trigger("click"); // MOSTRAR MENU DESDE EL INICIO
-   
-        }
-      },
-      (err) => {
-
-        this.ErrorServidor = true;
-        dialogRef.close();
-
-        this.dialog.open(DialogErrorComponent, {
-          data: "<b class='error'>" + err.message + "</b>",
-        });
-
-        $("#btnMenu").trigger("click"); // MOSTRAR MENU DESDE EL INICIO
-   
+         }
       }
     );
-    
 
   }
 
 
-  
-  public v_Abrir_Form(id : string) : void{
 
-    if(id == "") return;
-    if(id == "btnMenu") return;
+  public v_Abrir_Form(id: string): void {
+
+    if (id == "") return;
+    if (id == "btnMenu") return;
 
 
-    if(this.ErrorServidor && id != "aSalir"){
+    if (this.ErrorServidor && id != "aSalir") {
       this.dialog.open(DialogErrorComponent, {
         data: "<b class='error'>" + "Error al conectar con el servidor, por favor recargue la pagina o cierre sessión." + "</b>",
       });
       return;
     }
-    
-    if(id == "aNewFactura"){
+
+    if (id == "aNewFactura") {
       $("#btnMenu").trigger("click");
       this.DynamicFrom.viewContainerRef.clear();
 
@@ -159,42 +163,42 @@ export class SidebarComponent {
       Factura.instance.TipoFactura = "Factura";
     }
 
-    if(id == "aNewPedido"){
+    if (id == "aNewPedido") {
       $("#btnMenu").trigger("click");
       this.DynamicFrom.viewContainerRef.clear();
       let Pedido: ComponentRef<FacturaComponent> = this.DynamicFrom.viewContainerRef.createComponent(FacturaComponent);
       Pedido.instance.TipoFactura = "Pedido";
     }
 
-    if(id == "aRegistroFactura"){
+    if (id == "aRegistroFactura") {
       this.DynamicFrom.viewContainerRef.clear();
       let RegFactura: ComponentRef<RegistroFacturaComponent> = this.DynamicFrom.viewContainerRef.createComponent(RegistroFacturaComponent);
       RegFactura.instance.TipoDocumento = "Factura";
     }
 
-    if(id == "aRegistroPedido"){
+    if (id == "aRegistroPedido") {
       this.DynamicFrom.viewContainerRef.clear();
       let RegPedido: ComponentRef<RegistroFacturaComponent> = this.DynamicFrom.viewContainerRef.createComponent(RegistroFacturaComponent);
       RegPedido.instance.TipoDocumento = "Pedido";
     }
 
-    
-    if(id == "aRegistroCola"){
+
+    if (id == "aRegistroCola") {
       this.DynamicFrom.viewContainerRef.clear();
       let RegPedido: ComponentRef<RegistroFacturaComponent> = this.DynamicFrom.viewContainerRef.createComponent(RegistroFacturaComponent);
       RegPedido.instance.TipoDocumento = "Factura";
       RegPedido.instance.EsCola = true;
     }
-    
 
 
-    if(id == "aSalir"){
+
+    if (id == "aSalir") {
       this.ErrorServidor = true;
-     this._SrvLogin.CerrarSession();
-  
+      this._SrvLogin.CerrarSession();
+
     }
   }
-  
+
 
 }
 

@@ -244,41 +244,49 @@ export class FactConfirmarComponent {
     );
 
     this.Conexion.Datos_ClienteClave(this.CodCliente).subscribe(
-      (s) => {
-        dialogRef.close();
-        let _json = JSON.parse(s);
+      {
+        next: (s) => {
 
-        if (_json["esError"] == 1) {
-          this.dialog.open(DialogErrorComponent, {
-            data: _json["msj"].Mensaje,
-          });
-        } else {
-          let Datos: iDatos[] = _json["d"];
-          let Clave: any = Datos[0].d;
-
-          if (Clave.length > 0) {
-            if (Clave[0].EsClave && Clave[0].CodVendedor != CodNewVend[0]) {
-              this.cmbVendedor.setSelectedItem(Clave[0].CodVendedor);
-              this.val.Get("txtVendedor").setValue(Clave[0].CodVendedor);
-              this.cmbVendedor.close();
-
-              this.dialog.open(DialogErrorComponent, {
-                data:
-                  "<p>Cliente Clave solo se permite seleccionar el vendedor:<b class='error'>" +
-                  Clave[0].Vendedor +
-                  "</b></p>",
-              });
+          dialogRef.close();
+          let _json = JSON.parse(s);
+  
+          if (_json["esError"] == 1) {
+            this.dialog.open(DialogErrorComponent, {
+              data: _json["msj"].Mensaje,
+            });
+          } else {
+            let Datos: iDatos[] = _json["d"];
+            let Clave: any = Datos[0].d;
+  
+            if (Clave.length > 0) {
+              if (Clave[0].EsClave && Clave[0].CodVendedor != CodNewVend[0]) {
+                this.cmbVendedor.setSelectedItem(Clave[0].CodVendedor);
+                this.val.Get("txtVendedor").setValue(Clave[0].CodVendedor);
+                this.cmbVendedor.close();
+  
+                this.dialog.open(DialogErrorComponent, {
+                  data:
+                    "<p>Cliente Clave solo se permite seleccionar el vendedor:<b class='error'>" +
+                    Clave[0].Vendedor +
+                    "</b></p>",
+                });
+              }
             }
           }
+
+        },
+        error: (err) => {
+          dialogRef.close();
+          this.dialog.open(DialogErrorComponent, {
+            data: "<b class='error'>" + err.message + "</b>",
+          });
+        },
+        complete: () => {
+         
         }
-      },
-      (err) => {
-        dialogRef.close();
-        this.dialog.open(DialogErrorComponent, {
-          data: "<b class='error'>" + err.message + "</b>",
-        });
       }
     );
+
   }
   
 
@@ -313,80 +321,89 @@ export class FactConfirmarComponent {
     );
 
     this.Plazo = 0;
-    this.Conexion.Datos_Credito(this.CodCliente).subscribe(
-      (s) => {
-        dialogRef.close();
-        let _json = JSON.parse(s);
-
-        if (_json["esError"] == 1) {
-          this.dialog.open(DialogErrorComponent, {
-            data: _json["msj"].Mensaje,
-          });
-        } else {
-          let Datos: iDatos[] = _json["d"];
-          this.i_Credito = Datos[0].d;
-
-          this.val.Get("txtLimite_Confirmar").setValue("0.00");
-          this.val.Get("txtDisponible_Confirmar").setValue("0.00");
-          this.Disponible = 0;
     
+    this.Conexion.Datos_Credito(this.CodCliente).subscribe(
+      {
+        next: (s) => {
 
-          if (this.i_Credito.length > 0) {
-            this.TipoPago = "Credito";
-            this.val.Get("txtLimite_Confirmar").setValue(this.cFunciones.NumFormat(this.i_Credito[0].Limite, "2"));
-            this.val.Get("txtDisponible_Confirmar").setValue(this.cFunciones.NumFormat(this.i_Credito[0].Disponible, "2"));
-            this.Disponible = this.cFunciones.Redondeo(this.i_Credito[0].Disponible, "2");
-             //this.Plazo = Number(Credito[0].Plazo) + Number(Credito[0].Gracia);
-            this.Plazo = Number(this.i_Credito[0].Plazo);
-
-            this.MonedaCliente = this.i_Credito[0].Moneda;
-            this.SimboloMonedaCliente = "U$";
-            if (this.i_Credito[0].Moneda == "C") this.SimboloMonedaCliente = "C$";
-
-            this.val.Get("txtFecha").setValue(this.cFunciones.DateFormat(this.Fecha, "yyyy-MM-dd"));
-            this.val.Get("txtPlazo").setValue(this.Plazo);
-            this.val.Get("txtVence").setValue(this.cFunciones.DateAddDay("Day",this.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
-
-            this.Calcular();
-
-
-
-            if (this.i_Credito[0].Plazo == 0) {
-              this.Plazo = 0;
-              this.TipoPago = "Contado";
-              chk.bootstrapToggle("off");
-
+          dialogRef.close();
+          let _json = JSON.parse(s);
+  
+          if (_json["esError"] == 1) {
+            this.dialog.open(DialogErrorComponent, {
+              data: _json["msj"].Mensaje,
+            });
+          } else {
+            let Datos: iDatos[] = _json["d"];
+            this.i_Credito = Datos[0].d;
+  
+            this.val.Get("txtLimite_Confirmar").setValue("0.00");
+            this.val.Get("txtDisponible_Confirmar").setValue("0.00");
+            this.Disponible = 0;
+      
+  
+            if (this.i_Credito.length > 0) {
+              this.TipoPago = "Credito";
+              this.val.Get("txtLimite_Confirmar").setValue(this.cFunciones.NumFormat(this.i_Credito[0].Limite, "2"));
+              this.val.Get("txtDisponible_Confirmar").setValue(this.cFunciones.NumFormat(this.i_Credito[0].Disponible, "2"));
+              this.Disponible = this.cFunciones.Redondeo(this.i_Credito[0].Disponible, "2");
+               //this.Plazo = Number(Credito[0].Plazo) + Number(Credito[0].Gracia);
+              this.Plazo = Number(this.i_Credito[0].Plazo);
+  
+              this.MonedaCliente = this.i_Credito[0].Moneda;
+              this.SimboloMonedaCliente = "U$";
+              if (this.i_Credito[0].Moneda == "C") this.SimboloMonedaCliente = "C$";
+  
+              this.val.Get("txtFecha").setValue(this.cFunciones.DateFormat(this.Fecha, "yyyy-MM-dd"));
               this.val.Get("txtPlazo").setValue(this.Plazo);
               this.val.Get("txtVence").setValue(this.cFunciones.DateAddDay("Day",this.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
+  
               this.Calcular();
-
-              
+  
+  
+  
+              if (this.i_Credito[0].Plazo == 0) {
+                this.Plazo = 0;
+                this.TipoPago = "Contado";
+                chk.bootstrapToggle("off");
+  
+                this.val.Get("txtPlazo").setValue(this.Plazo);
+                this.val.Get("txtVence").setValue(this.cFunciones.DateAddDay("Day",this.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
+                this.Calcular();
+  
+                
+                this.dialog.open(DialogErrorComponent, {
+                  data: "<b class='error'>No tiene crédito disponible.</b>",
+                });
+              }
+            } else {
+              this.TipoPago = "Contado";
+              chk.bootstrapToggle("off");
+              this.Calcular();
+  
+  
               this.dialog.open(DialogErrorComponent, {
-                data: "<b class='error'>No tiene crédito disponible.</b>",
+                data: "<b class='error'>No tiene crédito asignado.</b>",
               });
             }
-          } else {
-            this.TipoPago = "Contado";
-            chk.bootstrapToggle("off");
-            this.Calcular();
-
-
-            this.dialog.open(DialogErrorComponent, {
-              data: "<b class='error'>No tiene crédito asignado.</b>",
-            });
           }
-        }
-      },
-      (err) => {
-        dialogRef.close();
-        this.TipoPago = "Contado";
-        chk.bootstrapToggle("off");
 
-        this.dialog.open(DialogErrorComponent, {
-          data: "<b class='error'>" + err.message + "</b>",
-        });
+        },
+        error: (err) => {
+          dialogRef.close();
+          this.TipoPago = "Contado";
+          chk.bootstrapToggle("off");
+  
+          this.dialog.open(DialogErrorComponent, {
+            data: "<b class='error'>" + err.message + "</b>",
+          });
+        },
+        complete: () => {
+
+        }
       }
     );
+
   }
 
   public v_TipoImpuesto(event: any): void {
@@ -480,67 +497,70 @@ export class FactConfirmarComponent {
       }
     );
 
-
+    
     this.Conexion.Direcciones(this.CodCliente).subscribe(
-      (s) => {
-        document.getElementById("btnRefrescarConfirmar")?.removeAttribute("disabled");
-        dialogRef.close();
-        let _json = JSON.parse(s);
+      {
+        next: (s) => {
 
-        if (_json["esError"] == 1) {
+          document.getElementById("btnRefrescarConfirmar")?.removeAttribute("disabled");
+          dialogRef.close();
+          let _json = JSON.parse(s);
+  
+          if (_json["esError"] == 1) {
+            this.dialog.open(DialogErrorComponent, {
+              data: _json["msj"].Mensaje,
+            });
+          } else {
+            let Datos: iDatos[] = _json["d"];
+  
+            this.lstDirecciones = Datos[0].d;
+  
+            let i : number = 0;
+            this.lstDirecciones.forEach(f =>{
+              f.index = i;
+              f.Seleccionar = false;
+              if(f.Descripcion == "PRINCIPAL") f.Seleccionar = true;
+              i++;
+            });
+            
+  
+  
+            if (event.target.checked) {
+  
+  
+              let Direccion = this.lstDirecciones.find(f => f.Descripcion == "PRINCIPAL");
+  
+              this.val.Get("txtDireccion").setValue("");
+              if(Direccion != undefined) this.val.Get("txtDireccion").setValue(Direccion?.Direccion);
+              document.getElementById("btnDelivery")?.removeAttribute("disabled");
+              this.val.Get("txtDireccion").enable();
+              return;
+            }
+        
+            if (!event.target.checked) {
+              document.getElementById("btnDelivery")?.setAttribute("disabled", "disabled");
+              this.val.Get("txtDireccion").setValue("");
+              this.val.Get("txtDireccion").disable();
+              return;
+            }
+            
+          }
+
+        },
+        error: (err) => {
+          document.getElementById("btnRefrescarConfirmar")?.removeAttribute("disabled");
+          dialogRef.close();
+  
           this.dialog.open(DialogErrorComponent, {
-            data: _json["msj"].Mensaje,
+            data: "<b class='error'>" + err.message + "</b>",
           });
-        } else {
-          let Datos: iDatos[] = _json["d"];
+        },
+        complete: () => {
 
-          this.lstDirecciones = Datos[0].d;
-
-          let i : number = 0;
-          this.lstDirecciones.forEach(f =>{
-            f.index = i;
-            f.Seleccionar = false;
-            if(f.Descripcion == "PRINCIPAL") f.Seleccionar = true;
-            i++;
-          });
-          
-
-
-          if (event.target.checked) {
-
-
-            let Direccion = this.lstDirecciones.find(f => f.Descripcion == "PRINCIPAL");
-
-            this.val.Get("txtDireccion").setValue("");
-            if(Direccion != undefined) this.val.Get("txtDireccion").setValue(Direccion?.Direccion);
-            document.getElementById("btnDelivery")?.removeAttribute("disabled");
-            this.val.Get("txtDireccion").enable();
-            return;
-          }
-      
-          if (!event.target.checked) {
-            document.getElementById("btnDelivery")?.setAttribute("disabled", "disabled");
-            this.val.Get("txtDireccion").setValue("");
-            this.val.Get("txtDireccion").disable();
-            return;
-          }
-          
         }
-      },
-      (err) => {
-        document.getElementById("btnRefrescarConfirmar")?.removeAttribute("disabled");
-        dialogRef.close();
-
-        this.dialog.open(DialogErrorComponent, {
-          data: "<b class='error'>" + err.message + "</b>",
-        });
       }
     );
 
-
-   
-
-  
 
   }
  
@@ -579,56 +599,65 @@ export class FactConfirmarComponent {
 
     this.isEvent = true;
 
+    
     this.Conexion.DatosSucursal(this.CodBodega, this.TipoFactura).subscribe(
-      (s) => {
-        document.getElementById("btnRefrescarConfirmar")?.removeAttribute("disabled");
-        dialogRef.close();
-        let _json = JSON.parse(s);
+      {
+        next: (s) => {
 
-        if (_json["esError"] == 1) {
-          this.dialog.open(DialogErrorComponent, {
-            data: _json["msj"].Mensaje,
-          });
-        } else {
-          let Datos: iDatos[] = _json["d"];
-
-          this.Fecha =  new Date(this.cFunciones.DateFormat(Datos[0].d, 'yyyy-MM-dd hh:mm:ss'));
-          this.TC = Datos[1].d;
-          this.val.Get("txtNoDoc").setValue(Datos[2].d.split(";")[0]);
-          this.Serie = Datos[2].d.split(";")[1];
-      
-          this.val.Get("txtFecha").setValue(this.cFunciones.DateFormat(this.Fecha, "yyyy-MM-dd"));
-          this.val.Get("txtPlazo").setValue(this.Plazo);
-          this.val.Get("txtVence").setValue(this.cFunciones.DateAddDay("Day",this.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
-
-
-          let chk: any = document.querySelector("#chkTipoPago_Confirmar");
-          if(this.TipoPago == "Credito")
-          {
-             chk.bootstrapToggle("on");
-          }
-          else
-          {
-            chk.bootstrapToggle("off");
-          }
+          document.getElementById("btnRefrescarConfirmar")?.removeAttribute("disabled");
+          dialogRef.close();
+          let _json = JSON.parse(s);
+  
+          if (_json["esError"] == 1) {
+            this.dialog.open(DialogErrorComponent, {
+              data: _json["msj"].Mensaje,
+            });
+          } else {
+            let Datos: iDatos[] = _json["d"];
+  
+            this.Fecha =  new Date(this.cFunciones.DateFormat(Datos[0].d, 'yyyy-MM-dd hh:mm:ss'));
+            this.TC = Datos[1].d;
+            this.val.Get("txtNoDoc").setValue(Datos[2].d.split(";")[0]);
+            this.Serie = Datos[2].d.split(";")[1];
         
-      
-      
+            this.val.Get("txtFecha").setValue(this.cFunciones.DateFormat(this.Fecha, "yyyy-MM-dd"));
+            this.val.Get("txtPlazo").setValue(this.Plazo);
+            this.val.Get("txtVence").setValue(this.cFunciones.DateAddDay("Day",this.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
+  
+  
+            let chk: any = document.querySelector("#chkTipoPago_Confirmar");
+            if(this.TipoPago == "Credito")
+            {
+               chk.bootstrapToggle("on");
+            }
+            else
+            {
+              chk.bootstrapToggle("off");
+            }
           
-          this.Calcular();
-       
-          this.isEvent = false;
-        }
-      },
-      (err) => {
-        document.getElementById("btnRefrescarConfirmar")?.removeAttribute("disabled");
-        dialogRef.close();
+        
+        
+            
+            this.Calcular();
+         
+            this.isEvent = false;
+          }
 
-        this.dialog.open(DialogErrorComponent, {
-          data: "<b class='error'>" + err.message + "</b>",
-        });
+        },
+        error: (err) => {
+          document.getElementById("btnRefrescarConfirmar")?.removeAttribute("disabled");
+          dialogRef.close();
+  
+          this.dialog.open(DialogErrorComponent, {
+            data: "<b class='error'>" + err.message + "</b>",
+          });
+        },
+        complete: () => {
+
+        }
       }
     );
+
 
 
   }

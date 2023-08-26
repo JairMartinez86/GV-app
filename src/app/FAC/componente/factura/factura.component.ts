@@ -224,60 +224,69 @@ export class FacturaComponent {
     );
 
     this.Conexion.Datos_Factura().subscribe(
-      (s) => {
-        document.getElementById("btnRefrescar")?.removeAttribute("disabled");
-        dialogRef.close();
-        let _json = JSON.parse(s);
-     
-        if (_json["esError"] == 1) {
-          this.dialog.open(DialogErrorComponent, {
-            data: _json["msj"].Mensaje,
-          });
-        } else {
-          let Datos: iDatos[] = _json["d"];
+      {
+        next: (s) => {
 
-          this.lstClientes = Datos[0].d;
-          this.lstBodega = Datos[1].d;
-          this.lstVendedores = Datos[2].d;
-
-          let _iBodega  = this.lstBodega.find(f => f.Codigo == this.CodBodega);
-
-
-          this.cmbBodega.setSelectedItem(this.CodBodega);
-
-
-          if (this.CodCliente == "" && _iBodega != undefined) {
-            let cl = this.lstClientes.find((f) => f.Codigo == _iBodega?.ClienteContado);
-
-            if (cl != undefined) {
-              this.CodCliente = cl.Codigo;
-              this.MonedaCliente = cl.Moneda;
-              this.val.Get("txtCliente").setValue(cl.Cliente);
-              this.val.Get("txtVendedor").setValue([_iBodega.Vendedor]);
-              this.val.Get("txtCliente").disable();
-
-              this.MonedaCliente = cl.Moneda;
-              this.SimboloMonedaCliente = "U$";
-              if (cl.Moneda == "C") this.SimboloMonedaCliente = "C$";
+          document.getElementById("btnRefrescar")?.removeAttribute("disabled");
+          dialogRef.close();
+          let _json = JSON.parse(s);
+       
+          if (_json["esError"] == 1) {
+            this.dialog.open(DialogErrorComponent, {
+              data: _json["msj"].Mensaje,
+            });
+          } else {
+            let Datos: iDatos[] = _json["d"];
+  
+            this.lstClientes = Datos[0].d;
+            this.lstBodega = Datos[1].d;
+            this.lstVendedores = Datos[2].d;
+  
+            let _iBodega  = this.lstBodega.find(f => f.Codigo == this.CodBodega);
+  
+  
+            this.cmbBodega.setSelectedItem(this.CodBodega);
+  
+  
+            if (this.CodCliente == "" && _iBodega != undefined) {
+              let cl = this.lstClientes.find((f) => f.Codigo == _iBodega?.ClienteContado);
+  
+              if (cl != undefined) {
+                this.CodCliente = cl.Codigo;
+                this.MonedaCliente = cl.Moneda;
+                this.val.Get("txtCliente").setValue(cl.Cliente);
+                this.val.Get("txtVendedor").setValue([_iBodega.Vendedor]);
+                this.val.Get("txtCliente").disable();
+  
+                this.MonedaCliente = cl.Moneda;
+                this.SimboloMonedaCliente = "U$";
+                if (cl.Moneda == "C") this.SimboloMonedaCliente = "C$";
+              }
+            }
+  
+            //LLENAR DATOS AL REFRESCAR
+            if (this.bol_Referescar) {
+              this.LlenarDatosCliente(this.CodCliente);
+              this.bol_Referescar = false;
             }
           }
 
-          //LLENAR DATOS AL REFRESCAR
-          if (this.bol_Referescar) {
-            this.LlenarDatosCliente(this.CodCliente);
-            this.bol_Referescar = false;
-          }
-        }
-      },
-      (err) => {
-        document.getElementById("btnRefrescar")?.removeAttribute("disabled");
-        dialogRef.close();
+        },
+        error: (err) => {
+          document.getElementById("btnRefrescar")?.removeAttribute("disabled");
+          dialogRef.close();
+  
+          this.dialog.open(DialogErrorComponent, {
+            data: "<b class='error'>" + err.message + "</b>",
+          });
+        },
+        complete: () => {
 
-        this.dialog.open(DialogErrorComponent, {
-          data: "<b class='error'>" + err.message + "</b>",
-        });
+        }
       }
     );
+    
+   
   }
 
   public v_Refrescar(): void {
@@ -465,41 +474,50 @@ public customSettings: OverlaySettings = {
     );
 
     this.Conexion.Datos_ClienteClave(this.CodCliente).subscribe(
-      (s) => {
-        dialogRef.close();
-        let _json = JSON.parse(s);
+      {
+        next: (s) => {
 
-        if (_json["esError"] == 1) {
-          this.dialog.open(DialogErrorComponent, {
-            data: _json["msj"].Mensaje,
-          });
-        } else {
-          let Datos: iDatos[] = _json["d"];
-          let Clave: any = Datos[0].d;
-
-          if (Clave.length > 0) {
-            if (Clave[0].EsClave && Clave[0].CodVendedor != CodNewVend[0]) {
-              this.cmbVendedor.setSelectedItem(Clave[0].CodVendedor);
-              this.val.Get("txtVendedor").setValue(Clave[0].CodVendedor);
-              this.cmbVendedor.close();
-
-              this.dialog.open(DialogErrorComponent, {
-                data:
-                  "<p>Cliente Clave solo se permite seleccionar el vendedor:<b class='error'>" +
-                  Clave[0].Vendedor +
-                  "</b></p>",
-              });
+          dialogRef.close();
+          let _json = JSON.parse(s);
+  
+          if (_json["esError"] == 1) {
+            this.dialog.open(DialogErrorComponent, {
+              data: _json["msj"].Mensaje,
+            });
+          } else {
+            let Datos: iDatos[] = _json["d"];
+            let Clave: any = Datos[0].d;
+  
+            if (Clave.length > 0) {
+              if (Clave[0].EsClave && Clave[0].CodVendedor != CodNewVend[0]) {
+                this.cmbVendedor.setSelectedItem(Clave[0].CodVendedor);
+                this.val.Get("txtVendedor").setValue(Clave[0].CodVendedor);
+                this.cmbVendedor.close();
+  
+                this.dialog.open(DialogErrorComponent, {
+                  data:
+                    "<p>Cliente Clave solo se permite seleccionar el vendedor:<b class='error'>" +
+                    Clave[0].Vendedor +
+                    "</b></p>",
+                });
+              }
             }
           }
+
+        },
+        error: (err) => {
+          dialogRef.close();
+          this.dialog.open(DialogErrorComponent, {
+            data: "<b class='error'>" + err.message + "</b>",
+          });
+        },
+        complete: () => {
+
         }
-      },
-      (err) => {
-        dialogRef.close();
-        this.dialog.open(DialogErrorComponent, {
-          data: "<b class='error'>" + err.message + "</b>",
-        });
       }
     );
+
+
   }
 
   public v_TipoPago(event: any): void {
@@ -525,77 +543,87 @@ public customSettings: OverlaySettings = {
     );
 
     this.Plazo = 0;
+
     this.Conexion.Datos_Credito(this.CodCliente).subscribe(
-      (s) => {
-        dialogRef.close();
-        let _json = JSON.parse(s);
+      {
+        next: (s) => {
 
-        if (_json["esError"] == 1) {
-          this.dialog.open(DialogErrorComponent, {
-            data: _json["msj"].Mensaje,
-          });
-        } else {
-          let Datos: iDatos[] = _json["d"];
-          let Credito: iCredito[] = Datos[0].d;
-
-          this.val.Get("txtLimite").setValue("0.00");
-          this.val.Get("txtDisponible").setValue("0.00");
-          this.Disponible = 0;
-
-          if (Credito.length > 0) {
-            this.TipoPago = "Credito";
-            this.val
-              .Get("txtLimite")
-              .setValue(this.cFunciones.NumFormat(Credito[0].Limite, "2"));
-            this.val
-              .Get("txtDisponible")
-              .setValue(this.cFunciones.NumFormat(Credito[0].Disponible, "2"));
-              this.Disponible = this.cFunciones.Redondeo(Credito[0].Disponible, "2");
-
-              if(this.ConfirmarFactura.Vizualizado)
-              {
-                this.ConfirmarFactura.Disponible = this.Disponible;
-                this.ConfirmarFactura.Calcular();
-                this.val.Get("txtDisponible").setValue(this.cFunciones.NumFormat(this.ConfirmarFactura.Restante, "2"));
+          dialogRef.close();
+          let _json = JSON.parse(s);
+  
+          if (_json["esError"] == 1) {
+            this.dialog.open(DialogErrorComponent, {
+              data: _json["msj"].Mensaje,
+            });
+          } else {
+            let Datos: iDatos[] = _json["d"];
+            let Credito: iCredito[] = Datos[0].d;
+  
+            this.val.Get("txtLimite").setValue("0.00");
+            this.val.Get("txtDisponible").setValue("0.00");
+            this.Disponible = 0;
+  
+            if (Credito.length > 0) {
+              this.TipoPago = "Credito";
+              this.val
+                .Get("txtLimite")
+                .setValue(this.cFunciones.NumFormat(Credito[0].Limite, "2"));
+              this.val
+                .Get("txtDisponible")
+                .setValue(this.cFunciones.NumFormat(Credito[0].Disponible, "2"));
+                this.Disponible = this.cFunciones.Redondeo(Credito[0].Disponible, "2");
+  
+                if(this.ConfirmarFactura.Vizualizado)
+                {
+                  this.ConfirmarFactura.Disponible = this.Disponible;
+                  this.ConfirmarFactura.Calcular();
+                  this.val.Get("txtDisponible").setValue(this.cFunciones.NumFormat(this.ConfirmarFactura.Restante, "2"));
+                }
+  
+  
+  
+              //this.Plazo = Number(Credito[0].Plazo) + Number(Credito[0].Gracia);
+              this.Plazo = Number(Credito[0].Plazo);
+  
+              this.MonedaCliente = Credito[0].Moneda;
+              this.SimboloMonedaCliente = "U$";
+              if (Credito[0].Moneda == "C") this.SimboloMonedaCliente = "C$";
+  
+              if (Credito[0].Plazo == 0) {
+                this.Plazo = 0;
+                this.TipoPago = "Contado";
+                chk.bootstrapToggle("off");
+                this.dialog.open(DialogErrorComponent, {
+                  data: "<b class='error'>No tiene crédito disponible.</b>",
+                });
               }
-
-
-
-            //this.Plazo = Number(Credito[0].Plazo) + Number(Credito[0].Gracia);
-            this.Plazo = Number(Credito[0].Plazo);
-
-            this.MonedaCliente = Credito[0].Moneda;
-            this.SimboloMonedaCliente = "U$";
-            if (Credito[0].Moneda == "C") this.SimboloMonedaCliente = "C$";
-
-            if (Credito[0].Plazo == 0) {
-              this.Plazo = 0;
+            } else {
               this.TipoPago = "Contado";
               chk.bootstrapToggle("off");
+  
               this.dialog.open(DialogErrorComponent, {
-                data: "<b class='error'>No tiene crédito disponible.</b>",
+                data: "<b class='error'>No tiene crédito asignado.</b>",
               });
             }
-          } else {
-            this.TipoPago = "Contado";
-            chk.bootstrapToggle("off");
-
-            this.dialog.open(DialogErrorComponent, {
-              data: "<b class='error'>No tiene crédito asignado.</b>",
-            });
           }
-        }
-      },
-      (err) => {
-        dialogRef.close();
-        this.TipoPago = "Contado";
-        chk.bootstrapToggle("off");
 
-        this.dialog.open(DialogErrorComponent, {
-          data: "<b class='error'>" + err.message + "</b>",
-        });
+        },
+        error: (err) => {
+          dialogRef.close();
+          this.TipoPago = "Contado";
+          chk.bootstrapToggle("off");
+  
+          this.dialog.open(DialogErrorComponent, {
+            data: "<b class='error'>" + err.message + "</b>",
+          });
+        },
+        complete: () => {
+
+        }
       }
     );
+
+ 
   }
 
   public v_TipoImpuesto(event: any): void {
@@ -976,52 +1004,56 @@ public customSettings: OverlaySettings = {
       }
     );
 
-   
     this.POST.GuardarFactura(this.Fila_Doc).subscribe(
-      (s) => {
-        dialogRef.close();
-        let _json = JSON.parse(s);
+      {
+        next: (s) => {
 
-        if (_json["esError"] == 1) {
-          this.dialog.open(DialogErrorComponent, {
-            data: _json["msj"].Mensaje,
-          });
-        } 
-        else {
+          dialogRef.close();
+          let _json = JSON.parse(s);
+  
+          if (_json["esError"] == 1) {
+            this.dialog.open(DialogErrorComponent, {
+              data: _json["msj"].Mensaje,
+            });
+          } 
+          else {
+  
+  
+            let Datos: iDatos[] = _json["d"];
+            let Consecutivo: string = Datos[0].d;
+  
+            this.dialog.open(DialogErrorComponent, {
+              data: "<p>Documento Generado: <b class='error'>" + Consecutivo + "</b></p>"
+            });
+  
+  
+              this._Evento("Limpiar");
+  
+              (document.querySelector("#frmFichaFactura") as HTMLElement).setAttribute(
+                "style",
+                "display:initial;"
+              );
+          
+              (document.querySelector("#frmConfirmarFactura") as HTMLElement).setAttribute(
+                "style",
+                "display:none;"
+              );
+              
+          }
 
-
-          let Datos: iDatos[] = _json["d"];
-          let Consecutivo: string = Datos[0].d;
-
-          this.dialog.open(DialogErrorComponent, {
-            data: "<p>Documento Generado: <b class='error'>" + Consecutivo + "</b></p>"
-          });
-
-
-            this._Evento("Limpiar");
-
-            (document.querySelector("#frmFichaFactura") as HTMLElement).setAttribute(
-              "style",
-              "display:initial;"
-            );
-        
-            (document.querySelector("#frmConfirmarFactura") as HTMLElement).setAttribute(
-              "style",
-              "display:none;"
-            );
-            
-        }
-      },
-      (err) => {
-        dialogRef.close();
+        },
+        error: (err) => {
+          dialogRef.close();
       
-        this.dialog.open(DialogErrorComponent, {
-          data: "<b class='error'>" + err.message + "</b>",
-        });
+          this.dialog.open(DialogErrorComponent, {
+            data: "<b class='error'>" + err.message + "</b>",
+          });
+        },
+        complete: () => {
+
+        }
       }
     );
-
-   
 
 
   }
