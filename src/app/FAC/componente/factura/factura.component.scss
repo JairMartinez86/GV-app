@@ -55,33 +55,23 @@ span{
   }
 }
 
-/*
-.btn-contenedor{
-  margin-bottom: 35px;
-  text-align: left;
 
-  @include Tamano(xs) {
-    button{
-      display: block;
-      width: 100%;
-    }
-  }
-
-  @include Tamano(lg) {
-    button{
-      display: initial;
-      width: auto;
-    }
-  }
- 
-  
-}
-*/
 
 #btnGuardarFactura
 {
   display: none;
 }
+
+
+.btn-contenedor-custom {
+  display: flex;
+  justify-content: flex-end;
+  height: 60px;
+  margin-right: 10px;
+  z-index: 2;
+}
+
+
 
 
 //████████████████████████████████████████████FOOTER████████████████████████████████████████████████████████████████████████

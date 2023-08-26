@@ -10,6 +10,7 @@ import { Validacion } from 'src/app/SHARED/class/validacion';
 import { DialogErrorComponent } from 'src/app/SHARED/componente/dialog-error/dialog-error.component';
 import { WaitComponent } from 'src/app/SHARED/componente/wait/wait.component';
 import { iDatos } from 'src/app/SHARED/interface/i-Datos';
+import { FacturaComponent } from '../factura.component';
 
 @Component({
   selector: 'app-registro-factura',
@@ -118,6 +119,66 @@ export class RegistroFacturaComponent {
     this.lstDocumentos.filter = (event.target as HTMLInputElement).value.trim().toLowerCase();
   }
 
+
+  public v_Editar(det : iFactPed)
+  {
+
+
+    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+      WaitComponent,
+      {
+        panelClass: "escasan-dialog-full-blur",
+        data: "",
+      }
+    );
+
+    this.Conexion.GetDetalle(det.IdVenta).subscribe(
+      {
+        next: (s) => {
+
+  
+          let _json = JSON.parse(s);
+       
+          if (_json["esError"] == 1) {
+            this.dialog.open(DialogErrorComponent, {
+              data: _json["msj"].Mensaje,
+            });
+          } else {
+            let Datos: iDatos[] = _json["d"];
+
+            det.VentaDetalle = Datos[0].d;
+
+
+              let dialogRef: MatDialogRef<FacturaComponent> =
+              this.dialog.open(FacturaComponent, {
+                panelClass: "escasan-dialog-full",
+                disableClose: true
+              });
+
+            dialogRef.afterOpened().subscribe(s => {
+              dialogRef.componentInstance.v_Editar(det);
+
+            });
+  
+          }
+
+        },
+        error: (err) => {
+          dialogRef.close();
+  
+          this.dialog.open(DialogErrorComponent, {
+            data: "<b class='error'>" + err.message + "</b>",
+          });
+        },
+        complete: () => {
+          dialogRef.close();
+        }
+      }
+    );
+    
+
+    
+  }
 
   private ngOnInit() {
 

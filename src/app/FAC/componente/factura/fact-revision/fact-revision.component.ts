@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { iFactPed } from 'src/app/FAC/interface/i-Factura-Pedido';
 import { iDetalleFactura } from 'src/app/FAC/interface/i-detalle-factura';
 import { Funciones } from 'src/app/SHARED/class/cls_Funciones';
 
@@ -20,6 +21,7 @@ export class FactRevisionComponent {
   public TC: number = 0;
   private MonedaCliente : string;
   private TipoExoneracion : string;
+  public EsModal : boolean;
 
   constructor(public cFunciones: Funciones){}
 
@@ -50,6 +52,11 @@ export class FactRevisionComponent {
 
   }
 
+  public v_Autorizar(det : iDetalleFactura) : void{
+
+    det.Autorizado = !det.Autorizado;
+    det.UsuarioAutoriza = "jmg";
+  }
 
   private Calcular() :void{
 

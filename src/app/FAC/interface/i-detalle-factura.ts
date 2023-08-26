@@ -1,6 +1,6 @@
 export interface iDetalleFactura{
-    IdVentaDetalle :string
-    IdVenta: string
+    IdVentaDetalle :string;
+    IdVenta: string;
     Index:number;
     Codigo: string;
     Producto: string;
@@ -36,5 +36,9 @@ export interface iDetalleFactura{
     EsBonifLibre : boolean;
     EsExonerado : boolean;
     PrecioLiberado : boolean;
+    Margen : number;
+    PedirAutorizado: boolean;
+    Autorizado: boolean;
+    UsuarioAutoriza: string,
     IndexUnion : number;
 }

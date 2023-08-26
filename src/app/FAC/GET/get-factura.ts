@@ -59,4 +59,9 @@ export class getFactura{
    }
    
 
+   public GetDetalle(IdVenta : string) : Observable<string>{
+      return this.http.get<any>(this._Cnx.Url() + "Factura/GetDetalle?IdVenta=" + IdVenta);
+   }
+   
+
 }

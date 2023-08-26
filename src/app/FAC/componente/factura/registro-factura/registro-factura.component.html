@@ -18,21 +18,21 @@
                                     <input type="date" id="txtFecha1" class="form-control" placeholder="Fecha Inicio"
                                         aria-label="Fecha Final" formControlName="txtFecha1">
                                     <label for="txtFecha1">Desde</label>
-    
+
                                 </div>
-    
+
                             </div>
                         </div>
                         <div class="col-6 col-md-6 col-lg-4 px-1 mb-1" *ngIf="!EsCola">
                             <div class="input-group">
-    
+
                                 <div class="form-floating">
                                     <input type="date" id="txtFecha2" class="form-control" placeholder="Fecha Final"
                                         aria-label="Fecha Final" formControlName="txtFecha2">
                                     <label for="txtFecha2">Hasta</label>
-    
+
                                 </div>
-    
+
                                 <span class="input-group-text"> <button type="button" class="btn btn-refescar"
                                         id="btnBuscarFactura" (click)="CargarDocumentos();"><i
                                             class="fa-solid fa-arrows-rotate fa-beat-fade fa-lg"></i></button></span>
@@ -41,25 +41,31 @@
                         <div class="col-12 col-md-12 col-lg-4 mb-1">
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
-    
+
                                 <div class="form-floating">
                                     <input type="text" id="txtBuscar" class="form-control" placeholder="Buscar"
                                         aria-label="Buscar" formControlName="txtBuscar" (keyup)="v_Filtrar($event)">
                                     <label for="txtBuscar">Buscar</label>
-    
+
                                 </div>
-    
+                                <span class="input-group-text"> <button type="button" class="btn btn-secundario"
+                                        id="btnRefrescarReg" (click)="CargarDocumentos();"><i
+                                            class="fa-solid fa-arrows-rotate fa-spin fa-lg"></i> Refrescar</button>
+                                </span>
+
+
+
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
-    
-    
+
+
         </div>
     </div>
 
-   
+
 
     <div class="mat-elevation-z8  table-container">
         <table class="table table-hover table-bordered table-sm tabla-custom mat-elevation-z8" mat-table
@@ -192,13 +198,23 @@
 
                     <div class="row">
                         <span class="input-group-text btn-contenedor">
+                            <span>
+                                <i *ngIf="det.EsExportacion" class="fas fa-plane-departure fa-lg"></i>
+                                <i *ngIf="det.EsContraentrega" class="fas fa-handshake"></i>
+                                <i *ngIf="det.EsDelivery" class="fas fa-truck fa-lg"></i>
+                            </span>
 
-                            <button type="button" class="btn"><i
-                                    [ngClass]="(EsCola ==true) ? 'fa-solid fa-print fa-fade fa-lg': 'fa-solid fa-eye fa-beat-fade fa-lg'"></i>
-                            </button>
-                            <button type="button" class="btn"><i class="fa-solid fa-ban fa-beat-fade fa-lg"
-                                    (click)="v_Anular(det)" *ngIf="det.Estado!='Anulado'"></i>
-                            </button>
+                            <span>
+                                <button type="button" class="btn" *ngIf="det.PedirAutorizacion"
+                                (click)="v_Editar(det);"><i
+                                        [ngClass]="(EsCola ==true) ? 'fa-solid fa-print fa-fade fa-lg': 'fa-solid fa-eye fa-beat-fade fa-lg'"></i>
+                                </button>
+                                <button type="button" class="btn"><i class="fa-solid fa-ban fa-beat-fade fa-lg"
+                                        (click)="v_Anular(det)" *ngIf="det.Estado!='Anulado'"></i>
+                                </button>
+                            </span>
+
+
                         </span>
 
                     </div>

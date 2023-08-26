@@ -15,7 +15,6 @@ import { iDetalleFactura } from "src/app/FAC/interface/i-detalle-factura";
 import { iExistencia } from "src/app/FAC/interface/i-Existencia";
 import { iBonificacion } from "src/app/FAC/interface/i-Bonificacion";
 import { iDescuento } from "src/app/FAC/interface/i-Descuento";
-import { iBonifLibre } from "src/app/FAC/interface/i-Bonif-Libre";
 
 @Component({
   selector: "app-fact-ficha-producto",
@@ -54,6 +53,8 @@ export class FactFichaProductoComponent {
   public Impuesto: number = 0;
   public TotalCordoba: number = 0;
   public TotalDolar: number = 0;
+
+  private EsModal : boolean = false;
 
   public constructor(
     private dialog: MatDialog,
@@ -105,12 +106,13 @@ export class FactFichaProductoComponent {
     this._Evento("Limpiar");
   }
 
-  public Iniciar(CodBodega: string, CodCliente: string, MonedaCliente: string, TipoExoneracion: string): void {
+  public Iniciar(CodBodega: string, CodCliente: string, MonedaCliente: string, TipoExoneracion: string, EsModal : boolean): void {
     this._Evento("Limpiar");
     this.CodBodega = CodBodega;
     this.CodCliente = CodCliente;
     this.MonedaCliente = MonedaCliente;
     this.TipoExoneracion = TipoExoneracion;
+    this.EsModal = EsModal;
 
     document.getElementById("btnAgregarProducto")?.setAttribute("disabled", "disabled");
 
@@ -574,6 +576,9 @@ export class FactFichaProductoComponent {
         DetalleBonificado.EsBonifLibre = false;
         DetalleBonificado.EsExonerado = false;
         DetalleBonificado.PrecioLiberado = false;
+        DetalleBonificado.Margen = 0;
+        DetalleBonificado.PedirAutorizado = false;
+        DetalleBonificado.Autorizado = false;
         DetalleBonificado.IndexUnion = det.Index;
 
         AgregarBonificado = true;
@@ -629,6 +634,9 @@ export class FactFichaProductoComponent {
       det.EsBonifLibre = true;
       det.EsExonerado = false;
       det.PrecioLiberado = false;
+      det.PedirAutorizado = false;
+      det.Autorizado = false;
+      det.Margen = 0;
       this.bol_BonificacionLibre = false;
       this.i_Bonif = undefined;
 
@@ -640,9 +648,25 @@ export class FactFichaProductoComponent {
       this.TotalCordoba = 0;
       this.TotalDolar = 0;
     }
+    else
+    {
+      det.PedirAutorizado = false;
+      if(det.Autorizado == undefined) det.Autorizado = false;
+
+      if (AgregarBonificado && det.Descuento == 0){
+        let PrecioDist  = this.lstPrecios.find(f => f.CodProducto == this.CodProducto && f.Tipo.includes("Distribuid"));
+
+        det.Margen = this.cFunciones.Redondeo(det.Cantidad * det.PrecioCordoba, "2");
+        det.Margen = this.cFunciones.Redondeo(det.Margen / DetalleBonificado.Cantidad, "2");
+        if(det.Margen < Number(PrecioDist?.PrecioCordoba) && !this.EsModal) det.PedirAutorizado = true;
+
+      }
+     
+    }
 
 
-
+ 
+    
 
     this.lstDetalle.push(det);
     if (AgregarBonificado && det.Descuento == 0) this.lstDetalle.push(DetalleBonificado);

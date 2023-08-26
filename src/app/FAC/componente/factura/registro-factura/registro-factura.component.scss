@@ -150,7 +150,13 @@ table{
 
 .btn-contenedor {
     display: flex;
-    justify-content: right;
+    justify-content:space-between;
+
+    span:first-child{
+        i{
+            margin-right: 10px;
+        }
+    }
 
     button:first-child {
         margin-right: 50px;

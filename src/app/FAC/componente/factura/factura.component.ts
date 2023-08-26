@@ -42,7 +42,7 @@ export class FacturaComponent {
   public CodCliente: string = "";
   lstClientes: iCliente[] = [];
   filteredClientes: Observable<iCliente[]> | undefined;
-  public Fila_Doc : iFactPed = {} as iFactPed;
+  private Fila_Doc : iFactPed = {} as iFactPed;
   public TipoFactura : string = "Factura";
 
   lstBodega: iBodega[] = [];
@@ -59,6 +59,7 @@ export class FacturaComponent {
   public isEvent: boolean = false;
   private bol_Referescar: boolean = false;
   private Disponible : number = 0;
+  public EsModal : boolean = false;
 
   public SimboloMonedaCliente: string = "U$";
   private MonedaCliente: string;
@@ -780,7 +781,7 @@ public customSettings: OverlaySettings = {
         this.val.Get("txtVendedor").setValue(this.ConfirmarFactura.val.Get("txtVendedor").value);
      
       }
-
+  
       this.LlenarRevision();
 
       return;
@@ -825,7 +826,8 @@ public customSettings: OverlaySettings = {
       this.CodBodega,
       this.CodCliente,
       this.MonedaCliente,
-      this.ConfirmarFactura.TipoExoneracion
+      this.ConfirmarFactura.TipoExoneracion,
+      this.EsModal
     );
   }
 
@@ -839,7 +841,7 @@ public customSettings: OverlaySettings = {
       this.FichaProducto.lstDetalle,
       this.FichaProducto.TC,
       this.MonedaCliente,
-      this.ConfirmarFactura.TipoExoneracion
+      this.ConfirmarFactura.TipoExoneracion,
     );
   }
 
@@ -948,7 +950,7 @@ public customSettings: OverlaySettings = {
     let iBodega = this.lstBodega.find(f => f.Codigo == this.CodBodega);
     let iCLiente = this.lstClientes.find(f => f.Codigo == this.CodCliente);
     let iVendedor = this.lstVendedores.find(f => f.Codigo == this.cmbVendedor.selection[0]);
-    if( this.RevisionFactura.lstDetalle.filter(f => f.PrecioLiberado).length > 0 &&  this.Fila_Doc.IdVenta == "00000000-0000-0000-0000-000000000000") PedirAutorizacion = true;
+    if( this.RevisionFactura.lstDetalle.filter(f => f.PrecioLiberado  || f.PedirAutorizado).length > 0 &&  !this.EsModal) PedirAutorizacion = true;
 
     //this.Fila_Doc.IdVenta = "";
     //this.Fila_Doc.NoFactura = "";
@@ -961,7 +963,7 @@ public customSettings: OverlaySettings = {
     this.Fila_Doc.NomCliente = iCLiente!.Cliente;
     this.Fila_Doc.Nombre = this.ConfirmarFactura.val.Get("txtNombre_Confirmar").value;
     this.Fila_Doc.RucCedula = this.val.Get("txtIdentificacion").value;
-    this.Fila_Doc.Contanto = this.val.Get("txtContacto").value;
+    this.Fila_Doc.Contacto = this.val.Get("txtContacto").value;
     this.Fila_Doc.Limite = this.ConfirmarFactura.val.Get("txtLimite_Confirmar").value;
     this.Fila_Doc.Disponible = this.ConfirmarFactura.val.Get("txtDisponible_Confirmar").value;
     this.Fila_Doc.CodBodega = this.CodBodega;
@@ -1054,6 +1056,86 @@ public customSettings: OverlaySettings = {
         }
       }
     );
+
+
+  }
+
+  public v_Editar(det : iFactPed){
+    this.EsModal = true;
+    this.isEvent = false;
+    this.Fila_Doc = det;
+  
+
+    
+
+    this.RevisionFactura.EsModal = true;
+    this.ConfirmarFactura.EsModal = true;
+    this.CodCliente = this.Fila_Doc.CodCliente;
+    this.val.Get("txtCliente").setValue(this.Fila_Doc.NomCliente);
+    this.val.Get("txtNombre").setValue(this.Fila_Doc.Nombre);
+    this.val.Get("txtIdentificacion").setValue(this.Fila_Doc.RucCedula);
+    this.val.Get("txtContacto").setValue(this.Fila_Doc.Contacto);
+    this.val.Get("txtLimite").setValue(this.Fila_Doc.Limite);
+    this.val.Get("txtDisponible").setValue(this.Fila_Doc.Disponible);
+
+    this.CodBodega = this.Fila_Doc.CodBodega;
+    this.cmbBodega.setSelectedItem(this.Fila_Doc.CodBodega);
+    this.val.Get("txtBodega").setValue([this.Fila_Doc.CodBodega]);
+
+    this.cmbVendedor.setSelectedItem(this.Fila_Doc.CodVendedor);
+    this.val.Get("txtVendedor").setValue([this.Fila_Doc.CodVendedor]);
+
+    this.val.Get("txtOC").setValue(this.Fila_Doc.OrdenCompra);
+
+    
+    let chk1: any = document.querySelector("#chkTipoFactura");
+    chk1.bootstrapToggle("off");
+    if(this.Fila_Doc.TipoVenta == "Credito") chk1.bootstrapToggle("on");
+    
+
+    let chk2: any = document.querySelector("#chkExportacion");
+    chk2.bootstrapToggle("off");
+    if(this.Fila_Doc.EsExportacion)chk2.bootstrapToggle("on");
+
+    let chk3: any = document.querySelector("#chkContraEntrega");
+    chk3.bootstrapToggle("off");
+    if(this.Fila_Doc.EsContraentrega) chk3.bootstrapToggle("on");
+
+
+
+    let chk4: any = document.querySelector("#chkEsPedido");
+    chk4.bootstrapToggle("off");
+    if(this.Fila_Doc.TipoDocumento == "Factura") chk4.bootstrapToggle("on");
+
+    this.TipoFactura = this.Fila_Doc.TipoDocumento;
+    this.ConfirmarFactura.TipoPago = this.Fila_Doc.TipoVenta;
+    this.FichaProducto.TC = this.Fila_Doc.TasaCambio;
+    this.ConfirmarFactura.TipoFactura = this.Fila_Doc.TipoDocumento;
+    this.ConfirmarFactura.Serie = this.Fila_Doc.Serie;
+    if(this.Fila_Doc.TipoDocumento == "Factura") this.ConfirmarFactura.val.Get("txtNoDoc").setValue(this.Fila_Doc.NoFactura);
+    if(this.Fila_Doc.TipoDocumento == "Pedido") this.ConfirmarFactura.val.Get("txtNoDoc").setValue(this.Fila_Doc.NoPedido);
+
+    this.Plazo = this.Fila_Doc.Plazo;
+    this.ConfirmarFactura.Fecha = new Date(this.cFunciones.DateFormat(this.Fila_Doc.Fecha, 'yyyy-MM-dd hh:mm:ss'));
+    this.ConfirmarFactura.val.Get("txtFecha").setValue(this.cFunciones.DateFormat(this.ConfirmarFactura.Fecha, "yyyy-MM-dd"));
+    this.ConfirmarFactura.val.Get("txtPlazo").setValue(this.Plazo);
+    this.ConfirmarFactura.val.Get("txtVence").setValue(this.cFunciones.DateAddDay("Day",this.ConfirmarFactura.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
+
+    this.ConfirmarFactura.val.Get("txtMoneda").setValue(this.Fila_Doc.Moneda);
+    this.ConfirmarFactura.val.Get("chkDelivery").setValue(this.Fila_Doc.EsDelivery);
+    this.ConfirmarFactura.val.Get("txtDireccion").setValue(this.Fila_Doc.Direccion);
+    this.ConfirmarFactura.val.Get("txtObservaciones").setValue(this.Fila_Doc.Observaciones);
+
+    let chk5: any = document.querySelector("#chkExoneracion");
+    chk5.bootstrapToggle("off");
+    if(this.Fila_Doc.TipoExoneracion == "Exonerado") chk5.bootstrapToggle("on");
+    this.ConfirmarFactura.val.Get("txtNoExoneracion").setValue(this.Fila_Doc.NoExoneracion);
+
+    this.FichaProducto.lstDetalle = this.Fila_Doc.VentaDetalle;
+
+
+    this.Panel = "Producto";
+    this.v_FichaPanel("Siguiente");
 
 
   }

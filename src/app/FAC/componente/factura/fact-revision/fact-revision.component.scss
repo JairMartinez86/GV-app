@@ -96,7 +96,24 @@ td i {
 }
 
 
+.contenedor-edicion{
 
+
+  .AutorizarMargen{
+    margin-right: 30px;
+    padding: 10px;
+
+    b{
+      color: var(--escan-fondo);
+      font-weight: bold;
+      margin-right: 10px;
+    }
+  }
+}
+
+.secundario{
+  color: var(--escan-secundario);
+}
 
 
 

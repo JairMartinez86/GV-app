@@ -34,15 +34,18 @@
                             <td class="col-sm-12">
                                 <div class="etiqueta">Descuento:</div>
                                 <div class="valores">
-                                    <div class="valores-descuento"><span class="porc">{{det.PorcDescuento * 100| number :
+                                    <div class="valores-descuento"><span class="porc">{{det.PorcDescuento * 100| number
+                                            :
                                             '1.2-2'}} %</span><span>{{det.Descuento| number : '1.2-2'}}</span></div>
                                 </div>
                             </td>
                             <td class="col-sm-12">
                                 <div class="etiqueta">Adicional:</div>
                                 <div class="valores">
-                                    <div class="valores-descuento"><span class="porc">{{det.PorcDescuentoAdicional * 100| number :
-                                            '1.2-2'}} %</span><span>{{det.DescuentoAdicional| number : '1.2-2'}}</span></div>
+                                    <div class="valores-descuento"><span class="porc">{{det.PorcDescuentoAdicional *
+                                            100| number :
+                                            '1.2-2'}} %</span><span>{{det.DescuentoAdicional| number : '1.2-2'}}</span>
+                                    </div>
                                 </div>
                             </td>
                             <td class="col-sm-12">
@@ -59,10 +62,34 @@
                             </td>
 
                             <td class="col-sm-12 linea">
-                                <span class="input-group-text">
-                                    <button type="button" class="btn"><i class="fa-solid fa-trash fa-beat-fade"
-                                            (click)="v_Eliminar(det.Index);"></i>
+
+                                <span class="input-group-tex">
+
+                                    <div class="contenedor-edicion">
+
+                                        <div class="btn-contenedor">
+                                            <button type="button" class="btn btn-primario AutorizarMargen"
+                                            *ngIf="EsModal && det.PedirAutorizado" (click)="v_Autorizar(det);">
+                                            <b>Margen:</b>
+                                            <b>{{det.Margen}}</b>
+                                            
+                                            <i
+                                            [ngClass]="det.Autorizado ? 'fa-solid fa-lock-open fa-beat-fade fa-lg secundario' : 'fa-solid fa-lock fa-beat-fade fa-lg'"></i>
+
+
+                                        </button>
+
+                                        
+                                        <button type="button" class="btn" (click)="v_Eliminar(det.Index);"><i
+                                            class="fa-solid fa-trash fa-beat-fade"></i>
                                     </button>
+                                        </div>
+
+                                        
+
+
+                                    </div>
+
                                 </span>
 
                             </td>
