@@ -2,34 +2,93 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { iLogin } from '../interface/i-login';
 import { Funciones } from '../class/cls_Funciones';
-import { interval, Subscription } from 'rxjs';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { getServidor } from '../GET/get-servidor';
+import { WaitComponent } from '../componente/wait/wait.component';
+import { DialogErrorComponent } from '../componente/dialog-error/dialog-error.component';
+import { iDatos } from '../interface/i-Datos';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  
+ 
 
-  constructor(private _Router: Router, private cFunciones : Funciones) { }
+  constructor(private _Router: Router, private cFunciones : Funciones,
+    private DIALOG: MatDialog, private GET: getServidor) { }
 
 
   public Session(user : string, pwd : string) : void{
 
+    document.getElementById("btnLogin")?.setAttribute("disabled", "disabled");
 
-    let l : iLogin = {} as iLogin;
+    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
+      WaitComponent,
+      {
+        panelClass: "escasan-dialog-full-blur",
+        data: "",
+      }
+    );
+    
+    this.GET.Login(user, pwd).subscribe(
+      {
+        next: (data) => {
 
-    l.User = user;
-    l.Pwd = pwd;
-    l.Fecha = this.cFunciones.DateFormat(new Date(), "yyyy/MM/dd hh:mm:ss");
+          
+          dialogRef.close();
+          let _json: any =  JSON.parse(data);
 
-    localStorage.removeItem("login");
-    localStorage.setItem("login", JSON.stringify(l));
+          if (_json["esError"] == 1) {
+            this.DIALOG.open(DialogErrorComponent, {
+              data: _json["msj"].Mensaje,
+            });
+          } else {
 
-    this.isLogin();
+            let datos : iDatos[] =  _json["d"];
+
+              let l : iLogin = datos[0].d[0];
+              this.cFunciones.User = l.User;
+              this.cFunciones.Nombre = l.Nombre;
+              this.cFunciones.Rol = l.Rol;
+              this.cFunciones.FechaServidor(datos[1].d);
+              this.cFunciones.SetTiempoDesconexion(Number(datos[2].d));
+    
+              localStorage.removeItem("login");
+
+              if(datos[0].d != undefined)
+              {
+                localStorage.setItem("login", JSON.stringify(l));
+
+              this.isLogin();
+              }
+
+              
+          }
+
+        },
+        error: (err) => {
+
+          document.getElementById("btnLogin")?.removeAttribute("disabled");
+
+          dialogRef.close();
+
+          this.DIALOG.open(DialogErrorComponent, {
+            data: "<b class='error'>" + err.message + "</b>",
+          });
+
+        },
+        complete: () => { 
+        document.getElementById("btnLogin")?.removeAttribute("disabled");
+ 
+      }
+      }
+    );
+
+
   }
 
-  subscription: Subscription = {} as Subscription;
   
   public isLogin(){
 
@@ -38,10 +97,15 @@ export class LoginService {
     if(s != undefined){
 
       let l : iLogin = JSON.parse(s);
-      if(this.Diff(new Date(l.Fecha)) <= 120)
+
+      if(this.Diff(new Date(l.FechaLogin)) <= this.cFunciones.TiempoDesconexion())
       {
-        this.subscription = interval(5000).subscribe(val => this.UpdFecha())
-        this._Router.navigate(['/Menu'], { skipLocationChange: false });
+
+        if(this._Router.url !== '/Menu')
+        {
+          this._Router.navigate(['/Menu'], { skipLocationChange: false });
+        }
+       
         return;
       }
  
@@ -54,23 +118,25 @@ export class LoginService {
 
   Diff(FechaLogin : Date){
 
-    let FechaServidor : Date = new Date(this.cFunciones.FechaInicio());
+    let FechaServidor : Date = new Date(this.cFunciones.FechaServer);
 
     var Segundos = Math.abs((FechaLogin.getTime() - FechaServidor.getTime()) / 1000);
     return Segundos;
   }
 
 
-  private UpdFecha(){
-    
+  public UpdFecha(f : string){
+
     let s : string = localStorage.getItem("login")!;
    
    if(s != undefined){
 
       let l : iLogin = JSON.parse(s);
-      l.Fecha = this.cFunciones.DateFormat(new Date(), "yyyy-MM-dd hh:mm:ss");
+      l.FechaLogin = f;
       localStorage.removeItem("login");
       localStorage.setItem("login", JSON.stringify(l));
+
+      this.isLogin();
     }
 
   }
@@ -80,7 +146,5 @@ export class LoginService {
     this._Router.navigate(['/Login'], { skipLocationChange: false });
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+  
 }

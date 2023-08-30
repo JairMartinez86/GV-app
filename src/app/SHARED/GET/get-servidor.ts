@@ -8,21 +8,25 @@ import { Conexion } from "src/app/SHARED/class/Cadena_Conexion";
   })
 export class getServidor{
     
-    private _Cnx = new Conexion();
-    private http: HttpClient;
+  private _Cnx = new Conexion();
+  private http: HttpClient;
 
-    constructor(){
+  constructor(){
 
-        this.http = new HttpClient(new HttpXhrBackend({ 
-            build: () => new XMLHttpRequest() 
-        }));
+      this.http = new HttpClient(new HttpXhrBackend({ 
+          build: () => new XMLHttpRequest() 
+      }));
 
-    }
+  }
 
-    public FechaServidor() : Observable<string>{
-      return this.http.get<any>(this._Cnx.Url() + "SIS/FechaServidor");
-   }
-    
+  public FechaServidor(user : string) : Observable<any>{
+    return this.http.get<any>(this._Cnx.Url() + "SIS/FechaServidor?user="+ user);
+ }
+  
+ public Login(user: string, pass : string) : Observable<any>{
+  return this.http.get<any>(this._Cnx.Url() + "SIS/Login?user=" + user + "&pass=" + pass);
+}
+
  
 
 }

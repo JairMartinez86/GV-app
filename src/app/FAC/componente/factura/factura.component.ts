@@ -1025,7 +1025,7 @@ public customSettings: OverlaySettings = {
             let Consecutivo: string = Datos[0].d;
   
             this.dialog.open(DialogErrorComponent, {
-              data: "<p>Documento Generado: <b class='error'>" + Consecutivo + "</b></p>"
+              data: "<p>Documento Generado: <b class='bold'>" + Consecutivo + "</b></p>"
             });
   
   
@@ -1119,7 +1119,7 @@ public customSettings: OverlaySettings = {
     this.ConfirmarFactura.Fecha = new Date(this.cFunciones.DateFormat(this.Fila_Doc.Fecha, 'yyyy-MM-dd hh:mm:ss'));
     this.ConfirmarFactura.val.Get("txtFecha").setValue(this.cFunciones.DateFormat(this.ConfirmarFactura.Fecha, "yyyy-MM-dd"));
     this.ConfirmarFactura.val.Get("txtPlazo").setValue(this.Plazo);
-    this.ConfirmarFactura.val.Get("txtVence").setValue(this.cFunciones.DateAddDay("Day",this.ConfirmarFactura.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
+    this.ConfirmarFactura.val.Get("txtVence").setValue(this.cFunciones.DateAdd("Day",this.ConfirmarFactura.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
 
     this.ConfirmarFactura.val.Get("txtMoneda").setValue(this.Fila_Doc.Moneda);
     this.ConfirmarFactura.val.Get("chkDelivery").setValue(this.Fila_Doc.EsDelivery);

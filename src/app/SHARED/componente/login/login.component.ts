@@ -1,8 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { LoginService } from "../../service/login.service";
 import { Validacion } from "../../class/validacion";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { DialogErrorComponent } from "../dialog-error/dialog-error.component";
+import { DynamicFormDirective } from "../../directive/dynamic-form.directive";
 
 @Component({
   selector: "app-login",
@@ -12,7 +13,10 @@ import { DialogErrorComponent } from "../dialog-error/dialog-error.component";
 export class LoginComponent {
   public val = new Validacion();
 
-  public constructor(private _SrvLogin: LoginService, public dialog: MatDialog) {
+  @ViewChild(DynamicFormDirective, { static: true }) DynamicFrom!: DynamicFormDirective;
+
+
+  public constructor(private _SrvLogin: LoginService, private DIALOG: MatDialog) {
     this.val.add(
       "txtUsuario",
       "1",
@@ -33,9 +37,9 @@ export class LoginComponent {
       "txtPass",
       "2",
       "LEN>=",
-      "6",
+      "3",
       "",
-      "La contraseña debe de contener almenos 6 caracteres."
+      "La contraseña debe de contener almenos 3 caracteres."
     );
 
    
@@ -47,6 +51,9 @@ export class LoginComponent {
     this.val.Get("txtUsuario")?.setValue("temporal");
     this.val.Get("txtPass")?.setValue("temporal");
     this.val.Iniciar = true;
+
+    this.DynamicFrom?.viewContainerRef.clear();
+    this.DIALOG.closeAll();
   }
 
   public v_Iniciar(): void {
@@ -54,7 +61,7 @@ export class LoginComponent {
       this._SrvLogin.Session(this.val.ValForm.get("txtUsuario")?.value!, this.val.ValForm.get("txtPass")?.value!);
     } else {
 
-      let dialogRef: MatDialogRef<DialogErrorComponent> = this.dialog.open(
+      let dialogRef: MatDialogRef<DialogErrorComponent> = this.DIALOG.open(
         DialogErrorComponent,
         {
           data: this.val.Errores,
@@ -70,7 +77,7 @@ export class LoginComponent {
 
     ///CAMBIO DE FOCO
     this.val.addFocus("txtUsuario", "txtPass", undefined);
-    this.val.addFocus("txtPass", "btnIniciar", "click");
+    this.val.addFocus("txtPass", "btnLogin", "click");
 
     
   }

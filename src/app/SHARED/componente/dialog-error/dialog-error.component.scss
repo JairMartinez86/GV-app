@@ -5,6 +5,22 @@
     box-shadow: 3px 4px 14px 6px rgba(0, 0, 0, 0.76);
 }
 
+.msj{
+
+    text-align: justify;
+    text-justify: inter-word;
+    word-wrap: break-word;
+
+}
+
+.error,
+.bold{
+    font-weight: bold;
+    color: black,
+}
+
+
+
 .logo{
     width: 105px;
     height: 84px;

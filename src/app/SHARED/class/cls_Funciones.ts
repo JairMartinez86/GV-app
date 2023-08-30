@@ -5,37 +5,48 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class Funciones {
-  private _FechaInicio: Date = new Date();
+
+  private _TiempoDesconexion : number = 0;
+
   public FechaServer: Date;
+
+  public TiempoDesconexion() : number{
+    return this._TiempoDesconexion;
+  }
+  
 
   private datePipe: DatePipe = new DatePipe('en-US');
 
   public MonedaLocal = "C";
 
-  constructor() {
-    this._FechaInicio = new Date(
-      this.DateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss')
-    );
-  }
+  public User : string = "";
+  public Nombre : string = "";
+  public Rol : string = "";
 
-  public FechaInicio(): Date {
-    return this._FechaInicio;
-  }
+
+
 
   public FechaServidor(f  : Date) {
     this.FechaServer = new Date(
       this.DateFormat(f, 'yyyy-MM-dd hh:mm:ss')
     );
   }
+  
 
   public ShortFechaServidor() : string {
     return this.DateFormat(this.FechaServer, 'yyyy-MM-dd')
   }
 
 
+    
+  public SetTiempoDesconexion(n : number) : void{
+     this._TiempoDesconexion = n;
+  }
 
 
-  public DateAddDay(Tipo: string, Fecha: Date, Num: number): string {
+
+
+  public DateAdd(Tipo: string, Fecha: Date, Num: number): string {
     let f = new Date(Fecha);
     switch (Tipo) {
       case 'Day':
