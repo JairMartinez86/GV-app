@@ -103,6 +103,10 @@ td i {
     margin-right: 30px;
     padding: 10px;
 
+    @include Tamano_Menor(lg) {
+      width: 100%;
+    }
+
     b{
       color: var(--escan-fondo);
       font-weight: bold;

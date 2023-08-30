@@ -55,7 +55,7 @@ export class FactRevisionComponent {
   public v_Autorizar(det : iDetalleFactura) : void{
 
     det.Autorizado = !det.Autorizado;
-    det.UsuarioAutoriza = "jmg";
+    det.UsuarioAutoriza = this.cFunciones.User;
   }
 
   private Calcular() :void{

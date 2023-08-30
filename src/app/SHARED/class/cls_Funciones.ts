@@ -70,6 +70,12 @@ export class Funciones {
 
     return this.DateFormat(f, 'yyyy-MM-dd');
   }
+  
+   public LastDay(Fecha: Date): string {
+    let f = new Date(Fecha.getFullYear(), Fecha.getMonth() + 1);
+
+    return this.DateFormat(f, 'yyyy-MM-dd');
+  }
 
   public DateFormat(fecha: Date, formart: string): string {
     return this.datePipe.transform(fecha, formart)!;
