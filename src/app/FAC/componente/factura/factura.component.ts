@@ -803,10 +803,19 @@ public customSettings: OverlaySettings = {
     if (evento == "Siguiente" && this.Panel == "Revision") {
       this.Panel = "Confirmar";
       this.BotonSiguienteLabel = this.TipoFactura == "Factura"?  "Facturar" : "Pedido";
-
       (
         document.querySelector("#frmConfirmarFactura") as HTMLElement
       ).setAttribute("style", "display:initial;");
+
+      if(this.TipoFactura == "Pedido" && this.EsModal)
+      {
+        let TotalPorAutorizar = this.RevisionFactura.lstDetalle.filter(f => f.PedirAutorizado).length;
+        let TotalAutorizado = this.RevisionFactura.lstDetalle.filter(f => f.Autorizado).length;
+
+        this.BotonSiguienteLabel = "Guardar";
+        if(TotalAutorizado > 0)this.BotonSiguienteLabel = "Autorizar Parcial";
+        if(TotalPorAutorizar == TotalAutorizado) this.BotonSiguienteLabel = "Autorización Parcial";
+      }
 
       this.LlenarDatosConfirmacion();
 
@@ -1073,6 +1082,13 @@ public customSettings: OverlaySettings = {
   
             let Datos: iDatos[] = _json["d"];
             let Consecutivo: string = Datos[0].d;
+
+            if(this.EsModal){
+              if(this.DIALOG.getDialogById("dialog-factura-editar") != undefined) this.DIALOG.getDialogById("dialog-factura-editar")?.close();
+
+
+              return;
+            }
   
             this.DIALOG.open(DialogErrorComponent, {
               data: "<p>Documento Generado: <b class='bold'>" + Consecutivo + "</b></p>"

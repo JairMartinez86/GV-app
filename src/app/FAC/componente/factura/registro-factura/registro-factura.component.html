@@ -11,7 +11,7 @@
             <div class="row">
                 <form [formGroup]="val.ValForm" autocomplete="off">
                     <div class="row gx-0 contenedor-buscar">
-                        <div class="col-6 col-md-6 col-lg-4 mb-1" *ngIf="!EsCola">
+                        <div class="col-6 col-md-6 col-lg-4 mb-1" *ngIf="!EsCola && TipoDocumento== 'Factura'">
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-calendar"></i></span>
                                 <div class="form-floating">
@@ -23,7 +23,7 @@
 
                             </div>
                         </div>
-                        <div class="col-6 col-md-6 col-lg-4 px-1 mb-1" *ngIf="!EsCola">
+                        <div class="col-6 col-md-6 col-lg-4 px-1 mb-1" *ngIf="!EsCola && TipoDocumento== 'Factura'">
                             <div class="input-group">
 
                                 <div class="form-floating">

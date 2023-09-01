@@ -68,7 +68,6 @@ span{
   justify-content: flex-end;
   height: 60px;
   margin-right: 10px;
-  z-index: 2;
 }
 
 
@@ -94,6 +93,11 @@ span{
       position: absolute;
       top: 0;
       right: -24px;
+
+      @include Tamano_Menor(sm) {
+        height: 55px;
+      }
+
     }
   }
 
@@ -107,13 +111,21 @@ span{
       position: absolute;
       top: 0;
       left: -24px;
+
+      @include Tamano_Menor(sm) {
+        height: 55px;
+      }
     }
   }
 
   button {
     font-size: 1em;
+   
     @include Tamano_Menor(sm) {
+      padding-top: 0;
       font-size: 0.9em;
+      height: 55px;
+
     }
   }
 }

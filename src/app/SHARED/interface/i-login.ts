@@ -4,5 +4,7 @@ export interface iLogin{
     Pwd : string;
     Rol: string;
     FechaLogin: string;
-    Desconecion : boolean
+    Desconecion : boolean;
+    FechaServer : string;
+    TimeOut: number;
 }

@@ -48,12 +48,14 @@ export class LoginService {
 
             let datos : iDatos[] =  _json["d"];
 
-              let l : iLogin = datos[0].d[0];
-              this.cFunciones.User = l.User;
-              this.cFunciones.Nombre = l.Nombre;
-              this.cFunciones.Rol = l.Rol;
-              this.cFunciones.FechaServidor(datos[1].d);
-              this.cFunciones.SetTiempoDesconexion(Number(datos[2].d));
+            let l : iLogin = datos[0].d[0];
+            this.cFunciones.User = l.User;
+            this.cFunciones.Nombre = l.Nombre;
+            this.cFunciones.Rol = l.Rol;
+            this.cFunciones.FechaServidor(datos[1].d);
+            this.cFunciones.SetTiempoDesconexion(Number(datos[2].d));
+            l.FechaServer = datos[1].d;
+            l.TimeOut = Number(datos[2].d);
     
               localStorage.removeItem("login");
 
@@ -74,9 +76,13 @@ export class LoginService {
 
           dialogRef.close();
 
-          this.DIALOG.open(DialogErrorComponent, {
-            data: "<b class='error'>" + err.message + "</b>",
-          });
+          if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+          {
+            this.DIALOG.open(DialogErrorComponent, {
+              id: "error-servidor",
+              data: "<b class='error'>" + err.message + "</b>",
+            });
+          }
 
         },
         complete: () => { 
@@ -92,11 +98,23 @@ export class LoginService {
   
   public isLogin(){
 
+
     let s : string = localStorage.getItem("login")!;
 
     if(s != undefined){
 
       let l : iLogin = JSON.parse(s);
+
+      
+    if(this.cFunciones.User == "")
+    {
+      this.cFunciones.User = l.User;
+      this.cFunciones.Nombre = l.Nombre;
+      this.cFunciones.Rol = l.Rol;
+      this.cFunciones.FechaServidor(new Date(l.FechaServer));
+      this.cFunciones.SetTiempoDesconexion(l.TimeOut);
+    }
+
 
       if(this.Diff(new Date(l.FechaLogin)) <= this.cFunciones.TiempoDesconexion())
       {

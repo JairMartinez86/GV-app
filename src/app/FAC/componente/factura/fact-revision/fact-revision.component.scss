@@ -3,7 +3,7 @@
 
 //████████████████████████████████████████████TABLE██████████████████████████████████████████████████████████████████████
 
-.frmRevision{
+.frmRevision {
   min-width: var(--min-width);
 }
 
@@ -13,16 +13,20 @@ table {
 }
 
 thead {
-  position: absolute;
+  position: absolute;  
 }
+
+
 .header-table {
   position: fixed;
   z-index: 1;
   overflow-x: hidden;
   top: 0;
   height: 60px;
+  
 }
 
+.contenedor,
 tbody tr:first-child {
   margin-top: 30px;
 }
@@ -52,6 +56,8 @@ td i {
   font-size: 2em;
 }
 
+
+
 .etiqueta,
 .valores {
   display: inline-block;
@@ -68,10 +74,11 @@ td i {
 
 }
 
-.valores-descuento{
+.valores-descuento {
   display: flex;
-  justify-content:space-between;
-  .porc{
+  justify-content: space-between;
+
+  .porc {
     margin-left: 5px;
     color: blue;
   }
@@ -79,27 +86,29 @@ td i {
 
 
 
-.valores{
-  .bonif, .exo{
+.valores {
+
+  .bonif,
+  .exo {
     display: inline-block;
     width: 50%;
     font-weight: bold;
   }
-  
-  .bonif{
+
+  .bonif {
     color: var(--escan-primario);
   }
-  
-  .exo{
+
+  .exo {
     color: var(--escan-secundario);
   }
 }
 
 
-.contenedor-edicion{
+.contenedor-edicion {
 
 
-  .AutorizarMargen{
+  .AutorizarMargen {
     margin-right: 30px;
     padding: 10px;
 
@@ -107,7 +116,7 @@ td i {
       width: 100%;
     }
 
-    b{
+    b {
       color: var(--escan-fondo);
       font-weight: bold;
       margin-right: 10px;
@@ -115,7 +124,7 @@ td i {
   }
 }
 
-.secundario{
+.secundario {
   color: var(--escan-secundario);
 }
 
@@ -130,7 +139,7 @@ td i {
     width: 60%;
   }
 
-  .pie-fila{
+  .pie-fila {
     width: 50%;
   }
 
@@ -227,8 +236,7 @@ td i {
       content: "";
       border-style: solid;
       border-width: 24px 24px 24px 24px;
-      border-color: var(--escan-fondo) var(--escan-fondo) var(--escan-fondo)
-        var(--escan-primario);
+      border-color: var(--escan-fondo) var(--escan-fondo) var(--escan-fondo) var(--escan-primario);
       position: absolute;
       top: 0;
       right: -24px;
@@ -256,8 +264,7 @@ td i {
       content: "";
       border-style: solid;
       border-width: 24px 24px 24px 24px;
-      border-color: var(--escan-fondo) var(--escan-primario) var(--escan-fondo)
-        var(--escan-fondo);
+      border-color: var(--escan-fondo) var(--escan-primario) var(--escan-fondo) var(--escan-fondo);
       position: absolute;
       top: 0;
       left: -24px;

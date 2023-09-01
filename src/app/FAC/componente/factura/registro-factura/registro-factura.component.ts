@@ -155,12 +155,18 @@ export class RegistroFacturaComponent {
 
               let dialogRef: MatDialogRef<FacturaComponent> =
               this.DIALOG.open(FacturaComponent, {
+                id: "dialog-factura-editar",
                 panelClass: "escasan-dialog-full",
                 disableClose: true
               });
 
             dialogRef.afterOpened().subscribe(s => {
               dialogRef.componentInstance.v_Editar(det);
+
+            });
+
+            dialogRef.afterClosed().subscribe(s => {
+              this.CargarDocumentos();
 
             });
   
