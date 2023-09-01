@@ -57,8 +57,8 @@ export class FactFichaProductoComponent {
   private EsModal : boolean = false;
 
   public constructor(
-    private dialog: MatDialog,
-    private Conexion: getFactura,
+    private DIALOG: MatDialog,
+    private GET: getFactura,
     public cFunciones: Funciones
   ) {
     this.val.add(
@@ -174,7 +174,7 @@ export class FactFichaProductoComponent {
       .getElementById("btnRefrescarProductos")
       ?.setAttribute("disabled", "disabled");
 
-    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
       WaitComponent,
       {
         panelClass: "escasan-dialog-full-blur",
@@ -182,7 +182,7 @@ export class FactFichaProductoComponent {
       }
     );
 
-    this.Conexion.Cargar_Productos().subscribe(
+    this.GET.Cargar_Productos().subscribe(
       {
         next: (s) => {
 
@@ -193,7 +193,7 @@ export class FactFichaProductoComponent {
           let _json = JSON.parse(s);
 
           if (_json["esError"] == 1) {
-            this.dialog.open(DialogErrorComponent, {
+            this.DIALOG.open(DialogErrorComponent, {
               data: _json["msj"].Mensaje,
             });
           } else {
@@ -219,9 +219,13 @@ export class FactFichaProductoComponent {
             ?.removeAttribute("disabled");
           dialogRef.close();
 
-          this.dialog.open(DialogErrorComponent, {
-            data: "<b class='error'>" + err.message + "</b>",
-          });
+          if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+          {
+            this.DIALOG.open(DialogErrorComponent, {
+              id: "error-servidor",
+              data: "<b class='error'>" + err.message + "</b>",
+            });
+          }
         },
         complete: () => {
 
@@ -301,7 +305,7 @@ export class FactFichaProductoComponent {
 
   private v_Datos_Producto(): void {
 
-    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
       WaitComponent,
       {
         panelClass: "escasan-dialog-full-blur",
@@ -309,7 +313,7 @@ export class FactFichaProductoComponent {
       }
     );
 
-    this.Conexion.Datos_Producto(this.CodProducto, this.CodBodega, this.CodCliente).subscribe(
+    this.GET.Datos_Producto(this.CodProducto, this.CodBodega, this.CodCliente).subscribe(
       {
         next: (s) => {
 
@@ -317,7 +321,7 @@ export class FactFichaProductoComponent {
           let _json = JSON.parse(s);
   
           if (_json["esError"] == 1) {
-            this.dialog.open(DialogErrorComponent, {
+            this.DIALOG.open(DialogErrorComponent, {
               data: _json["msj"].Mensaje,
             });
           } else {
@@ -350,9 +354,13 @@ export class FactFichaProductoComponent {
         error: (err) => {
           dialogRef.close();
 
-          this.dialog.open(DialogErrorComponent, {
-            data: "<b class='error'>" + err.message + "</b>",
-          });
+          if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+          {
+            this.DIALOG.open(DialogErrorComponent, {
+              id: "error-servidor",
+              data: "<b class='error'>" + err.message + "</b>",
+            });
+          }
         },
         complete: () => {
 
@@ -422,7 +430,7 @@ export class FactFichaProductoComponent {
     if (p == "D") data = this.lstDescuento;
 
 
-    let dialogRef: MatDialogRef<TablaDatosComponent> = this.dialog.open(
+    let dialogRef: MatDialogRef<TablaDatosComponent> = this.DIALOG.open(
       TablaDatosComponent,
       {
         panelClass: window.innerWidth < 992 ? "escasan-dialog-full" : "",
@@ -463,7 +471,7 @@ export class FactFichaProductoComponent {
 
   public v_Bonificacion_Libre(): void {
     let dialogRef: MatDialogRef<FactBonificacionLibreComponent> =
-      this.dialog.open(FactBonificacionLibreComponent, {
+      this.DIALOG.open(FactBonificacionLibreComponent, {
         panelClass: "escasan-dialog-full",//window.innerWidth < 992 ? "escasan-dialog-full" : "",
         data: this.lstProductos,
         disableClose: true
@@ -603,7 +611,7 @@ export class FactFichaProductoComponent {
 
 
 
-      let Ref = this.dialog.open(DialogErrorComponent, {
+      let Ref = this.DIALOG.open(DialogErrorComponent, {
         data:
           "<ul>" + MsjError + "</ul>" + this.val.Errores,
       });

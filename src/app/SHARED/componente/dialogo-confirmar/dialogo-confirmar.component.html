@@ -1,0 +1,19 @@
+<div class="escasan-dialog" if="dialog-confirmar">
+
+    <img class="logo"  src="../assets/images/ISOLOGO.png">
+  
+
+
+    <div mat-dialog-content>
+        <div class="msj" [innerHTML]="mensaje"></div>
+    </div>
+    
+    <div mat-dialog-actions class="btn-contenedor">
+        <button type="button" class="btn btn-primario" (click)="v_Confirmar();">{{textBoton1}}</button>
+        <button type="button" class="btn btn-opcional" (click)="v_Cancelar();">{{textBoton2}}</button>
+    </div>
+    
+</div>
+
+
+

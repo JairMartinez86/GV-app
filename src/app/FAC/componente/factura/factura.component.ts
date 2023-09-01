@@ -29,6 +29,7 @@ import { iDetalleFactura } from "../../interface/i-detalle-factura";
 import { FactRevisionComponent } from "./fact-revision/fact-revision.component";
 import { postFactura } from "../../POST/post-factura";
 import { iFactPed } from "../../interface/i-Factura-Pedido";
+import { DialogoConfirmarComponent } from "src/app/SHARED/componente/dialogo-confirmar/dialogo-confirmar.component";
 
 @Component({
   selector: "app-factura",
@@ -70,9 +71,9 @@ export class FacturaComponent {
 
 
   constructor(
-    private dialog: MatDialog,
+    private DIALOG: MatDialog,
     private cFunciones: Funciones,
-    private Conexion: getFactura,
+    private GET: getFactura,
     private POST: postFactura
   ) {
     this.val.add(
@@ -216,7 +217,7 @@ export class FacturaComponent {
       .getElementById("btnRefrescar")
       ?.setAttribute("disabled", "disabled");
 
-    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
       WaitComponent,
       {
         panelClass: "escasan-dialog-full-blur",
@@ -224,7 +225,7 @@ export class FacturaComponent {
       }
     );
 
-    this.Conexion.Datos_Factura().subscribe(
+    this.GET.Datos_Factura().subscribe(
       {
         next: (s) => {
 
@@ -233,7 +234,7 @@ export class FacturaComponent {
           let _json = JSON.parse(s);
        
           if (_json["esError"] == 1) {
-            this.dialog.open(DialogErrorComponent, {
+            this.DIALOG.open(DialogErrorComponent, {
               data: _json["msj"].Mensaje,
             });
           } else {
@@ -277,9 +278,13 @@ export class FacturaComponent {
           document.getElementById("btnRefrescar")?.removeAttribute("disabled");
           dialogRef.close();
   
-          this.dialog.open(DialogErrorComponent, {
-            data: "<b class='error'>" + err.message + "</b>",
-          });
+          if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+          {
+            this.DIALOG.open(DialogErrorComponent, {
+              id: "error-servidor",
+              data: "<b class='error'>" + err.message + "</b>",
+            });
+          }
         },
         complete: () => {
 
@@ -360,7 +365,7 @@ export class FacturaComponent {
         );
 
         if (index == -1) {
-          this.dialog.open(DialogErrorComponent, {
+          this.DIALOG.open(DialogErrorComponent, {
             data:
               "<p>No se cuentra el Vendedor: <b class='error'>" +
               Cliente[0].CodVendedor +
@@ -465,7 +470,7 @@ public customSettings: OverlaySettings = {
   private v_EsClienteClave(CodNewVend: string): void {
     if (CodNewVend == "") return;
 
-    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
       WaitComponent,
       {
         
@@ -474,7 +479,7 @@ public customSettings: OverlaySettings = {
       }
     );
 
-    this.Conexion.Datos_ClienteClave(this.CodCliente).subscribe(
+    this.GET.Datos_ClienteClave(this.CodCliente).subscribe(
       {
         next: (s) => {
 
@@ -482,7 +487,7 @@ public customSettings: OverlaySettings = {
           let _json = JSON.parse(s);
   
           if (_json["esError"] == 1) {
-            this.dialog.open(DialogErrorComponent, {
+            this.DIALOG.open(DialogErrorComponent, {
               data: _json["msj"].Mensaje,
             });
           } else {
@@ -495,7 +500,7 @@ public customSettings: OverlaySettings = {
                 this.val.Get("txtVendedor").setValue(Clave[0].CodVendedor);
                 this.cmbVendedor.close();
   
-                this.dialog.open(DialogErrorComponent, {
+                this.DIALOG.open(DialogErrorComponent, {
                   data:
                     "<p>Cliente Clave solo se permite seleccionar el vendedor:<b class='error'>" +
                     Clave[0].Vendedor +
@@ -508,9 +513,13 @@ public customSettings: OverlaySettings = {
         },
         error: (err) => {
           dialogRef.close();
-          this.dialog.open(DialogErrorComponent, {
-            data: "<b class='error'>" + err.message + "</b>",
-          });
+          if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+          {
+            this.DIALOG.open(DialogErrorComponent, {
+              id: "error-servidor",
+              data: "<b class='error'>" + err.message + "</b>",
+            });
+          }
         },
         complete: () => {
 
@@ -534,7 +543,7 @@ public customSettings: OverlaySettings = {
     let chk: any = document.querySelector("#chkTipoFactura");
     // chk.bootstrapToggle("off");
 
-    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
       WaitComponent,
       {
         
@@ -545,7 +554,7 @@ public customSettings: OverlaySettings = {
 
     this.Plazo = 0;
 
-    this.Conexion.Datos_Credito(this.CodCliente).subscribe(
+    this.GET.Datos_Credito(this.CodCliente).subscribe(
       {
         next: (s) => {
 
@@ -553,7 +562,7 @@ public customSettings: OverlaySettings = {
           let _json = JSON.parse(s);
   
           if (_json["esError"] == 1) {
-            this.dialog.open(DialogErrorComponent, {
+            this.DIALOG.open(DialogErrorComponent, {
               data: _json["msj"].Mensaje,
             });
           } else {
@@ -594,7 +603,7 @@ public customSettings: OverlaySettings = {
                 this.Plazo = 0;
                 this.TipoPago = "Contado";
                 chk.bootstrapToggle("off");
-                this.dialog.open(DialogErrorComponent, {
+                this.DIALOG.open(DialogErrorComponent, {
                   data: "<b class='error'>No tiene crédito disponible.</b>",
                 });
               }
@@ -602,7 +611,7 @@ public customSettings: OverlaySettings = {
               this.TipoPago = "Contado";
               chk.bootstrapToggle("off");
   
-              this.dialog.open(DialogErrorComponent, {
+              this.DIALOG.open(DialogErrorComponent, {
                 data: "<b class='error'>No tiene crédito asignado.</b>",
               });
             }
@@ -614,9 +623,13 @@ public customSettings: OverlaySettings = {
           this.TipoPago = "Contado";
           chk.bootstrapToggle("off");
   
-          this.dialog.open(DialogErrorComponent, {
-            data: "<b class='error'>" + err.message + "</b>",
-          });
+          if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+          {
+            this.DIALOG.open(DialogErrorComponent, {
+              id: "error-servidor",
+              data: "<b class='error'>" + err.message + "</b>",
+            });
+          }
         },
         complete: () => {
 
@@ -672,7 +685,7 @@ public customSettings: OverlaySettings = {
     this.val.EsValido();
 
     if (this.val.Errores != "") {
-      this.dialog.open(DialogErrorComponent, {
+      this.DIALOG.open(DialogErrorComponent, {
         data: this.val.Errores,
       });
 
@@ -680,7 +693,7 @@ public customSettings: OverlaySettings = {
     }
 
     if (this.CodCliente == "") {
-      this.dialog.open(DialogErrorComponent, {
+      this.DIALOG.open(DialogErrorComponent, {
         data: "<b>Seleccione un cliente.</b>",
       });
 
@@ -888,7 +901,7 @@ public customSettings: OverlaySettings = {
 
 
     if (ErrorFicha != "") {
-      this.dialog.open(DialogErrorComponent, {
+      this.DIALOG.open(DialogErrorComponent, {
         data: ErrorFicha,
       });
 
@@ -896,7 +909,7 @@ public customSettings: OverlaySettings = {
     }
 
     if (ErrorConfirmar != "") {
-      this.dialog.open(DialogErrorComponent, {
+      this.DIALOG.open(DialogErrorComponent, {
         data: ErrorConfirmar,
       });
 
@@ -937,7 +950,7 @@ public customSettings: OverlaySettings = {
 
     if(ErrorOtros != "")
     {
-      this.dialog.open(DialogErrorComponent, {
+      this.DIALOG.open(DialogErrorComponent, {
         data:
           "<ul>"+ErrorOtros+"</ul>",
       });
@@ -952,6 +965,9 @@ public customSettings: OverlaySettings = {
     let iVendedor = this.lstVendedores.find(f => f.Codigo == this.cmbVendedor.selection[0]);
     if( this.RevisionFactura.lstDetalle.filter(f => f.PrecioLiberado  || f.PedirAutorizado).length > 0 &&  !this.EsModal) PedirAutorizacion = true;
 
+
+
+    
     //this.Fila_Doc.IdVenta = "";
     //this.Fila_Doc.NoFactura = "";
     //this.Fila_Doc.NoPedido = "";
@@ -992,13 +1008,43 @@ public customSettings: OverlaySettings = {
     this.Fila_Doc.FechaRegistro = new Date();
     this.Fila_Doc.UsuarioRegistra = this.cFunciones.User;
     this.Fila_Doc.TasaCambio = this.ConfirmarFactura.TC;
-    this.Fila_Doc.Estado = "";
+    this.Fila_Doc.Estado = "Solicitado";
     this.Fila_Doc.MotivoAnulacion = "";
     this.Fila_Doc.VentaDetalle = this.RevisionFactura.lstDetalle;
 
 
- 
-    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+    
+    if( this.RevisionFactura.lstDetalle.filter(f => f.Autorizado).length > 0 &&  this.EsModal)
+    {
+
+      let dialogoConfirmar : MatDialogRef<DialogoConfirmarComponent> = this.DIALOG.open(DialogoConfirmarComponent, { disableClose: true })
+
+      dialogoConfirmar.componentInstance.mensaje = "<p ><b class='bold'>Autorizar Margenes?</b></p>";
+      dialogoConfirmar.componentInstance.textBoton1 = "Si";
+      dialogoConfirmar.componentInstance.textBoton2 = "No";
+
+      
+      dialogoConfirmar.afterClosed().subscribe(s=>{
+      
+        if(dialogoConfirmar.componentInstance.retorno=="1"){ 
+          this.EnviarDostos();
+        }
+
+      });
+
+    }
+    else
+    {
+      this.EnviarDostos();
+    }
+
+
+  }
+
+  private EnviarDostos()
+  {
+    
+    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
       WaitComponent,
       {
         panelClass: "escasan-dialog-full-blur",
@@ -1014,7 +1060,7 @@ public customSettings: OverlaySettings = {
           let _json = JSON.parse(s);
   
           if (_json["esError"] == 1) {
-            this.dialog.open(DialogErrorComponent, {
+            this.DIALOG.open(DialogErrorComponent, {
               data: _json["msj"].Mensaje,
             });
           } 
@@ -1024,7 +1070,7 @@ public customSettings: OverlaySettings = {
             let Datos: iDatos[] = _json["d"];
             let Consecutivo: string = Datos[0].d;
   
-            this.dialog.open(DialogErrorComponent, {
+            this.DIALOG.open(DialogErrorComponent, {
               data: "<p>Documento Generado: <b class='bold'>" + Consecutivo + "</b></p>"
             });
   
@@ -1047,17 +1093,19 @@ public customSettings: OverlaySettings = {
         error: (err) => {
           dialogRef.close();
       
-          this.dialog.open(DialogErrorComponent, {
-            data: "<b class='error'>" + err.message + "</b>",
-          });
+          if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+          {
+            this.DIALOG.open(DialogErrorComponent, {
+              id: "error-servidor",
+              data: "<b class='error'>" + err.message + "</b>",
+            });
+          }
         },
         complete: () => {
 
         }
       }
     );
-
-
   }
 
   public v_Editar(det : iFactPed){

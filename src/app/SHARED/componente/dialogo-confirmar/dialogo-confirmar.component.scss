@@ -1,0 +1,35 @@
+
+#dialog-confirmar{
+    width: 300px;
+    max-width: 400px;
+    padding: 5px;
+    box-shadow: 3px 4px 14px 6px rgba(0, 0, 0, 0.76);
+}
+
+.msj{
+
+    text-align: justify;
+    text-justify: inter-word;
+    word-wrap: break-word;
+
+}
+
+.bold{
+    font-weight: bold;
+    color: black,
+}
+
+
+
+.logo{
+    width: 105px;
+    height: 84px;
+}
+
+button{
+    width: 100px;
+}
+
+button:first-child{
+    margin-right: 25px;
+}

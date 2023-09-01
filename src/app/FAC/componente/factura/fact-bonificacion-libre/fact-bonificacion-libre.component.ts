@@ -20,7 +20,7 @@ export class FactBonificacionLibreComponent {
   public i_Bonif : any;
 
   constructor(
-    private dialog: MatDialog,
+    private DIALOG: MatDialog,
     public cFunciones: Funciones,
     public dialogRef: MatDialogRef<FactBonificacionLibreComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -96,7 +96,7 @@ export class FactBonificacionLibreComponent {
 
     if(this.valBonif.Errores != "" || Error != "")
     {
-      this.dialog.open(DialogErrorComponent, {
+      this.DIALOG.open(DialogErrorComponent, {
         data: this.valBonif.Errores + Error,
       });
 

@@ -30,8 +30,8 @@ export class RegistroFacturaComponent {
   public lstDocumentos :   MatTableDataSource<iFactPed[]>;
  
   constructor(
-    private dialog: MatDialog,
-    private Conexion: getFactura,
+    private DIALOG: MatDialog,
+    private GET: getFactura,
     public cFunciones: Funciones,
   ) {
 
@@ -47,7 +47,7 @@ export class RegistroFacturaComponent {
 
   public CargarDocumentos(): void {
     
-    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
       WaitComponent,
       {
         panelClass: "escasan-dialog-full-blur",
@@ -55,13 +55,13 @@ export class RegistroFacturaComponent {
       }
     );
 
-    this.Conexion.Get(this.val.Get("txtFecha1").value, this.val.Get("txtFecha2").value, this.TipoDocumento, this.EsCola).subscribe(
+    this.GET.Get(this.val.Get("txtFecha1").value, this.val.Get("txtFecha2").value, this.TipoDocumento, this.EsCola).subscribe(
       (s) => {
         dialogRef.close();
         let _json = JSON.parse(s);
      
         if (_json["esError"] == 1) {
-          this.dialog.open(DialogErrorComponent, {
+          this.DIALOG.open(DialogErrorComponent, {
             data: _json["msj"].Mensaje,
           });
         } else {
@@ -80,9 +80,13 @@ export class RegistroFacturaComponent {
         document.getElementById("btnRefrescar")?.removeAttribute("disabled");
         dialogRef.close();
 
-        this.dialog.open(DialogErrorComponent, {
-          data: "<b class='error'>" + err.message + "</b>",
-        });
+        if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+          {
+            this.DIALOG.open(DialogErrorComponent, {
+              id: "error-servidor",
+              data: "<b class='error'>" + err.message + "</b>",
+            });
+          }
       }
     );
   }
@@ -90,7 +94,7 @@ export class RegistroFacturaComponent {
 
   public v_Anular(det : any) : void{
 
-    let dialogRef: MatDialogRef<AnularComponent> = this.dialog.open(
+    let dialogRef: MatDialogRef<AnularComponent> = this.DIALOG.open(
       AnularComponent,
       {
         panelClass: window.innerWidth < 992 ? "escasan-dialog-full" : "escasan-dialog",
@@ -124,7 +128,7 @@ export class RegistroFacturaComponent {
   {
 
 
-    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
       WaitComponent,
       {
         panelClass: "escasan-dialog-full-blur",
@@ -132,7 +136,7 @@ export class RegistroFacturaComponent {
       }
     );
 
-    this.Conexion.GetDetalle(det.IdVenta).subscribe(
+    this.GET.GetDetalle(det.IdVenta).subscribe(
       {
         next: (s) => {
 
@@ -140,7 +144,7 @@ export class RegistroFacturaComponent {
           let _json = JSON.parse(s);
        
           if (_json["esError"] == 1) {
-            this.dialog.open(DialogErrorComponent, {
+            this.DIALOG.open(DialogErrorComponent, {
               data: _json["msj"].Mensaje,
             });
           } else {
@@ -150,7 +154,7 @@ export class RegistroFacturaComponent {
 
 
               let dialogRef: MatDialogRef<FacturaComponent> =
-              this.dialog.open(FacturaComponent, {
+              this.DIALOG.open(FacturaComponent, {
                 panelClass: "escasan-dialog-full",
                 disableClose: true
               });
@@ -166,9 +170,13 @@ export class RegistroFacturaComponent {
         error: (err) => {
           dialogRef.close();
   
-          this.dialog.open(DialogErrorComponent, {
-            data: "<b class='error'>" + err.message + "</b>",
-          });
+          if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+          {
+            this.DIALOG.open(DialogErrorComponent, {
+              id: "error-servidor",
+              data: "<b class='error'>" + err.message + "</b>",
+            });
+          }
         },
         complete: () => {
           dialogRef.close();

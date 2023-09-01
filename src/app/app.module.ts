@@ -32,6 +32,7 @@ import { IgxIconModule } from 'igniteui-angular';
 import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 import { AnularComponent } from './SHARED/anular/anular.component';
 import {MatTableModule} from '@angular/material/table';
+import { DialogoConfirmarComponent } from './SHARED/componente/dialogo-confirmar/dialogo-confirmar.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {MatTableModule} from '@angular/material/table';
     RegistroFacturaComponent,
     DialogErrorComponent,
     AnularComponent,
+    DialogoConfirmarComponent,
   ],
   imports: [
     BrowserModule,
