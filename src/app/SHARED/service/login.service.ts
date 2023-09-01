@@ -98,7 +98,6 @@ export class LoginService {
   
   public isLogin(){
 
-
     let s : string = localStorage.getItem("login")!;
 
     if(s != undefined){
