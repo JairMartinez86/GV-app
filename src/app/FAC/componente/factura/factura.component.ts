@@ -1013,8 +1013,10 @@ public customSettings: OverlaySettings = {
     this.Fila_Doc.VentaDetalle = this.RevisionFactura.lstDetalle;
 
 
+    let TotalPorAutorizar = this.RevisionFactura.lstDetalle.filter(f => f.PedirAutorizado).length;
+    let TotalAutorizado = this.RevisionFactura.lstDetalle.filter(f => f.Autorizado).length;
     
-    if( this.RevisionFactura.lstDetalle.filter(f => f.Autorizado).length > 0 &&  this.EsModal)
+    if(TotalAutorizado > 0 &&  this.EsModal)
     {
 
       let dialogoConfirmar : MatDialogRef<DialogoConfirmarComponent> = this.DIALOG.open(DialogoConfirmarComponent, { disableClose: true })
@@ -1027,6 +1029,8 @@ public customSettings: OverlaySettings = {
       dialogoConfirmar.afterClosed().subscribe(s=>{
       
         if(dialogoConfirmar.componentInstance.retorno=="1"){ 
+          this.Fila_Doc.PedirAutorizacion = true;
+          if(TotalPorAutorizar == TotalAutorizado) this.Fila_Doc.PedirAutorizacion = false;
           this.EnviarDostos();
         }
 
