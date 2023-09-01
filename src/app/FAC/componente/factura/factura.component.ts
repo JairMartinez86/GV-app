@@ -814,7 +814,7 @@ public customSettings: OverlaySettings = {
 
         this.BotonSiguienteLabel = "Guardar";
         if(TotalAutorizado > 0)this.BotonSiguienteLabel = "Autorizar Parcial";
-        if(TotalPorAutorizar == TotalAutorizado) this.BotonSiguienteLabel = "Autorización Parcial";
+        if(TotalPorAutorizar == TotalAutorizado) this.BotonSiguienteLabel = "Autorización";
       }
 
       this.LlenarDatosConfirmacion();
