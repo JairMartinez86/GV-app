@@ -184,18 +184,19 @@ td i {
 
   .contenedor-totales {
     display: block;
-    color: var(--escan-fondo);
     //margin-bottom: 2px;
     border-bottom: 2px dotted;
 
     .etiqueta-totales {
       text-align: center;
       font-weight: bold;
+      color: var(--escan-fondo);
     }
 
     .valores-totales {
       text-align: right;
       font-weight: bold;
+      color: var(--escan-fondo);
     }
 
     @include Tamano(xs) {
