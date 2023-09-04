@@ -193,9 +193,12 @@ export class FactFichaProductoComponent {
           let _json = JSON.parse(s);
 
           if (_json["esError"] == 1) {
-            this.DIALOG.open(DialogErrorComponent, {
-              data: _json["msj"].Mensaje,
-            });
+            if(this.DIALOG.getDialogById("error-servidor-msj") == undefined){
+              this.DIALOG.open(DialogErrorComponent, {
+                id: "error-servidor-msj",
+                data: _json["msj"].Mensaje,
+              });
+            }
           } else {
             let Datos: iDatos[] = _json["d"];
 
@@ -321,9 +324,12 @@ export class FactFichaProductoComponent {
           let _json = JSON.parse(s);
   
           if (_json["esError"] == 1) {
-            this.DIALOG.open(DialogErrorComponent, {
-              data: _json["msj"].Mensaje,
-            });
+            if(this.DIALOG.getDialogById("error-servidor-msj") == undefined){
+              this.DIALOG.open(DialogErrorComponent, {
+                id: "error-servidor-msj",
+                data: _json["msj"].Mensaje,
+              });
+            }
           } else {
             let Datos: iDatos[] = _json["d"];
   

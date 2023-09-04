@@ -234,9 +234,12 @@ export class FacturaComponent {
           let _json = JSON.parse(s);
        
           if (_json["esError"] == 1) {
-            this.DIALOG.open(DialogErrorComponent, {
-              data: _json["msj"].Mensaje,
-            });
+            if(this.DIALOG.getDialogById("error-servidor-msj") == undefined){
+              this.DIALOG.open(DialogErrorComponent, {
+                id: "error-servidor-msj",
+                data: _json["msj"].Mensaje,
+              });
+            }
           } else {
             let Datos: iDatos[] = _json["d"];
   
@@ -487,9 +490,12 @@ public customSettings: OverlaySettings = {
           let _json = JSON.parse(s);
   
           if (_json["esError"] == 1) {
-            this.DIALOG.open(DialogErrorComponent, {
-              data: _json["msj"].Mensaje,
-            });
+            if(this.DIALOG.getDialogById("error-servidor-msj") == undefined){
+              this.DIALOG.open(DialogErrorComponent, {
+                id: "error-servidor-msj",
+                data: _json["msj"].Mensaje,
+              });
+            }
           } else {
             let Datos: iDatos[] = _json["d"];
             let Clave: any = Datos[0].d;
@@ -562,9 +568,12 @@ public customSettings: OverlaySettings = {
           let _json = JSON.parse(s);
   
           if (_json["esError"] == 1) {
-            this.DIALOG.open(DialogErrorComponent, {
-              data: _json["msj"].Mensaje,
-            });
+            if(this.DIALOG.getDialogById("error-servidor-msj") == undefined){
+              this.DIALOG.open(DialogErrorComponent, {
+                id: "error-servidor-msj",
+                data: _json["msj"].Mensaje,
+              });
+            }
           } else {
             let Datos: iDatos[] = _json["d"];
             let Credito: iCredito[] = Datos[0].d;
@@ -1040,7 +1049,7 @@ public customSettings: OverlaySettings = {
         if(dialogoConfirmar.componentInstance.retorno=="1"){ 
           this.Fila_Doc.PedirAutorizacion = true;
           if(TotalPorAutorizar == TotalAutorizado) this.Fila_Doc.PedirAutorizacion = false;
-          this.EnviarDostos();
+          this.EnviarDatos();
         }
 
       });
@@ -1048,13 +1057,13 @@ public customSettings: OverlaySettings = {
     }
     else
     {
-      this.EnviarDostos();
+      this.EnviarDatos();
     }
 
 
   }
 
-  private EnviarDostos()
+  private EnviarDatos()
   {
     
     let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
@@ -1073,9 +1082,12 @@ public customSettings: OverlaySettings = {
           let _json = JSON.parse(s);
   
           if (_json["esError"] == 1) {
-            this.DIALOG.open(DialogErrorComponent, {
-              data: _json["msj"].Mensaje,
-            });
+            if(this.DIALOG.getDialogById("error-servidor-msj") == undefined){
+              this.DIALOG.open(DialogErrorComponent, {
+                id: "error-servidor-msj",
+                data: _json["msj"].Mensaje,
+              });
+            }
           } 
           else {
   

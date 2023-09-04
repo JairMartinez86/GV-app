@@ -145,9 +145,12 @@ export class SidebarComponent {
           let _json : any = JSON.parse(data);
 
         if (_json["esError"] == 1) {
-          this.dialog.open(DialogErrorComponent, {
-            data: _json["msj"].Mensaje,
-          });
+          if(this.dialog.getDialogById("error-servidor-msj") == undefined){
+            this.dialog.open(DialogErrorComponent, {
+              id: "error-servidor-msj",
+              data: _json["msj"].Mensaje,
+            });
+          }
         } else {
           let Datos: iDatos[] = _json["d"];
 
