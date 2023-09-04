@@ -30,7 +30,6 @@ export class RegistroFacturaComponent {
   public lstDocumentos :   MatTableDataSource<iFactPed[]>;
  
   constructor(
-    private DIALOG: MatDialog,
     private GET: getFactura,
     public cFunciones: Funciones,
   ) {
@@ -47,7 +46,7 @@ export class RegistroFacturaComponent {
 
   public CargarDocumentos(): void {
     
-    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
+    let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
       {
         panelClass: "escasan-dialog-full-blur",
@@ -61,7 +60,7 @@ export class RegistroFacturaComponent {
         let _json = JSON.parse(s);
      
         if (_json["esError"] == 1) {
-          this.DIALOG.open(DialogErrorComponent, {
+          this.cFunciones.DIALOG.open(DialogErrorComponent, {
             data: _json["msj"].Mensaje,
           });
         } else {
@@ -80,9 +79,9 @@ export class RegistroFacturaComponent {
         document.getElementById("btnRefrescar")?.removeAttribute("disabled");
         dialogRef.close();
 
-        if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+        if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
           {
-            this.DIALOG.open(DialogErrorComponent, {
+            this.cFunciones.DIALOG.open(DialogErrorComponent, {
               id: "error-servidor",
               data: "<b class='error'>" + err.message + "</b>",
             });
@@ -94,7 +93,7 @@ export class RegistroFacturaComponent {
 
   public v_Anular(det : any) : void{
 
-    let dialogRef: MatDialogRef<AnularComponent> = this.DIALOG.open(
+    let dialogRef: MatDialogRef<AnularComponent> = this.cFunciones.DIALOG.open(
       AnularComponent,
       {
         panelClass: window.innerWidth < 992 ? "escasan-dialog-full" : "escasan-dialog",
@@ -128,7 +127,7 @@ export class RegistroFacturaComponent {
   {
 
 
-    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
+    let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
       {
         panelClass: "escasan-dialog-full-blur",
@@ -144,7 +143,7 @@ export class RegistroFacturaComponent {
           let _json = JSON.parse(s);
        
           if (_json["esError"] == 1) {
-            this.DIALOG.open(DialogErrorComponent, {
+            this.cFunciones.DIALOG.open(DialogErrorComponent, {
               data: _json["msj"].Mensaje,
             });
           } else {
@@ -154,7 +153,7 @@ export class RegistroFacturaComponent {
 
 
               let dialogRef: MatDialogRef<FacturaComponent> =
-              this.DIALOG.open(FacturaComponent, {
+              this.cFunciones.DIALOG.open(FacturaComponent, {
                 id: "dialog-factura-editar",
                 panelClass: "escasan-dialog-full",
                 disableClose: true
@@ -176,9 +175,9 @@ export class RegistroFacturaComponent {
         error: (err) => {
           dialogRef.close();
   
-          if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+          if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
           {
-            this.DIALOG.open(DialogErrorComponent, {
+            this.cFunciones.DIALOG.open(DialogErrorComponent, {
               id: "error-servidor",
               data: "<b class='error'>" + err.message + "</b>",
             });

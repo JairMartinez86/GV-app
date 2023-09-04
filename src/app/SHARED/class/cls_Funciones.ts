@@ -1,5 +1,6 @@
 import { DatePipe, formatNumber } from '@angular/common';
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,11 @@ export class Funciones {
   public User : string = "";
   public Nombre : string = "";
   public Rol : string = "";
+
+  constructor(public DIALOG: MatDialog) {
+
+  }
+
 
 
 

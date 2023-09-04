@@ -1,5 +1,5 @@
 import { Component, ViewChild } from "@angular/core";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MatDialogRef } from "@angular/material/dialog";
 import { FactDeliveryComponent } from "../fact-delivery/fact-delivery.component";
 import { Validacion } from "src/app/SHARED/class/validacion";
 import { getFactura } from "src/app/FAC/GET/get-factura";
@@ -67,7 +67,7 @@ export class FactConfirmarComponent {
   public cmbVendedor: IgxComboComponent;
 
 
-  public constructor(private DIALOG: MatDialog, private cFunciones: Funciones, private GET: getFactura) {
+  public constructor(private cFunciones: Funciones, private GET: getFactura) {
 
 
     this.val.add("chkEsPedido", "1", "LEN>=", "0", "Tipo Doc", "");
@@ -248,7 +248,7 @@ export class FactConfirmarComponent {
 
 
 
-    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
+    let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
       {
 
@@ -265,8 +265,8 @@ export class FactConfirmarComponent {
           let _json = JSON.parse(s);
 
           if (_json["esError"] == 1) {
-            if(this.DIALOG.getDialogById("error-servidor-msj") == undefined){
-              this.DIALOG.open(DialogErrorComponent, {
+            if(this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined){
+              this.cFunciones.DIALOG.open(DialogErrorComponent, {
                 id: "error-servidor-msj",
                 data: _json["msj"].Mensaje,
               });
@@ -281,7 +281,7 @@ export class FactConfirmarComponent {
                 this.val.Get("txtVendedor").setValue(Clave[0].CodVendedor);
                 this.cmbVendedor.close();
 
-                this.DIALOG.open(DialogErrorComponent, {
+                this.cFunciones.DIALOG.open(DialogErrorComponent, {
                   data:
                     "<p>Cliente Clave solo se permite seleccionar el vendedor:<b class='error'>" +
                     Clave[0].Vendedor +
@@ -294,9 +294,9 @@ export class FactConfirmarComponent {
         },
         error: (err) => {
           dialogRef.close();
-          if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+          if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
           {
-            this.DIALOG.open(DialogErrorComponent, {
+            this.cFunciones.DIALOG.open(DialogErrorComponent, {
               id: "error-servidor",
               data: "<b class='error'>" + err.message + "</b>",
             });
@@ -333,7 +333,7 @@ export class FactConfirmarComponent {
 
 
 
-    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
+    let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
       {
         panelClass: "escasan-dialog-full-blur",
@@ -351,8 +351,8 @@ export class FactConfirmarComponent {
           let _json = JSON.parse(s);
 
           if (_json["esError"] == 1) {
-            if(this.DIALOG.getDialogById("error-servidor-msj") == undefined){
-              this.DIALOG.open(DialogErrorComponent, {
+            if(this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined){
+              this.cFunciones.DIALOG.open(DialogErrorComponent, {
                 id: "error-servidor-msj",
                 data: _json["msj"].Mensaje,
               });
@@ -396,7 +396,7 @@ export class FactConfirmarComponent {
                 this.Calcular();
 
 
-                this.DIALOG.open(DialogErrorComponent, {
+                this.cFunciones.DIALOG.open(DialogErrorComponent, {
                   data: "<b class='error'>No tiene crédito disponible.</b>",
                 });
               }
@@ -406,7 +406,7 @@ export class FactConfirmarComponent {
               this.Calcular();
 
 
-              this.DIALOG.open(DialogErrorComponent, {
+              this.cFunciones.DIALOG.open(DialogErrorComponent, {
                 data: "<b class='error'>No tiene crédito asignado.</b>",
               });
             }
@@ -418,9 +418,9 @@ export class FactConfirmarComponent {
           this.TipoPago = "Contado";
           chk.bootstrapToggle("off");
 
-          if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+          if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
           {
-            this.DIALOG.open(DialogErrorComponent, {
+            this.cFunciones.DIALOG.open(DialogErrorComponent, {
               id: "error-servidor",
               data: "<b class='error'>" + err.message + "</b>",
             });
@@ -516,7 +516,7 @@ export class FactConfirmarComponent {
 
 
 
-    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
+    let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
       {
         panelClass: "escasan-dialog-full-blur",
@@ -534,8 +534,8 @@ export class FactConfirmarComponent {
           let _json = JSON.parse(s);
 
           if (_json["esError"] == 1) {
-            if(this.DIALOG.getDialogById("error-servidor-msj") == undefined){
-              this.DIALOG.open(DialogErrorComponent, {
+            if(this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined){
+              this.cFunciones.DIALOG.open(DialogErrorComponent, {
                 id: "error-servidor-msj",
                 data: _json["msj"].Mensaje,
               });
@@ -581,9 +581,9 @@ export class FactConfirmarComponent {
           document.getElementById("btnRefrescarConfirmar")?.removeAttribute("disabled");
           dialogRef.close();
 
-          if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+          if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
           {
-            this.DIALOG.open(DialogErrorComponent, {
+            this.cFunciones.DIALOG.open(DialogErrorComponent, {
               id: "error-servidor",
               data: "<b class='error'>" + err.message + "</b>",
             });
@@ -601,7 +601,7 @@ export class FactConfirmarComponent {
 
   public v_Delivery(): void {
 
-    let dialogRef: MatDialogRef<FactDeliveryComponent> = this.DIALOG.open(
+    let dialogRef: MatDialogRef<FactDeliveryComponent> = this.cFunciones.DIALOG.open(
       FactDeliveryComponent,
       {
         panelClass: "escasan-dialog-full",//window.innerWidth < 992 ? "escasan-dialog-full" : "",
@@ -623,7 +623,7 @@ export class FactConfirmarComponent {
     document.getElementById("btnRefrescarConfirmar")?.setAttribute("disabled", "disabled");
 
 
-    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
+    let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
       {
         panelClass: "escasan-dialog-full-blur",
@@ -644,8 +644,8 @@ export class FactConfirmarComponent {
           let _json = JSON.parse(s);
 
           if (_json["esError"] == 1) {
-            if(this.DIALOG.getDialogById("error-servidor-msj") == undefined){
-              this.DIALOG.open(DialogErrorComponent, {
+            if(this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined){
+              this.cFunciones.DIALOG.open(DialogErrorComponent, {
                 id: "error-servidor-msj",
                 data: _json["msj"].Mensaje,
               });
@@ -687,9 +687,9 @@ export class FactConfirmarComponent {
         error: (err) => {
           document.getElementById("btnRefrescarConfirmar")?.removeAttribute("disabled");
           dialogRef.close();
-          if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+          if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
           {
-            this.DIALOG.open(DialogErrorComponent, {
+            this.cFunciones.DIALOG.open(DialogErrorComponent, {
               id: "error-servidor",
               data: "<b class='error'>" + err.message + "</b>",
             });

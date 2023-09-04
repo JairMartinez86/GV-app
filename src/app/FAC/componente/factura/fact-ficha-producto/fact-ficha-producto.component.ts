@@ -57,7 +57,6 @@ export class FactFichaProductoComponent {
   private EsModal : boolean = false;
 
   public constructor(
-    private DIALOG: MatDialog,
     private GET: getFactura,
     public cFunciones: Funciones
   ) {
@@ -174,7 +173,7 @@ export class FactFichaProductoComponent {
       .getElementById("btnRefrescarProductos")
       ?.setAttribute("disabled", "disabled");
 
-    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
+    let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
       {
         panelClass: "escasan-dialog-full-blur",
@@ -193,8 +192,8 @@ export class FactFichaProductoComponent {
           let _json = JSON.parse(s);
 
           if (_json["esError"] == 1) {
-            if(this.DIALOG.getDialogById("error-servidor-msj") == undefined){
-              this.DIALOG.open(DialogErrorComponent, {
+            if(this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined){
+              this.cFunciones.DIALOG.open(DialogErrorComponent, {
                 id: "error-servidor-msj",
                 data: _json["msj"].Mensaje,
               });
@@ -222,9 +221,9 @@ export class FactFichaProductoComponent {
             ?.removeAttribute("disabled");
           dialogRef.close();
 
-          if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+          if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
           {
-            this.DIALOG.open(DialogErrorComponent, {
+            this.cFunciones.DIALOG.open(DialogErrorComponent, {
               id: "error-servidor",
               data: "<b class='error'>" + err.message + "</b>",
             });
@@ -308,7 +307,7 @@ export class FactFichaProductoComponent {
 
   private v_Datos_Producto(): void {
 
-    let dialogRef: MatDialogRef<WaitComponent> = this.DIALOG.open(
+    let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
       {
         panelClass: "escasan-dialog-full-blur",
@@ -324,8 +323,8 @@ export class FactFichaProductoComponent {
           let _json = JSON.parse(s);
   
           if (_json["esError"] == 1) {
-            if(this.DIALOG.getDialogById("error-servidor-msj") == undefined){
-              this.DIALOG.open(DialogErrorComponent, {
+            if(this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined){
+              this.cFunciones.DIALOG.open(DialogErrorComponent, {
                 id: "error-servidor-msj",
                 data: _json["msj"].Mensaje,
               });
@@ -360,9 +359,9 @@ export class FactFichaProductoComponent {
         error: (err) => {
           dialogRef.close();
 
-          if(this.DIALOG.getDialogById("error-servidor") == undefined) 
+          if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
           {
-            this.DIALOG.open(DialogErrorComponent, {
+            this.cFunciones.DIALOG.open(DialogErrorComponent, {
               id: "error-servidor",
               data: "<b class='error'>" + err.message + "</b>",
             });
@@ -436,7 +435,7 @@ export class FactFichaProductoComponent {
     if (p == "D") data = this.lstDescuento;
 
 
-    let dialogRef: MatDialogRef<TablaDatosComponent> = this.DIALOG.open(
+    let dialogRef: MatDialogRef<TablaDatosComponent> = this.cFunciones.DIALOG.open(
       TablaDatosComponent,
       {
         panelClass: window.innerWidth < 992 ? "escasan-dialog-full" : "",
@@ -477,7 +476,7 @@ export class FactFichaProductoComponent {
 
   public v_Bonificacion_Libre(): void {
     let dialogRef: MatDialogRef<FactBonificacionLibreComponent> =
-      this.DIALOG.open(FactBonificacionLibreComponent, {
+      this.cFunciones.DIALOG.open(FactBonificacionLibreComponent, {
         panelClass: "escasan-dialog-full",//window.innerWidth < 992 ? "escasan-dialog-full" : "",
         data: this.lstProductos,
         disableClose: true
@@ -617,7 +616,7 @@ export class FactFichaProductoComponent {
 
 
 
-      let Ref = this.DIALOG.open(DialogErrorComponent, {
+      let Ref = this.cFunciones.DIALOG.open(DialogErrorComponent, {
         data:
           "<ul>" + MsjError + "</ul>" + this.val.Errores,
       });
