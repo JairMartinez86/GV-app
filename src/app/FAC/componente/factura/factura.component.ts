@@ -960,10 +960,15 @@ public customSettings: OverlaySettings = {
 
     }
 
-    if( this.RevisionFactura.lstDetalle.length == 0) ErrorOtros += "<li class='error-etiqueta'>Productos<ul><li class='error-mensaje'>Registre al menos un producto para facturar.</li></ul>";
+    if( this.RevisionFactura.lstDetalle.length == 0) {
+      ErrorOtros += "<li class='error-etiqueta'>Productos<ul><li class='error-mensaje'>Registre al menos un producto para facturar.</li></ul>";
 
-    if( this.RevisionFactura.lstDetalle.filter(f => !f.EsBonif && !f.EsBonifLibre).length == 0) ErrorOtros += "<li class='error-etiqueta'>Productos<ul><li class='error-mensaje'>Registre al menos un producto que no sea bonificado.</li></ul>";
+    } 
+    else{
+      if( this.RevisionFactura.lstDetalle.filter(f => !f.EsBonif && !f.EsBonifLibre).length == 0) ErrorOtros += "<li class='error-etiqueta'>Productos<ul><li class='error-mensaje'>Registre al menos un producto que no sea bonificado.</li></ul>";
 
+    }
+    
 
     if(ErrorOtros != "")
     {
