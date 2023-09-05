@@ -255,7 +255,7 @@ export class Validacion {
         span.id = "info-validacion-" + f.Id;
         span.className = "info-validacion";
         let ei = document.createElement("i");
-        ei.className = "fa-solid fa-info fa-fade fa-lg";
+        ei.className = "fa-solid fa-info fa-fade fa-xl opcional";
         span.appendChild(ei);
         elemnto?.parentNode?.insertBefore(span, elemnto);
         elemnto?.parentElement?.classList.add("contenedor-info-validacion");
