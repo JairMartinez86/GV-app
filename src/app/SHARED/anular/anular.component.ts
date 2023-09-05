@@ -5,6 +5,7 @@ import { DialogErrorComponent } from '../componente/dialog-error/dialog-error.co
 import { postFactura } from 'src/app/FAC/POST/post-factura';
 import { iDatos } from '../interface/i-Datos';
 import { WaitComponent } from '../componente/wait/wait.component';
+import { Funciones } from '../class/cls_Funciones';
 
 @Component({
   selector: 'app-anular',
@@ -17,8 +18,8 @@ export class AnularComponent {
   public IdDoc: string;
   public Tipo: string;
 
-  constructor(private dialog: MatDialog, public dialogRef: MatDialogRef<AnularComponent>,
-    private POST: postFactura) {
+  constructor(public dialogRef: MatDialogRef<AnularComponent>,
+    private POST: postFactura, public cFunciones: Funciones) {
 
     this.val.add("txtNoDoc", "1", "LEN>", "0", "No Documento", "Error con el número del documento.");
     this.val.add("txtSerie", "1", "LEN>", "0", "Serie", "Error con la serie del documento.");
@@ -39,8 +40,10 @@ export class AnularComponent {
 
     this.val.EsValido();
 
+    this.cFunciones.DIALOG.closeAll();
+
     if (this.val.Errores != "") {
-      this.dialog.open(DialogErrorComponent, {
+      this.cFunciones.DIALOG.open(DialogErrorComponent, {
         data: this.val.Errores,
       });
 
@@ -51,7 +54,7 @@ export class AnularComponent {
     document.getElementById("btnAnular")?.setAttribute("disabled", "disabled");
     document.getElementById("btnCancelarAnular")?.setAttribute("disabled", "disabled");
 
-    let dialogRef: MatDialogRef<WaitComponent> = this.dialog.open(
+    let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
       {
         panelClass: "escasan-dialog-full-blur",
@@ -61,7 +64,7 @@ export class AnularComponent {
 
 
 
-    this.POST.AnularFactura(this.IdDoc, this.val.Get("txtMotivo").value, "jmg").subscribe(
+    this.POST.AnularFactura(this.IdDoc, this.val.Get("txtMotivo").value, this.cFunciones.User).subscribe(
       {
         next: (s) => {
 
@@ -72,9 +75,12 @@ export class AnularComponent {
           let _json = JSON.parse(s);
   
           if (_json["esError"] == 1) {
-            this.dialog.open(DialogErrorComponent, {
-              data: _json["msj"].Mensaje,
-            });
+            if(this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined){
+              this.cFunciones.DIALOG.open(DialogErrorComponent, {
+                id: "error-servidor-msj",
+                data: _json["msj"].Mensaje,
+              });
+            }
           }
           else {
   
@@ -91,9 +97,13 @@ export class AnularComponent {
   
           dialogRef.close();
   
-          this.dialog.open(DialogErrorComponent, {
-            data: "<b class='error'>" + err.message + "</b>",
-          });
+          if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
+          {
+            this.cFunciones.DIALOG.open(DialogErrorComponent, {
+              id: "error-servidor",
+              data: "<b class='error'>" + err.message + "</b>",
+            });
+          }
         },
         complete: () => {
 

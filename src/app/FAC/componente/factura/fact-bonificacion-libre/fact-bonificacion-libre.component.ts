@@ -96,7 +96,7 @@ export class FactBonificacionLibreComponent {
 
     if(this.valBonif.Errores != "" || Error != "")
     {
-      this.DIALOG.open(DialogErrorComponent, {
+      this.cFunciones.DIALOG.open(DialogErrorComponent, {
         data: this.valBonif.Errores + Error,
       });
 

@@ -195,6 +195,8 @@ export class Validacion {
       let frm: any = this.Get(f.Id);
       let etiqueta: string = this.lstFrm.find((ff) => ff.Id == f.Id)?.Etiqueta!;
 
+      document.getElementById(f.Id)?.classList.remove("error-validacion");
+
       let r: string[] = this._Validar(f.Id, f, frm, retorno, errores);
 
       if (r[1] != "" && f.Mensaje != "") {
@@ -202,13 +204,24 @@ export class Validacion {
 
         if (i + 1 < this.lstReglas.length) {
           if (this.lstReglas[i + 1].Id != f.Id) {
+            if(!this.Errores.includes(etiqueta))
+            {
+              this.Errores += "<li class='error-etiqueta'>" + etiqueta + "<ul>" + er + "</ul></li>";
+              er = "";
+            }
+          
+          }
+        } else {
+          if(!this.Errores.includes(etiqueta))
+          {
             this.Errores += "<li class='error-etiqueta'>" + etiqueta + "<ul>" + er + "</ul></li>";
             er = "";
           }
-        } else {
-          this.Errores += "<li class='error-etiqueta'>" + etiqueta + "<ul>" + er + "</ul></li>";
-          er = "";
+          
         }
+
+        document.getElementById(f.Id)?.classList.add("error-validacion");
+
       }
 
       i++;
