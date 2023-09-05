@@ -92,8 +92,8 @@ export class FactConfirmarComponent {
   public Iniciar(TipoFactura: string, CodBodega: string, CodCliente: string, Plazo: number, NombreCliente: string, Nombre: string, CodVendedor: string, Moneda: string,
     TipoPago: string, TC: number, lst: iDetalleFactura[]): void {
 
-    this.Vizualizado = true;
     this._Evento("Limpiar");
+    this.Vizualizado = true;
     this.CodBodega = CodBodega;
     this.CodCliente = CodCliente;
     this.NombreCliente = NombreCliente;
@@ -515,6 +515,7 @@ export class FactConfirmarComponent {
   v_ActivarDelivery(event: any): void {
 
 
+this.val.Get("chkDelivery").setValue(event.target.checked);
 
     let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,

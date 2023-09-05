@@ -206,9 +206,13 @@
 
                             <span>
                                 <button type="button" class="btn" *ngIf="det.PedirAutorizacion"
-                                (click)="v_Editar(det);"><i
-                                        [ngClass]="(EsCola ==true) ? 'fa-solid fa-print fa-fade fa-lg': 'fa-solid fa-eye fa-beat-fade fa-lg'"></i>
+                                (click)="v_Editar(det);"><i class="fa-solid fa-eye fa-beat-fade fa-lg'"></i>
                                 </button>
+
+                                <button type="button" class="btn" *ngIf="(det.Estado == 'Autorizado' || det.TipoDocumento == 'Factura') || EsCola "
+                                (click)="v_Imprimir(det);"><i class="fa-solid fa-print fa-fade fa-lg"></i>
+                                </button>
+
                                 <button type="button" class="btn"><i class="fa-solid fa-ban fa-beat-fade fa-lg"
                                         (click)="v_Anular(det)" *ngIf="det.Estado!='Anulado'"></i>
                                 </button>

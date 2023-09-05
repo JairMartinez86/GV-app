@@ -143,9 +143,12 @@ export class RegistroFacturaComponent {
           let _json = JSON.parse(s);
        
           if (_json["esError"] == 1) {
-            this.cFunciones.DIALOG.open(DialogErrorComponent, {
-              data: _json["msj"].Mensaje,
-            });
+            if(this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined){
+              this.cFunciones.DIALOG.open(DialogErrorComponent, {
+                id: "error-servidor-msj",
+                data: _json["msj"].Mensaje,
+              });
+            }
           } else {
             let Datos: iDatos[] = _json["d"];
 
@@ -193,6 +196,57 @@ export class RegistroFacturaComponent {
     
   }
 
+  public v_Imprimir(det : iFactPed) : void{
+
+    let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
+      WaitComponent,
+      {
+        panelClass: "escasan-dialog-full-blur",
+        data: "",
+      }
+    );
+
+    this.GET.Imprimir(det.IdVenta).subscribe(
+      {
+        next: (s) => {
+
+  
+          let _json = JSON.parse(s);
+       
+          if (_json["esError"] == 1) {
+            if(this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined){
+              this.cFunciones.DIALOG.open(DialogErrorComponent, {
+                id: "error-servidor-msj",
+                data: _json["msj"].Mensaje,
+              });
+            }
+          } else {
+            let Datos: iDatos[] = _json["d"];
+
+            this.CargarDocumentos();
+           
+  
+          }
+
+        },
+        error: (err) => {
+          dialogRef.close();
+  
+          if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
+          {
+            this.cFunciones.DIALOG.open(DialogErrorComponent, {
+              id: "error-servidor",
+              data: "<b class='error'>" + err.message + "</b>",
+            });
+          }
+        },
+        complete: () => {
+          dialogRef.close();
+        }
+      }
+    );
+    
+  }
   private ngOnInit() {
 
 

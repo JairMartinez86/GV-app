@@ -40,8 +40,7 @@ export class AnularComponent {
 
     this.val.EsValido();
 
-    this.cFunciones.DIALOG.closeAll();
-
+ 
     if (this.val.Errores != "") {
       this.cFunciones.DIALOG.open(DialogErrorComponent, {
         data: this.val.Errores,
@@ -84,7 +83,18 @@ export class AnularComponent {
           }
           else {
   
-            this.dialogRef.close();
+            let Datos: iDatos[] = _json["d"];
+  
+
+           let confirm =  this.cFunciones.DIALOG.open(DialogErrorComponent, {
+              data: Datos[0].d,
+            });
+
+            confirm.afterClosed().subscribe(s =>{
+              this.dialogRef.close();
+            })
+
+            
   
           }
 

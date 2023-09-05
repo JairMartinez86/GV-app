@@ -1,5 +1,6 @@
 export interface iFactPed{
     IdVenta: string;
+    ID : number;
     TipoDocumento : string;
     Serie : string;
     NoFactura: string;

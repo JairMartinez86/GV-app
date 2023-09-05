@@ -593,6 +593,7 @@ export class FactFichaProductoComponent {
         DetalleBonificado.PedirAutorizado = false;
         DetalleBonificado.Autorizado = false;
         DetalleBonificado.IndexUnion = det.Index;
+        DetalleBonificado.UsuarioAutoriza = "";
 
         AgregarBonificado = true;
 
@@ -649,6 +650,7 @@ export class FactFichaProductoComponent {
       det.PrecioLiberado = false;
       det.PedirAutorizado = false;
       det.Autorizado = false;
+      det.UsuarioAutoriza = "";
       det.Margen = 0;
       this.bol_BonificacionLibre = false;
       this.i_Bonif = undefined;
@@ -664,6 +666,7 @@ export class FactFichaProductoComponent {
     else
     {
       det.PedirAutorizado = false;
+      det.UsuarioAutoriza = "";
       if(det.Autorizado == undefined) det.Autorizado = false;
 
       if (AgregarBonificado && det.Descuento == 0){

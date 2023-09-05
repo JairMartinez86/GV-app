@@ -817,7 +817,7 @@ public customSettings: OverlaySettings = {
 
       if(this.TipoFactura == "Pedido" && this.EsModal)
       {
-        let TotalPorAutorizar = this.RevisionFactura.lstDetalle.filter(f => f.PedirAutorizado).length;
+        let TotalPorAutorizar = this.RevisionFactura.lstDetalle.filter(f => f.PedirAutorizado || f.PrecioLiberado).length;
         let TotalAutorizado = this.RevisionFactura.lstDetalle.filter(f => f.Autorizado).length;
 
         this.BotonSiguienteLabel = "Guardar";
@@ -832,7 +832,7 @@ public customSettings: OverlaySettings = {
 
     if (evento == "Siguiente" && this.Panel == "Confirmar") {
       this.Panel = "Confirmar";
-      this.BotonSiguienteLabel = "Facturar";
+      this.BotonSiguienteLabel = this.TipoFactura == "Factura"?  "Facturar" : "Pedido";
 
       
       (
@@ -985,7 +985,7 @@ public customSettings: OverlaySettings = {
     let iBodega = this.lstBodega.find(f => f.Codigo == this.CodBodega);
     let iCLiente = this.lstClientes.find(f => f.Codigo == this.CodCliente);
     let iVendedor = this.lstVendedores.find(f => f.Codigo == this.cmbVendedor.selection[0]);
-    if( this.RevisionFactura.lstDetalle.filter(f => f.PrecioLiberado  || f.PedirAutorizado).length > 0 &&  !this.EsModal) PedirAutorizacion = true;
+    if( this.RevisionFactura.lstDetalle.filter(f => f.PrecioLiberado  || f.PedirAutorizado).length > 0) PedirAutorizacion = true;
 
 
 
@@ -1034,8 +1034,7 @@ public customSettings: OverlaySettings = {
     this.Fila_Doc.MotivoAnulacion = "";
     this.Fila_Doc.VentaDetalle = this.RevisionFactura.lstDetalle;
 
-
-    let TotalPorAutorizar = this.RevisionFactura.lstDetalle.filter(f => f.PedirAutorizado).length;
+    let TotalPorAutorizar = this.RevisionFactura.lstDetalle.filter(f => f.PedirAutorizado || f.PrecioLiberado).length;
     let TotalAutorizado = this.RevisionFactura.lstDetalle.filter(f => f.Autorizado).length;
     
     if(TotalAutorizado > 0 &&  this.EsModal)
@@ -1043,7 +1042,7 @@ public customSettings: OverlaySettings = {
 
       let dialogoConfirmar : MatDialogRef<DialogoConfirmarComponent> = this.cFunciones.DIALOG.open(DialogoConfirmarComponent, { disableClose: true })
 
-      dialogoConfirmar.componentInstance.mensaje = "<p ><b class='bold'>Autorizar Margenes?</b></p>";
+      dialogoConfirmar.componentInstance.mensaje = "<p ><b class='bold'>Autorizar Margenes / Precios?</b></p>";
       dialogoConfirmar.componentInstance.textBoton1 = "Si";
       dialogoConfirmar.componentInstance.textBoton2 = "No";
 
@@ -1155,6 +1154,7 @@ public customSettings: OverlaySettings = {
     this.RevisionFactura.EsModal = true;
     this.ConfirmarFactura.EsModal = true;
     this.CodCliente = this.Fila_Doc.CodCliente;
+    this.MonedaCliente = this.Fila_Doc.Moneda;
     this.val.Get("txtCliente").setValue(this.Fila_Doc.NomCliente);
     this.val.Get("txtNombre").setValue(this.Fila_Doc.Nombre);
     this.val.Get("txtIdentificacion").setValue(this.Fila_Doc.RucCedula);
@@ -1204,6 +1204,7 @@ public customSettings: OverlaySettings = {
     this.ConfirmarFactura.val.Get("txtFecha").setValue(this.cFunciones.DateFormat(this.ConfirmarFactura.Fecha, "yyyy-MM-dd"));
     this.ConfirmarFactura.val.Get("txtPlazo").setValue(this.Plazo);
     this.ConfirmarFactura.val.Get("txtVence").setValue(this.cFunciones.DateAdd("Day",this.ConfirmarFactura.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
+
 
     this.ConfirmarFactura.val.Get("txtMoneda").setValue(this.Fila_Doc.Moneda);
     this.ConfirmarFactura.val.Get("chkDelivery").setValue(this.Fila_Doc.EsDelivery);

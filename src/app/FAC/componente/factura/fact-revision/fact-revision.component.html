@@ -69,23 +69,23 @@
 
                                         <div class="btn-contenedor">
                                             <button type="button" class="btn btn-primario AutorizarMargen"
-                                            *ngIf="EsModal && det.PedirAutorizado" (click)="v_Autorizar(det);">
-                                            <b>Margen:</b>
-                                            <b>{{det.Margen}}</b>
-                                            
-                                            <i
-                                            [ngClass]="det.Autorizado ? 'fa-solid fa-lock-open fa-beat-fade fa-lg secundario' : 'fa-solid fa-lock fa-beat-fade fa-lg'"></i>
+                                                *ngIf="EsModal && det.PedirAutorizado || det.PrecioLiberado"
+                                                (click)="v_Autorizar(det);">
+                                                <b>{{det.PedirAutorizado? 'Margen:' : 'Precio Libre' }}</b>
+                                                <b>{{det.PedirAutorizado? det.Margen : ''}}</b>
+
+                                                <i
+                                                    [ngClass]="det.Autorizado ? 'fa-solid fa-lock-open fa-beat-fade fa-lg secundario' : 'fa-solid fa-lock fa-beat-fade fa-lg'"></i>
 
 
-                                        </button>
+                                            </button>
 
-                                        
-                                        <button type="button" class="btn" (click)="v_Eliminar(det.Index);"><i
-                                            class="fa-solid fa-trash fa-beat-fade"></i>
-                                    </button>
+                                            <button type="button" class="btn" (click)="v_Eliminar(det.Index);"><i
+                                                    class="fa-solid fa-trash fa-beat-fade"></i>
+                                            </button>
                                         </div>
 
-                                        
+
 
 
                                     </div>
