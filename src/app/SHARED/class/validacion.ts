@@ -186,25 +186,43 @@ export class Validacion {
 
     let i: number = 0;
     let er: string = "";
+    let esError : boolean = false;
 
     this.lstReglas.sort((a, b) => a.Index.localeCompare(b.Index));
+/*
+    let contenedorSpan  = document.getElementsByClassName("info-validacion");
+
+    for (let i = 0; i < contenedorSpan.length; i++) {
+      let elemnt = contenedorSpan[i] as HTMLElement;
+      elemnt.remove();
+  }
+*/
 
     this.lstReglas.forEach((f) => {
       let retorno = "0";
       let errores = "";
       let frm: any = this.Get(f.Id);
       let etiqueta: string = this.lstFrm.find((ff) => ff.Id == f.Id)?.Etiqueta!;
+      let _Id : string = "";
 
       let elemnto =  document.getElementById(f.Id);
       elemnto?.parentElement?.classList.remove("contenedor-info-validacion");
-
-      let contenedorSpan  = document.getElementById("-info-validacion-" + f.Id);
-      contenedorSpan?.remove();
       
+      let span = document.getElementById("info-validacion-" + f.Id);
+      span?.remove();
+
     
       let r: string[] = this._Validar(f.Id, f, frm, retorno, errores);
 
       if (r[1] != "" && f.Mensaje != "") {
+
+        if(_Id != f.Id)
+        {
+          _Id = f.Id;
+          esError = true;
+        }
+
+        
 
         er += "<li class='error-mensaje'>" + f.Mensaje + "</li>";
 
@@ -229,18 +247,19 @@ export class Validacion {
 
 
        //AGREGANDO ICONO DE VALIDACION
-       contenedorSpan  = document.getElementById("-info-validacion-" + f.Id);
-       if(contenedorSpan == undefined)
+      span  = document.getElementById("-info-validacion-" + f.Id);
+       if(span == undefined && esError)
        {
-        let span = document.createElement("span");
-        span.id = "-info-validacion-" + f.Id;
+        esError = false;
+        span = document.createElement("span");
+        span.id = "info-validacion-" + f.Id;
         span.className = "info-validacion";
         let ei = document.createElement("i");
         ei.className = "fa-solid fa-info fa-fade fa-lg";
         span.appendChild(ei);
         elemnto?.parentNode?.insertBefore(span, elemnto);
         elemnto?.parentElement?.classList.add("contenedor-info-validacion");
- 
+
  
        }
       
