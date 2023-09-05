@@ -195,11 +195,17 @@ export class Validacion {
       let frm: any = this.Get(f.Id);
       let etiqueta: string = this.lstFrm.find((ff) => ff.Id == f.Id)?.Etiqueta!;
 
-      document.getElementById(f.Id)?.classList.remove("error-validacion");
+      let elemnto =  document.getElementById(f.Id);
+      elemnto?.parentElement?.classList.remove("contenedor-info-validacion");
 
+      let contenedorSpan  = document.getElementById("-info-validacion-" + f.Id);
+      contenedorSpan?.remove();
+      
+    
       let r: string[] = this._Validar(f.Id, f, frm, retorno, errores);
 
       if (r[1] != "" && f.Mensaje != "") {
+
         er += "<li class='error-mensaje'>" + f.Mensaje + "</li>";
 
         if (i + 1 < this.lstReglas.length) {
@@ -219,11 +225,25 @@ export class Validacion {
           }
           
         }
-
-        document.getElementById(f.Id)?.classList.add("error-validacion");
-
       }
 
+
+       //AGREGANDO ICONO DE VALIDACION
+       contenedorSpan  = document.getElementById("-info-validacion-" + f.Id);
+       if(contenedorSpan == undefined)
+       {
+        let span = document.createElement("span");
+        span.id = "-info-validacion-" + f.Id;
+        span.className = "info-validacion";
+        let ei = document.createElement("i");
+        ei.className = "fa-solid fa-info fa-fade fa-lg";
+        span.appendChild(ei);
+        elemnto?.parentNode?.insertBefore(span, elemnto);
+        elemnto?.parentElement?.classList.add("contenedor-info-validacion");
+ 
+ 
+       }
+      
       i++;
     });
 
