@@ -12,8 +12,12 @@ import { WaitComponent } from 'src/app/SHARED/componente/wait/wait.component';
 import { iDatos } from 'src/app/SHARED/interface/i-Datos';
 import { FacturaComponent } from '../factura.component';
 import * as printJS from 'print-js';
+import { PDFDocument } from 'pdf-lib';
+import { FactConfirmarComponent } from '../fact-confirmar/fact-confirmar.component';
+import { DialogoConfirmarComponent } from 'src/app/SHARED/componente/dialogo-confirmar/dialogo-confirmar.component';
+import { ImprimirFacturaComponent } from './imprimir-factura/imprimir-factura.component';
 
-let DatosImpresion : iDatos[];
+let DatosImpresion: iDatos[];
 
 @Component({
   selector: 'app-registro-factura',
@@ -29,7 +33,7 @@ export class RegistroFacturaComponent {
 
   public TipoDocumento: string;
   public EsCola: boolean = false;
-  
+
 
 
   public lstDocumentos: MatTableDataSource<iFactPed[]>;
@@ -225,10 +229,10 @@ export class RegistroFacturaComponent {
           } else {
             DatosImpresion = _json["d"];
 
-
-            this.V_Mostrar_Factura_Impresa();
-            //this.print();
-
+            this.CargarDocumentos();
+            this.printPDFS();
+            
+    
           }
 
         },
@@ -249,115 +253,104 @@ export class RegistroFacturaComponent {
     );
 
   }
-  
-
-  print() {
-
-    let byteArray = new Uint8Array(atob(DatosImpresion[0].d).split('').map(char => char.charCodeAt(0)));
-
-
-    var file = new Blob([byteArray], { type: 'application/pdf' });
-   
-    let url = URL.createObjectURL(file);
-
-
-    const iframe = document.createElement('iframe');
-   iframe.style.display = 'none';
-   iframe.src = url;
-   document.body.appendChild(iframe);    
-   iframe.onload = () => {
-       setTimeout(() => {
-          iframe.focus();
-          iframe.contentWindow?.print();
-
-          setTimeout(() => {
-
-
-            
-    let byteArray2 = new Uint8Array(atob(DatosImpresion[1].d).split('').map(char => char.charCodeAt(0)));
-    let file2 = new Blob([byteArray2], { type: 'application/pdf' });
-    let url2 = URL.createObjectURL(file2);
-
-    const iframe2 = document.createElement('iframe');
-    iframe2.style.display = 'none';
-    iframe2.src = url2;
-    document.body.appendChild(iframe2);    
-    iframe2.onload = () => {
-        setTimeout(() => {
-          iframe2.focus();
-          iframe2.contentWindow?.print();
-        });
-     };
-
-         }, 1000);
-
-       });
-    };
 
 
 
-
+  /* Convert the merged pdf array buffer to blob url for print or open in browser.*/
+  downloadFile(data: any) {
+    const blob = new Blob([data], { type: 'application/pdf' });
+    const url = window.URL.createObjectURL(blob);
+    //window.open(url);
+    printJS({
+      printable: url,
+      type: 'pdf',
+      onPrintDialogClose: this.V_Mostrar_Manifiesto
+    })
 
   }
 
-  private V_Mostrar_Factura_Impresa(): void {
 
+  async printPDFS() {
 
+   
+    
     let byteArray = new Uint8Array(atob(DatosImpresion[0].d).split('').map(char => char.charCodeAt(0)));
     let byteArray2 = new Uint8Array(atob(DatosImpresion[1].d).split('').map(char => char.charCodeAt(0)));
 
 
     var file = new Blob([byteArray], { type: 'application/pdf' });
     var file2 = new Blob([byteArray2], { type: 'application/pdf' });
-   
+
     let url = URL.createObjectURL(file);
     let url2 = URL.createObjectURL(file2);
 
-    if(window.innerWidth > 992)
+     /* Array of pdf urls */
+     let pdfsToMerge = [url, url2];
+
+    if (window.innerWidth > 992)
     {
- 
-      printJS({ printable: [url, url2], type: 'pdf',  showModal: false });
+
+      if (this.cFunciones.MyBrowser() == "Firefox")
+      {
+        let dialogRef: MatDialogRef<ImprimirFacturaComponent> = this.cFunciones.DIALOG.open(
+          ImprimirFacturaComponent,
+          {
+            panelClass: window.innerWidth < 992 ? "escasan-dialog-full" : "escasan-dialog",
+            data : pdfsToMerge,
+            disableClose: true
+          }
+        );
+      }
+      else
+      {
+        pdfsToMerge = [url]; //  let pdfsToMerge = [url, url2] imprimir multiples pdf en una sola ventana;
+        const mergedPdf = await PDFDocument.create();
+        for (const pdfCopyDoc of pdfsToMerge) {
+          const pdfBytes = await fetch(pdfCopyDoc).then(res => res.arrayBuffer())
+          //const pdfBytes = fs.readFileSync(pdfCopyDoc);
+          const pdf = await PDFDocument.load(pdfBytes);
+          const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+          copiedPages.forEach((page) => {
+            mergedPdf.addPage(page);
+          });
+        }
+        const mergedPdfFile = await mergedPdf.save();
+        this.downloadFile(mergedPdfFile);
+   
+      }
+
+      
     }
     else
     {
-        var a = document.createElement("a");
-        a.id = "print"
-         a.href = url;
-        a.download = DatosImpresion[0].Nombre  + ".pdf";
-        document.body.appendChild(a);
-        a.click();
-        a.remove()
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = DatosImpresion[0].Nombre + ".pdf";
+      document.body.appendChild(a);
+      a.click();
+      a.remove()
+
+      a = document.createElement("a");
+      a.href = url2;
+      a.download = DatosImpresion[1].Nombre + ".pdf";
+      document.body.appendChild(a);
+      a.click();
+      a.remove()
+
     }
-   
-   
+
 
   }
 
+
+
   public V_Mostrar_Manifiesto() {
-return
     let byteArray = new Uint8Array(atob(DatosImpresion[1].d).split('').map(char => char.charCodeAt(0)));
     let file = new Blob([byteArray], { type: 'application/pdf' });
     let url = URL.createObjectURL(file);
 
-    if(window.innerWidth > 992)
-    {
-      printJS({ printable: url, type: 'pdf', showModal: false,  onPrintDialogClose: this.CargarDocumentos });
-    }
-    else
-    {
-        var a = document.createElement("a");
-        a.id = "print"
-         a.href = url;
-        a.download = DatosImpresion[1].Nombre + ".pdf";
-        document.body.appendChild(a);
-        a.click();
-        a.remove()
-    }
+    printJS({ printable: url, type: 'pdf', showModal: false, onPrintDialogClose: this.CargarDocumentos });
 
-  
-
-
-    
 
   }
 

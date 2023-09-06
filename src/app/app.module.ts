@@ -33,6 +33,7 @@ import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator'
 import { AnularComponent } from './SHARED/anular/anular.component';
 import {MatTableModule} from '@angular/material/table';
 import { DialogoConfirmarComponent } from './SHARED/componente/dialogo-confirmar/dialogo-confirmar.component';
+import { ImprimirFacturaComponent } from './FAC/componente/factura/registro-factura/imprimir-factura/imprimir-factura.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { DialogoConfirmarComponent } from './SHARED/componente/dialogo-confirmar
     DialogErrorComponent,
     AnularComponent,
     DialogoConfirmarComponent,
+    ImprimirFacturaComponent,
   ],
   imports: [
     BrowserModule,
