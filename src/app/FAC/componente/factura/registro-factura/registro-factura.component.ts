@@ -264,7 +264,7 @@ export class RegistroFacturaComponent {
     a.download = "FACTURA No. "  + datos[0] + ".pdf";
 document.body.appendChild(a);
 a.click();*/
-    printJS({ printable: url, type: 'pdf', showModal: true, onPrintDialogClose: this.V_Mostrar_Manifiesto });
+    printJS({ printable: url, type: 'pdf', showModal: false, onPrintDialogClose: this.V_Mostrar_Manifiesto });
 
   }
 
@@ -278,7 +278,7 @@ a.click();*/
     let url = URL.createObjectURL(file);
 
 
-    printJS({ printable: url, type: 'pdf', showModal: true, onPrintDialogClose: this.CargarDocumentos });
+    printJS({ printable: url, type: 'pdf', showModal: false, onPrintDialogClose: this.CargarDocumentos });
 
   }
 
