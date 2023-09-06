@@ -269,7 +269,7 @@ export class RegistroFacturaComponent {
         var a = document.createElement("a");
         a.id = "print"
          a.href = url;
-        a.download = "FACTURA No. "  + DatosImpresion[0].Nombre + ".pdf";
+        a.download = DatosImpresion[0].Nombre  + ".pdf";
         document.body.appendChild(a);
         a.click();
         a.remove()
@@ -294,7 +294,7 @@ export class RegistroFacturaComponent {
         var a = document.createElement("a");
         a.id = "print"
          a.href = url;
-        a.download = "MANIFIESTO No. "  + DatosImpresion[0].Nombre + ".pdf";
+        a.download = DatosImpresion[1].Nombre + ".pdf";
         document.body.appendChild(a);
         a.click();
         a.remove()
