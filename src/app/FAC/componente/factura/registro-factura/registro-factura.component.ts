@@ -26,6 +26,7 @@ export class RegistroFacturaComponent {
 
   public TipoDocumento: string;
   public EsCola: boolean = false;
+  private buffManifiesto : string = "";
   
   public lstDocumentos :   MatTableDataSource<iFactPed[]>;
  
@@ -224,8 +225,11 @@ export class RegistroFacturaComponent {
             let Datos: iDatos[] = _json["d"];
 
             this.CargarDocumentos();
-           
-  
+            
+           this.V_Mostrar_Factura_Impresa(Datos[0].d);
+           this.buffManifiesto = Datos[1].d;
+
+
           }
 
         },
@@ -247,6 +251,40 @@ export class RegistroFacturaComponent {
     );
     
   }
+
+
+  private V_Mostrar_Factura_Impresa(buffer : string) :void{
+     
+  let byteArray = new Uint8Array(atob(buffer).split('').map(char => char.charCodeAt(0)));
+
+  
+    var file = new Blob([byteArray], {type: 'application/pdf'});
+  // var a = document.createElement("a");
+    let url = URL.createObjectURL(file);
+        /*a.href = url;
+        a.download = "FACTURA No. "  + datos[0] + ".pdf";
+    document.body.appendChild(a);
+    a.click();*/
+    printJS({printable:url, type:'pdf', showModal:false, onPrintDialogClose: this.V_Mostrar_Manifiesto });
+
+  }
+
+  V_Mostrar_Manifiesto()
+{
+  if(this.buffManifiesto!= "")
+  {
+    let byteArray = new Uint8Array(atob(this.buffManifiesto).split('').map(char => char.charCodeAt(0)));
+    let file = new Blob([byteArray], {type: 'application/pdf'});
+    let url = URL.createObjectURL(file);
+
+    printJS({printable:url, type:'pdf', showModal:true})
+
+  }
+
+}
+
+
+
   private ngOnInit() {
 
 
@@ -260,3 +298,32 @@ export class RegistroFacturaComponent {
 
 
 }
+
+
+
+str_PDF_Manifiesto : string = "";
+v_Imprimir(datos : any)
+{
+
+ 
+ let byteArray = new Uint8Array(atob(datos[1]).split('').map(char => char.charCodeAt(0)));
+ this.str_PDF_Manifiesto = datos[1];
+
+ 
+  var file = new Blob([byteArray], {type: 'application/pdf'});
+ // var a = document.createElement("a");
+  let url = URL.createObjectURL(file);
+      /*a.href = url;
+      a.download = "FACTURA No. "  + datos[0] + ".pdf";
+  document.body.appendChild(a);
+  a.click();*/
+
+
+  printJS({printable:url, type:'pdf', showModal:false, onPrintDialogClose: this.v_Impirmir_Manifiesto })
+
+
+}
+
+
+
+
