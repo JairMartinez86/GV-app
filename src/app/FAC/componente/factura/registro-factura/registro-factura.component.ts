@@ -227,6 +227,7 @@ export class RegistroFacturaComponent {
 
 
             this.V_Mostrar_Factura_Impresa();
+            //this.print();
 
           }
 
@@ -248,9 +249,9 @@ export class RegistroFacturaComponent {
     );
 
   }
+  
 
-
-  private V_Mostrar_Factura_Impresa(): void {
+  print() {
 
     let byteArray = new Uint8Array(atob(DatosImpresion[0].d).split('').map(char => char.charCodeAt(0)));
 
@@ -259,10 +260,63 @@ export class RegistroFacturaComponent {
    
     let url = URL.createObjectURL(file);
 
+
+    const iframe = document.createElement('iframe');
+   iframe.style.display = 'none';
+   iframe.src = url;
+   document.body.appendChild(iframe);    
+   iframe.onload = () => {
+       setTimeout(() => {
+          iframe.focus();
+          iframe.contentWindow?.print();
+
+          setTimeout(() => {
+
+
+            
+    let byteArray2 = new Uint8Array(atob(DatosImpresion[1].d).split('').map(char => char.charCodeAt(0)));
+    let file2 = new Blob([byteArray2], { type: 'application/pdf' });
+    let url2 = URL.createObjectURL(file2);
+
+    const iframe2 = document.createElement('iframe');
+    iframe2.style.display = 'none';
+    iframe2.src = url2;
+    document.body.appendChild(iframe2);    
+    iframe2.onload = () => {
+        setTimeout(() => {
+          iframe2.focus();
+          iframe2.contentWindow?.print();
+        });
+     };
+
+         }, 1000);
+
+       });
+    };
+
+
+
+
+
+  }
+
+  private V_Mostrar_Factura_Impresa(): void {
+
+
+    let byteArray = new Uint8Array(atob(DatosImpresion[0].d).split('').map(char => char.charCodeAt(0)));
+    let byteArray2 = new Uint8Array(atob(DatosImpresion[1].d).split('').map(char => char.charCodeAt(0)));
+
+
+    var file = new Blob([byteArray], { type: 'application/pdf' });
+    var file2 = new Blob([byteArray2], { type: 'application/pdf' });
+   
+    let url = URL.createObjectURL(file);
+    let url2 = URL.createObjectURL(file2);
+
     if(window.innerWidth > 992)
     {
-     
-      printJS({ printable: url, type: 'pdf', onPrintDialogClose: this.V_Mostrar_Manifiesto });
+ 
+      printJS({ printable: [url, url2], type: 'pdf',  showModal: false });
     }
     else
     {
@@ -280,14 +334,14 @@ export class RegistroFacturaComponent {
   }
 
   public V_Mostrar_Manifiesto() {
-
+return
     let byteArray = new Uint8Array(atob(DatosImpresion[1].d).split('').map(char => char.charCodeAt(0)));
     let file = new Blob([byteArray], { type: 'application/pdf' });
     let url = URL.createObjectURL(file);
 
     if(window.innerWidth > 992)
     {
-      printJS({ printable: url, type: 'pdf', showModal: false, onPrintDialogClose: this.CargarDocumentos });
+      printJS({ printable: url, type: 'pdf', showModal: false,  onPrintDialogClose: this.CargarDocumentos });
     }
     else
     {
@@ -309,7 +363,7 @@ export class RegistroFacturaComponent {
 
 
 
-  private ngOnInit() {
+  private ngAfterViewInit() {
 
 
     ///CAMBIO DE FOCO
