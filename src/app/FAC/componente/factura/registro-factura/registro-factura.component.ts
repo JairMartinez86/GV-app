@@ -11,6 +11,9 @@ import { DialogErrorComponent } from 'src/app/SHARED/componente/dialog-error/dia
 import { WaitComponent } from 'src/app/SHARED/componente/wait/wait.component';
 import { iDatos } from 'src/app/SHARED/interface/i-Datos';
 import { FacturaComponent } from '../factura.component';
+import * as printJS from 'print-js';
+
+let DatosImpresion : iDatos[];
 
 @Component({
   selector: 'app-registro-factura',
@@ -26,10 +29,11 @@ export class RegistroFacturaComponent {
 
   public TipoDocumento: string;
   public EsCola: boolean = false;
-  private buffManifiesto : string = "";
   
-  public lstDocumentos :   MatTableDataSource<iFactPed[]>;
- 
+
+
+  public lstDocumentos: MatTableDataSource<iFactPed[]>;
+
   constructor(
     private GET: getFactura,
     public cFunciones: Funciones,
@@ -42,11 +46,11 @@ export class RegistroFacturaComponent {
     this.val.Get("txtFecha1").setValue(this.cFunciones.ShortFechaServidor());
     this.val.Get("txtFecha2").setValue(this.cFunciones.ShortFechaServidor());
 
-    
+
   }
 
   public CargarDocumentos(): void {
-    
+
     let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
       {
@@ -59,7 +63,7 @@ export class RegistroFacturaComponent {
       (s) => {
         dialogRef.close();
         let _json = JSON.parse(s);
-     
+
         if (_json["esError"] == 1) {
           this.cFunciones.DIALOG.open(DialogErrorComponent, {
             data: _json["msj"].Mensaje,
@@ -67,32 +71,31 @@ export class RegistroFacturaComponent {
         } else {
           let Datos: iDatos[] = _json["d"];
 
- 
+
           this.lstDocumentos = new MatTableDataSource(Datos[0].d);
           this.lstDocumentos.paginator = this.paginator;
-       
+
           //this.lstFilter = this.lstDocumentos.map((obj : any) => ({...obj}));
- 
-    
+
+
         }
       },
       (err) => {
         document.getElementById("btnRefrescar")?.removeAttribute("disabled");
         dialogRef.close();
 
-        if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
-          {
-            this.cFunciones.DIALOG.open(DialogErrorComponent, {
-              id: "error-servidor",
-              data: "<b class='error'>" + err.message + "</b>",
-            });
-          }
+        if (this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) {
+          this.cFunciones.DIALOG.open(DialogErrorComponent, {
+            id: "error-servidor",
+            data: "<b class='error'>" + err.message + "</b>",
+          });
+        }
       }
     );
   }
 
 
-  public v_Anular(det : any) : void{
+  public v_Anular(det: any): void {
 
     let dialogRef: MatDialogRef<AnularComponent> = this.cFunciones.DIALOG.open(
       AnularComponent,
@@ -101,8 +104,8 @@ export class RegistroFacturaComponent {
         disableClose: true
       }
     );
-    
-    dialogRef.afterOpened().subscribe(s =>{
+
+    dialogRef.afterOpened().subscribe(s => {
       dialogRef.componentInstance.val.Get("txtNoDoc").setValue(det.TipoDocumento == "Factura" ? det.NoFactura : det.NoPedido);
       dialogRef.componentInstance.val.Get("txtSerie").setValue(det.Serie);
       dialogRef.componentInstance.val.Get("txtBodega").setValue(det.CodBodega);
@@ -112,20 +115,19 @@ export class RegistroFacturaComponent {
     });
 
 
-    dialogRef.afterClosed().subscribe(s =>{
+    dialogRef.afterClosed().subscribe(s => {
       this.CargarDocumentos();
     });
 
 
   }
 
-  public v_Filtrar(event : any){
+  public v_Filtrar(event: any) {
     this.lstDocumentos.filter = (event.target as HTMLInputElement).value.trim().toLowerCase();
   }
 
 
-  public v_Editar(det : iFactPed)
-  {
+  public v_Editar(det: iFactPed) {
 
 
     let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
@@ -140,11 +142,11 @@ export class RegistroFacturaComponent {
       {
         next: (s) => {
 
-  
+
           let _json = JSON.parse(s);
-       
+
           if (_json["esError"] == 1) {
-            if(this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined){
+            if (this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined) {
               this.cFunciones.DIALOG.open(DialogErrorComponent, {
                 id: "error-servidor-msj",
                 data: _json["msj"].Mensaje,
@@ -156,7 +158,7 @@ export class RegistroFacturaComponent {
             det.VentaDetalle = Datos[0].d;
 
 
-              let dialogRef: MatDialogRef<FacturaComponent> =
+            let dialogRef: MatDialogRef<FacturaComponent> =
               this.cFunciones.DIALOG.open(FacturaComponent, {
                 id: "dialog-factura-editar",
                 panelClass: "escasan-dialog-full",
@@ -172,15 +174,14 @@ export class RegistroFacturaComponent {
               this.CargarDocumentos();
 
             });
-  
+
           }
 
         },
         error: (err) => {
           dialogRef.close();
-  
-          if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
-          {
+
+          if (this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) {
             this.cFunciones.DIALOG.open(DialogErrorComponent, {
               id: "error-servidor",
               data: "<b class='error'>" + err.message + "</b>",
@@ -192,12 +193,12 @@ export class RegistroFacturaComponent {
         }
       }
     );
-    
 
-    
+
+
   }
 
-  public v_Imprimir(det : iFactPed) : void{
+  public v_Imprimir(det: iFactPed): void {
 
     let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
@@ -211,33 +212,29 @@ export class RegistroFacturaComponent {
       {
         next: (s) => {
 
-  
+
           let _json = JSON.parse(s);
-       
+
           if (_json["esError"] == 1) {
-            if(this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined){
+            if (this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined) {
               this.cFunciones.DIALOG.open(DialogErrorComponent, {
                 id: "error-servidor-msj",
                 data: _json["msj"].Mensaje,
               });
             }
           } else {
-            let Datos: iDatos[] = _json["d"];
+            DatosImpresion = _json["d"];
 
-            this.CargarDocumentos();
-            
-           this.V_Mostrar_Factura_Impresa(Datos[0].d);
-           this.buffManifiesto = Datos[1].d;
 
+            this.V_Mostrar_Factura_Impresa();
 
           }
 
         },
         error: (err) => {
           dialogRef.close();
-  
-          if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
-          {
+
+          if (this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) {
             this.cFunciones.DIALOG.open(DialogErrorComponent, {
               id: "error-servidor",
               data: "<b class='error'>" + err.message + "</b>",
@@ -249,39 +246,41 @@ export class RegistroFacturaComponent {
         }
       }
     );
-    
+
   }
 
 
-  private V_Mostrar_Factura_Impresa(buffer : string) :void{
-     
-  let byteArray = new Uint8Array(atob(buffer).split('').map(char => char.charCodeAt(0)));
+  private V_Mostrar_Factura_Impresa(): void {
 
-  
-    var file = new Blob([byteArray], {type: 'application/pdf'});
-  // var a = document.createElement("a");
+    if(DatosImpresion == undefined) return;
+
+    let byteArray = new Uint8Array(atob(DatosImpresion[0].d).split('').map(char => char.charCodeAt(0)));
+
+
+    var file = new Blob([byteArray], { type: 'application/pdf' });
+    // var a = document.createElement("a");
     let url = URL.createObjectURL(file);
-        /*a.href = url;
-        a.download = "FACTURA No. "  + datos[0] + ".pdf";
-    document.body.appendChild(a);
-    a.click();*/
-    printJS({printable:url, type:'pdf', showModal:false, onPrintDialogClose: this.V_Mostrar_Manifiesto });
+    /*a.href = url;
+    a.download = "FACTURA No. "  + datos[0] + ".pdf";
+document.body.appendChild(a);
+a.click();*/
+    printJS({ printable: url, type: 'pdf', showModal: true, onPrintDialogClose: this.V_Mostrar_Manifiesto });
 
   }
 
-  V_Mostrar_Manifiesto()
-{
-  if(this.buffManifiesto!= "")
-  {
-    let byteArray = new Uint8Array(atob(this.buffManifiesto).split('').map(char => char.charCodeAt(0)));
-    let file = new Blob([byteArray], {type: 'application/pdf'});
+  public V_Mostrar_Manifiesto() {
+
+    if(DatosImpresion == undefined) return;
+
+
+    let byteArray = new Uint8Array(atob(DatosImpresion[1].d).split('').map(char => char.charCodeAt(0)));
+    let file = new Blob([byteArray], { type: 'application/pdf' });
     let url = URL.createObjectURL(file);
 
-    printJS({printable:url, type:'pdf', showModal:true})
+
+    printJS({ printable: url, type: 'pdf', showModal: true, onPrintDialogClose: this.CargarDocumentos });
 
   }
-
-}
 
 
 
@@ -300,29 +299,6 @@ export class RegistroFacturaComponent {
 }
 
 
-
-str_PDF_Manifiesto : string = "";
-v_Imprimir(datos : any)
-{
-
- 
- let byteArray = new Uint8Array(atob(datos[1]).split('').map(char => char.charCodeAt(0)));
- this.str_PDF_Manifiesto = datos[1];
-
- 
-  var file = new Blob([byteArray], {type: 'application/pdf'});
- // var a = document.createElement("a");
-  let url = URL.createObjectURL(file);
-      /*a.href = url;
-      a.download = "FACTURA No. "  + datos[0] + ".pdf";
-  document.body.appendChild(a);
-  a.click();*/
-
-
-  printJS({printable:url, type:'pdf', showModal:false, onPrintDialogClose: this.v_Impirmir_Manifiesto })
-
-
-}
 
 
 
