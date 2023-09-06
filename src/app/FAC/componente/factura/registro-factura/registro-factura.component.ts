@@ -252,33 +252,58 @@ export class RegistroFacturaComponent {
 
   private V_Mostrar_Factura_Impresa(): void {
 
-    if(DatosImpresion == undefined) return;
-
     let byteArray = new Uint8Array(atob(DatosImpresion[0].d).split('').map(char => char.charCodeAt(0)));
 
 
     var file = new Blob([byteArray], { type: 'application/pdf' });
-    // var a = document.createElement("a");
+   
     let url = URL.createObjectURL(file);
-    /*a.href = url;
-    a.download = "FACTURA No. "  + datos[0] + ".pdf";
-document.body.appendChild(a);
-a.click();*/
-    printJS({ printable: url, type: 'pdf', showModal: false, onPrintDialogClose: this.V_Mostrar_Manifiesto });
+
+    if(window.innerWidth > 992)
+    {
+     
+      printJS({ printable: url, type: 'pdf', onPrintDialogClose: this.V_Mostrar_Manifiesto });
+    }
+    else
+    {
+        var a = document.createElement("a");
+        a.id = "print"
+         a.href = url;
+        a.download = "FACTURA No. "  + DatosImpresion[0].Nombre + ".pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove()
+    }
+   
+   
 
   }
 
   public V_Mostrar_Manifiesto() {
 
-    if(DatosImpresion == undefined) return;
-
-
     let byteArray = new Uint8Array(atob(DatosImpresion[1].d).split('').map(char => char.charCodeAt(0)));
     let file = new Blob([byteArray], { type: 'application/pdf' });
     let url = URL.createObjectURL(file);
 
+    if(window.innerWidth > 992)
+    {
+      printJS({ printable: url, type: 'pdf', showModal: false, onPrintDialogClose: this.CargarDocumentos });
+    }
+    else
+    {
+        var a = document.createElement("a");
+        a.id = "print"
+         a.href = url;
+        a.download = "MANIFIESTO No. "  + DatosImpresion[0].Nombre + ".pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove()
+    }
 
-    printJS({ printable: url, type: 'pdf', showModal: false, onPrintDialogClose: this.CargarDocumentos });
+  
+
+
+    
 
   }
 
