@@ -48,8 +48,6 @@ export class LoginComponent {
   }
 
   private v_Limpiar() {
-    //this.val.Get("txtUsuario")?.setValue("OFONSECA");
-    //this.val.Get("txtPass")?.setValue("1987");
     this.val.Get("txtUsuario")?.setValue("");
     this.val.Get("txtPass")?.setValue("");
     this.val.Iniciar = true;
