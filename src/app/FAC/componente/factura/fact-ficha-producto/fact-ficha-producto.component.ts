@@ -848,7 +848,7 @@ export class FactFichaProductoComponent {
     this.Detalle.EsBonif = false;
     this.Detalle.EsBonifLibre = false;
     this.Detalle.EsExonerado = this.TipoExoneracion == "Exonerado" ? true : false;
-    this.Detalle.EsExento = Producto[0].ConImpuesto ? true : false;
+    this.Detalle.EsExento = !Producto[0].ConImpuesto
     if(this.bol_Exportacion)  this.Detalle.EsExento = true;
     this.Detalle.PrecioLiberado = this.bol_EsPrecioLiberado;
     this.Detalle.IndexUnion = -1;

@@ -104,14 +104,12 @@ export class FactRevisionComponent {
       let PorcAdicional: number = f.PorcDescuentoAdicional;
       let PorcImpuesto: number = f.PorcImpuesto;
 
-
+      f.EsExonerado = false;
+      if(f.EsExento == undefined || f.ImpuestoExo != 0) f.EsExento = false;
       f.ImpuestoExo = 0;
       f.ImpuestoExoCordoba = 0;
       f.ImpuestoExoDolar = 0;
-      f.EsExonerado = false;
-      f.EsExento = false;
-
-
+     
 
       if (this.cFunciones.MonedaLocal == this.MonedaCliente) {
         f.SubTotal = this.cFunciones.Redondeo(PrecioCordoba * Cantidad, "2");
@@ -140,8 +138,8 @@ export class FactRevisionComponent {
           f.ImpuestoExo = f.Impuesto;
           f.ImpuestoExoCordoba = f.ImpuestoCordoba;
           f.ImpuestoExoDolar = f.ImpuestoDolar;
-          if(this.TipoExoneracion == "Exonerado")f.EsExonerado = true;
-          if(this.bol_Exportacion)f.EsExento = true;
+          if(this.TipoExoneracion == "Exonerado" && !f.EsExento)f.EsExonerado = true;
+          if(this.bol_Exportacion && !f.EsExonerado)f.EsExento = true;
 
           f.Impuesto = 0;
           f.ImpuestoCordoba = 0;
@@ -178,8 +176,8 @@ export class FactRevisionComponent {
           f.ImpuestoExo = f.Impuesto;
           f.ImpuestoExoCordoba = f.ImpuestoCordoba;
           f.ImpuestoExoDolar = f.ImpuestoDolar;
-          if(this.TipoExoneracion == "Exonerado")f.EsExonerado = true;
-          if(this.bol_Exportacion)f.EsExento = true;
+          if(this.TipoExoneracion == "Exonerado" && !f.EsExento)f.EsExonerado = true;
+          if(this.bol_Exportacion && !f.EsExonerado)f.EsExento = true;
 
           f.Impuesto = 0;
           f.ImpuestoCordoba = 0;
