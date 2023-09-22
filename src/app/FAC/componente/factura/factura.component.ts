@@ -658,7 +658,7 @@ public customSettings: OverlaySettings = {
 
     let chk: any = document.querySelector("#chkImpuesto");
 
-    if( this.ConfirmarFactura.TipoExoneracion == "Sin Exoneración")
+    if( this.ConfirmarFactura.TipoExoneracion == "Sin Exoneración" && !this.EsExportacion)
     {
       chk.bootstrapToggle("on");
     }
@@ -686,7 +686,35 @@ public customSettings: OverlaySettings = {
   }
 
   public v_Exportacion(event: any): void {
+
+
+    if(this.ConfirmarFactura!.TipoExoneracion == "Exonerado")
+    {
+
+      let chkExport: any = document.querySelector("#chkExportacion");
+      if(chkExport != undefined)chkExport.bootstrapToggle("off");
+      return;
+    }
+
+
+
     this.EsExportacion = event.target.checked;
+
+    this.TipoImpuesto = "Iva"
+
+    let chk: any = document.querySelector("#chkImpuesto");
+    if(chk != undefined)chk.bootstrapToggle("on");
+
+    if(this.EsExportacion)
+    {
+      this.TipoImpuesto = "Sin Iva"
+
+      let chk: any = document.querySelector("#chkImpuesto");
+      if(chk != undefined)chk.bootstrapToggle("off");
+  
+    }
+
+   
   }
 
   public v_FichaPanel(evento: string): void {
@@ -767,7 +795,7 @@ public customSettings: OverlaySettings = {
 
         let chkExo: any = document.querySelector("#chkImpuesto");
         this.isEvent = true;
-        if (this.ConfirmarFactura.TipoExoneracion == "Sin Exoneración") {
+        if (this.ConfirmarFactura.TipoExoneracion == "Sin Exoneración" && !this.EsExportacion) {
           chkExo.bootstrapToggle("on");
         } else {
           chkExo.bootstrapToggle("off");
@@ -857,6 +885,7 @@ public customSettings: OverlaySettings = {
       this.CodCliente,
       this.MonedaCliente,
       this.ConfirmarFactura.TipoExoneracion,
+      this.EsExportacion,
       this.EsModal
     );
   }
@@ -872,6 +901,7 @@ public customSettings: OverlaySettings = {
       this.FichaProducto.TC,
       this.MonedaCliente,
       this.ConfirmarFactura.TipoExoneracion,
+      this.EsExportacion
     );
   }
 
@@ -894,6 +924,7 @@ public customSettings: OverlaySettings = {
       this.val.Get("txtVendedor").value[0],
       this.MonedaCliente,
       this.TipoPago,
+      this.EsExportacion,
       this.RevisionFactura.TC,
       this.RevisionFactura.lstDetalle
     );

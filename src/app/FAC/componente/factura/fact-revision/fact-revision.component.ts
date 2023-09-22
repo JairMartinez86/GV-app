@@ -21,16 +21,18 @@ export class FactRevisionComponent {
   public TC: number = 0;
   private MonedaCliente: string;
   private TipoExoneracion: string;
+  private bol_Exportacion : boolean = false;
   public EsModal: boolean;
 
   constructor(public cFunciones: Funciones) { }
 
 
-  public Iniciar(lst: iDetalleFactura[], TC: number, MonedaCliente: string, TipoExoneracion: string) {
+  public Iniciar(lst: iDetalleFactura[], TC: number, MonedaCliente: string, TipoExoneracion: string, Exportacion : boolean) {
     this.lstDetalle = lst;
     this.TC = TC;
     this.MonedaCliente = MonedaCliente;
     this.TipoExoneracion = TipoExoneracion;
+    this.bol_Exportacion = Exportacion;
     this.Calcular();
   }
 
@@ -107,6 +109,7 @@ export class FactRevisionComponent {
       f.ImpuestoExoCordoba = 0;
       f.ImpuestoExoDolar = 0;
       f.EsExonerado = false;
+      f.EsExento = false;
 
 
 
@@ -133,11 +136,12 @@ export class FactRevisionComponent {
         f.ImpuestoDolar = this.cFunciones.Redondeo(f.ImpuestoCordoba / this.TC, "2");
 
 
-        if (this.TipoExoneracion == "Exonerado" && !f.EsBonif) {
+        if ((this.TipoExoneracion == "Exonerado" || this.bol_Exportacion) && !f.EsBonif) {
           f.ImpuestoExo = f.Impuesto;
           f.ImpuestoExoCordoba = f.ImpuestoCordoba;
           f.ImpuestoExoDolar = f.ImpuestoDolar;
-          f.EsExonerado = true;
+          if(this.TipoExoneracion == "Exonerado")f.EsExonerado = true;
+          if(this.bol_Exportacion)f.EsExento = true;
 
           f.Impuesto = 0;
           f.ImpuestoCordoba = 0;
@@ -170,11 +174,12 @@ export class FactRevisionComponent {
         f.ImpuestoDolar = f.Impuesto;
         f.ImpuestoCordoba = this.cFunciones.Redondeo(f.ImpuestoCordoba * this.TC, "2");
 
-        if (this.TipoExoneracion == "Exonerado" && !f.EsBonif) {
+        if ((this.TipoExoneracion == "Exonerado" || this.bol_Exportacion)  && !f.EsBonif) {
           f.ImpuestoExo = f.Impuesto;
           f.ImpuestoExoCordoba = f.ImpuestoCordoba;
           f.ImpuestoExoDolar = f.ImpuestoDolar;
-          f.EsExonerado = true;
+          if(this.TipoExoneracion == "Exonerado")f.EsExonerado = true;
+          if(this.bol_Exportacion)f.EsExento = true;
 
           f.Impuesto = 0;
           f.ImpuestoCordoba = 0;

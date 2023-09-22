@@ -35,6 +35,7 @@ export interface iDetalleFactura{
     EsBonif : boolean;
     EsBonifLibre : boolean;
     EsExonerado : boolean;
+    EsExento : boolean;
     PrecioLiberado : boolean;
     Margen : number;
     PedirAutorizado: boolean;

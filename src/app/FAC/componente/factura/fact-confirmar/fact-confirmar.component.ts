@@ -52,6 +52,7 @@ export class FactConfirmarComponent {
   public Restante: number = 0;
   public TC: number = 1;
   public i_Credito: iCredito[];
+  public bol_Exportacion : boolean = false;
   public EsModal: boolean = false;
 
 
@@ -90,7 +91,7 @@ export class FactConfirmarComponent {
   }
 
   public Iniciar(TipoFactura: string, CodBodega: string, CodCliente: string, Plazo: number, NombreCliente: string, Nombre: string, CodVendedor: string, Moneda: string,
-    TipoPago: string, TC: number, lst: iDetalleFactura[]): void {
+    TipoPago: string, Exportacion : boolean, TC: number, lst: iDetalleFactura[]): void {
 
     this._Evento("Limpiar");
     this.Vizualizado = true;
@@ -101,6 +102,7 @@ export class FactConfirmarComponent {
     this.CodVendedor = CodVendedor;
     this.MonedaCliente = Moneda;
     this.Plazo = Plazo;
+    this.bol_Exportacion = Exportacion;
     this.TC = TC;
     this.TipoPago = TipoPago;
     this.TipoFactura = TipoFactura;
@@ -444,7 +446,7 @@ export class FactConfirmarComponent {
 
     let chk: any = document.querySelector("#chkImpuesto_Confirmar");
 
-    if (this.TipoExoneracion == "Sin Exoneración") {
+    if (this.TipoExoneracion == "Sin Exoneración" && !this.bol_Exportacion) {
       chk.bootstrapToggle("on");
     }
     else {
@@ -488,11 +490,19 @@ export class FactConfirmarComponent {
 
 
 
-    if (!event.target.checked) {
+    if (!event.target.checked || this.bol_Exportacion) {
 
       this.TipoExoneracion = "Sin Exoneración";
       chk.bootstrapToggle("on");
 
+      if(this.bol_Exportacion)
+      {
+        let chkExo: any = document.querySelector("#chkExoneracion");
+        chkExo.bootstrapToggle("off");
+      }
+     
+
+   
       this.val.Get("txtNoExoneracion").disable();
       this.val.Get("txtNoExoneracion").setValue("");
       this.Calcular();
@@ -742,7 +752,8 @@ this.val.Get("chkDelivery").setValue(event.target.checked);
       f.ImpuestoExo = 0;
       f.ImpuestoExoCordoba = 0;
       f.ImpuestoExoDolar = 0;
-      f.EsExonerado = false;
+      f.EsExonerado =  false;
+      f.EsExento = false;
 
 
 
@@ -769,11 +780,12 @@ this.val.Get("chkDelivery").setValue(event.target.checked);
         f.ImpuestoDolar = this.cFunciones.Redondeo(f.ImpuestoCordoba / this.TC, "2");
 
 
-        if (this.TipoExoneracion == "Exonerado" && !f.EsBonif) {
+        if ((this.TipoExoneracion == "Exonerado" || this.bol_Exportacion) && !f.EsBonif) {
           f.ImpuestoExo = f.Impuesto;
           f.ImpuestoExoCordoba = f.ImpuestoCordoba;
           f.ImpuestoExoDolar = f.ImpuestoDolar;
-          f.EsExonerado = true;
+          if(this.TipoExoneracion == "Exonerado")f.EsExonerado = true;
+          if(this.bol_Exportacion)f.EsExento = true;
 
           f.Impuesto = 0;
           f.ImpuestoCordoba = 0;
@@ -806,16 +818,18 @@ this.val.Get("chkDelivery").setValue(event.target.checked);
         f.ImpuestoDolar = f.Impuesto;
         f.ImpuestoCordoba = this.cFunciones.Redondeo(f.ImpuestoCordoba * this.TC, "2");
 
-        if (this.TipoExoneracion == "Exonerado" && !f.EsBonif) {
+        if ((this.TipoExoneracion == "Exonerado" || this.bol_Exportacion) && !f.EsBonif) {
           f.ImpuestoExo = f.Impuesto;
           f.ImpuestoExoCordoba = f.ImpuestoCordoba;
           f.ImpuestoExoDolar = f.ImpuestoDolar;
-          f.EsExonerado = true;
+          if(this.TipoExoneracion == "Exonerado")f.EsExonerado = true;
+          if(this.bol_Exportacion)f.EsExento = true;
 
           f.Impuesto = 0;
           f.ImpuestoCordoba = 0;
           f.ImpuestoDolar = 0;
         }
+
 
 
         f.Total = this.cFunciones.Redondeo(f.SubTotalNeto + f.Impuesto, "2");

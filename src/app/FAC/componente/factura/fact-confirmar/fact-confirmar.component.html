@@ -323,7 +323,7 @@
  
                      <div class="row">
                          <div class="col-12 contenedor-totales">
-                             <div class="etiqueta-totales">EXONERADO {{SimboloMonedaCliente}}:</div>
+                             <div class="etiqueta-totales">{{(bol_Exportacion? "EXENTO": "EXONERADO")}} {{SimboloMonedaCliente}}:</div>
                              <div class="valores-totales"><b>{{ImpuestoExo| number : '1.2-2'}}</b></div>
                          </div>
                      </div>

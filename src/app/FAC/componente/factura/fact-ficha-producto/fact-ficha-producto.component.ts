@@ -33,6 +33,8 @@ export class FactFichaProductoComponent {
   private bol_Referescar: boolean = false;
   private bol_BonificacionLibre = false;
   private bol_EsPrecioLiberado = false;
+  private bol_Exportacion = false;
+
 
   public CodProducto: string = "";
   private i_Bonif: any = undefined;
@@ -44,7 +46,7 @@ export class FactFichaProductoComponent {
   private lstExistencia: iExistencia[] = [];
   private lstBonificacion: iBonificacion[] = [];
   private lstDescuento: iDescuento[] = [];
-  private TipoExoneracion: string;
+  public TipoExoneracion: string;
 
   public SubTotal: number = 0;
   public Descuento: number = 0;
@@ -105,12 +107,13 @@ export class FactFichaProductoComponent {
     this._Evento("Limpiar");
   }
 
-  public Iniciar(CodBodega: string, CodCliente: string, MonedaCliente: string, TipoExoneracion: string, EsModal : boolean): void {
+  public Iniciar(CodBodega: string, CodCliente: string, MonedaCliente: string, TipoExoneracion: string, Exportacion: boolean, EsModal : boolean): void {
     this._Evento("Limpiar");
     this.CodBodega = CodBodega;
     this.CodCliente = CodCliente;
     this.MonedaCliente = MonedaCliente;
     this.TipoExoneracion = TipoExoneracion;
+    this.bol_Exportacion = Exportacion;
     this.EsModal = EsModal;
 
     document.getElementById("btnAgregarProducto")?.setAttribute("disabled", "disabled");
@@ -588,6 +591,8 @@ export class FactFichaProductoComponent {
         DetalleBonificado.EsBonif = true;
         DetalleBonificado.EsBonifLibre = false;
         DetalleBonificado.EsExonerado = false;
+        DetalleBonificado.EsExento = false;
+        if(this.bol_Exportacion)  DetalleBonificado.EsExento = true;
         DetalleBonificado.PrecioLiberado = false;
         DetalleBonificado.Margen = 0;
         DetalleBonificado.PedirAutorizado = false;
@@ -647,6 +652,8 @@ export class FactFichaProductoComponent {
       det.EsBonif = true;
       det.EsBonifLibre = true;
       det.EsExonerado = false;
+      det.EsExento = false;
+      if(this.bol_Exportacion)  DetalleBonificado.EsExento = true;
       det.PrecioLiberado = false;
       det.PedirAutorizado = false;
       det.Autorizado = false;
@@ -771,7 +778,7 @@ export class FactFichaProductoComponent {
       );
 
       ImpuestoExo = 0;
-      if (this.TipoExoneracion == "Exonerado") {
+      if (this.TipoExoneracion == "Exonerado" || this.bol_Exportacion) {
         ImpuestoExo = this.Impuesto;
         this.Impuesto = 0;
       }
@@ -799,7 +806,7 @@ export class FactFichaProductoComponent {
       );
 
       ImpuestoExo = 0;
-      if (this.TipoExoneracion == "Exonerado") {
+      if (this.TipoExoneracion == "Exonerado" || this.bol_Exportacion) {
         ImpuestoExo = this.Impuesto;
         this.Impuesto = 0;
       }
@@ -841,6 +848,8 @@ export class FactFichaProductoComponent {
     this.Detalle.EsBonif = false;
     this.Detalle.EsBonifLibre = false;
     this.Detalle.EsExonerado = this.TipoExoneracion == "Exonerado" ? true : false;
+    this.Detalle.EsExento = Producto[0].ConImpuesto ? true : false;
+    if(this.bol_Exportacion)  this.Detalle.EsExento = true;
     this.Detalle.PrecioLiberado = this.bol_EsPrecioLiberado;
     this.Detalle.IndexUnion = -1;
 

@@ -89,7 +89,8 @@ td i {
 .valores {
 
   .bonif,
-  .exo {
+  .exo,
+  .exe {
     display: inline-block;
     width: 50%;
     font-weight: bold;
@@ -101,6 +102,10 @@ td i {
 
   .exo {
     color: var(--escan-secundario);
+  }
+
+  .exe {
+    color: var(--escan-opcional);
   }
 }
 

@@ -58,6 +58,7 @@ export class SidebarComponent {
           element = <HTMLElement>element.parentElement;
 
         }
+        if(element?.id == undefined) return
         this.v_Abrir_Form(element.id);
       }
 
