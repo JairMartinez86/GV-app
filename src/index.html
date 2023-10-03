@@ -21,12 +21,13 @@
   <script type="text/javascript" src="https://unpkg.com/default-passive-events"></script>
   <script type="text/javascript">
 
-    function disableBack() { window.history.forward(); }
-    setTimeout("disableBack()", 0);
+   /* function disableBack() { window.history.forward(); }
+   setTimeout("disableBack()", 0);
     window.onunload = function () { null };
     window.onbeforeunload = function () {
       return "you can not refresh the page";
-    }
+    }*/
+
 
 
 
@@ -34,11 +35,12 @@
   <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
 </head>
 
-<body class="mat-typography ig-typography ig-scrollbar">
+<body class="mat-typography ig-typography ig-scrollbar" id="body">
   <app-root></app-root>
 </body>
 
-<footer class="bg-light text-center text-lg-start" style="position:fixed;left:0px;bottom:0px;height:30px;width:100%;background:#999;">
+<footer class="bg-light text-center text-lg-start"
+  style="position:fixed;left:0px;bottom:0px;height:30px;width:100%;background:#999;">
   <!-- Copyright -->
   <div class="text-center p-1" style="background-color: rgba(0, 0, 0, 0.2);">
     © 2023 Copyright Global Vet S.A
@@ -46,4 +48,5 @@
   </div>
   <!-- Copyright -->
 </footer>
+
 </html>

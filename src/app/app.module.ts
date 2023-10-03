@@ -34,6 +34,7 @@ import { AnularComponent } from './SHARED/anular/anular.component';
 import {MatTableModule} from '@angular/material/table';
 import { DialogoConfirmarComponent } from './SHARED/componente/dialogo-confirmar/dialogo-confirmar.component';
 import { ImprimirFacturaComponent } from './FAC/componente/factura/registro-factura/imprimir-factura/imprimir-factura.component';
+import { BackButtonDisableModule } from 'angular-disable-browser-back-button';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,10 @@ import { ImprimirFacturaComponent } from './FAC/componente/factura/registro-fact
     IgxComboModule,
     IgxIconModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+     BackButtonDisableModule.forRoot({
+      preserveScroll: true // DISABLE BACK
+    })
   ],
   providers: [
     { provide: MatPaginatorIntl, useValue: CustomPaginator() }
