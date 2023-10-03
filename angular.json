@@ -40,7 +40,10 @@
               "./node_modules/hammerjs/hammer.min.js"
             ],
             "allowedCommonJsDependencies": [
-              "jquery"
+              "jquery",
+              "disable-devtool",
+              "pako",
+              "print-js"
           ],
           "stylePreprocessorOptions": {
             "includePaths": [
