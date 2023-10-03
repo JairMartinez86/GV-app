@@ -1,6 +1,5 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { BackButtonDisableModule } from 'angular-disable-browser-back-button';
 import DisableDevtool from 'disable-devtool';
 
 @Injectable({
