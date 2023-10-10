@@ -20,7 +20,7 @@ export class AppComponent {
   ngOnInit(){
 
 
-    //this.Disable.disable_DevTool();
+    this.Disable.disable_DevTool();
     this.Disable.disable_RightClick();
     this.Disable.disable_Reload();
   }
