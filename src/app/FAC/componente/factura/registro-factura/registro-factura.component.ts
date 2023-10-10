@@ -134,6 +134,7 @@ export class RegistroFacturaComponent {
   public v_Editar(det: iFactPed) {
 
 
+
     let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
       {
@@ -142,7 +143,7 @@ export class RegistroFacturaComponent {
       }
     );
 
-    this.GET.GetDetalle(det.IdVenta).subscribe(
+    this.GET.GetDetalle(det.IdVenta, this.cFunciones.User).subscribe(
       {
         next: (s) => {
 
@@ -158,6 +159,17 @@ export class RegistroFacturaComponent {
             }
           } else {
             let Datos: iDatos[] = _json["d"];
+
+
+            if(Datos[1].d != "")
+            {
+              this.cFunciones.DIALOG.open(DialogErrorComponent, {
+                data: Datos[1].d ,
+              });
+              return;
+            }
+
+            
 
             det.VentaDetalle = Datos[0].d;
 
