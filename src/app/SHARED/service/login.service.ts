@@ -114,6 +114,7 @@ export class LoginService {
       this.cFunciones.SetTiempoDesconexion(l.TimeOut);
     }
 
+console.log(l.FechaLogin)
 
       if(this.Diff(new Date(l.FechaLogin)) <= this.cFunciones.TiempoDesconexion())
       {
@@ -138,6 +139,9 @@ export class LoginService {
     let FechaServidor : Date = new Date(this.cFunciones.FechaServer);
 
     var Segundos = Math.abs((FechaLogin.getTime() - FechaServidor.getTime()) / 1000);
+    console.log(FechaServidor)
+    console.log(FechaLogin)
+    console.log(Segundos)
     return Segundos;
   }
 

@@ -13,6 +13,7 @@ export class Funciones {
   public FechaServer: Date;
 
   public TiempoDesconexion(): number {
+    console.log(this._TiempoDesconexion)
     return this._TiempoDesconexion;
   }
 
