@@ -35,6 +35,7 @@ import {MatTableModule} from '@angular/material/table';
 import { DialogoConfirmarComponent } from './SHARED/componente/dialogo-confirmar/dialogo-confirmar.component';
 import { ImprimirFacturaComponent } from './FAC/componente/factura/registro-factura/imprimir-factura/imprimir-factura.component';
 import { BackButtonDisableModule } from 'angular-disable-browser-back-button';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,9 @@ import { BackButtonDisableModule } from 'angular-disable-browser-back-button';
     })
   ],
   providers: [
-    { provide: MatPaginatorIntl, useValue: CustomPaginator() }
+    { provide: MatPaginatorIntl, useValue: CustomPaginator() },
+    { provide: LocationStrategy, useClass: HashLocationStrategy}
+    
   ],
   bootstrap: [AppComponent]
 })
