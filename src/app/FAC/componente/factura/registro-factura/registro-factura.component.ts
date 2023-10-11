@@ -299,8 +299,8 @@ export class RegistroFacturaComponent {
      /* Array of pdf urls */
      let pdfsToMerge = [url, url2];
 
-    if (window.innerWidth > 992)
-    {
+   // if (window.innerWidth > 992)
+   // {
 
       if (this.cFunciones.MyBrowser() == "Firefox")
       {
@@ -332,8 +332,8 @@ export class RegistroFacturaComponent {
       }
 
       
-    }
-    else
+ //   }
+ /*   else
     {
       var a = document.createElement("a");
       a.href = url;
@@ -351,7 +351,7 @@ export class RegistroFacturaComponent {
 
     }
 
-
+*/
   }
 
 
