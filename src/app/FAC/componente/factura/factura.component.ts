@@ -1015,7 +1015,7 @@ public customSettings: OverlaySettings = {
 
     let iBodega = this.lstBodega.find(f => f.Codigo == this.CodBodega);
     let iCLiente = this.lstClientes.find(f => f.Codigo == this.CodCliente);
-    let iVendedor = this.lstVendedores.find(f => f.Codigo == this.cmbVendedor.selection[0]);
+    let iVendedor = this.lstVendedores.find(f => f.Codigo == this.cmbVendedor.value[0]);
     if( this.RevisionFactura.lstDetalle.filter(f => f.PrecioLiberado  || f.PedirAutorizado).length > 0) PedirAutorizacion = true;
 
 
