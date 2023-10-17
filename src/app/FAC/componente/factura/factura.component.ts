@@ -131,7 +131,7 @@ export class FacturaComponent {
         this.bol_Referescar = false;
         this.Plazo = 0;
         this.SimboloMonedaCliente = "U$";
-        this.CodBodega = "B-01";
+        this.CodBodega = this.cFunciones.Bodega;
         this.val.Get("txtCliente").setValue("");
         this.val.Get("txtNombre").setValue("");
         this.val.Get("txtIdentificacion").setValue("");
@@ -159,6 +159,7 @@ export class FacturaComponent {
 
         this.Disponible = 0;
         this.CodCliente == "";
+        this.val.Get("txtBodega").disable();
         this.val.Get("txtCliente").enable();
         this.val.Get("txtLimite").disable();
         this.val.Get("txtDisponible").disable();

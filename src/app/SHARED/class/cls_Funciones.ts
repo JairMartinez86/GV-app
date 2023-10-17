@@ -25,6 +25,7 @@ export class Funciones {
   public User: string = "";
   public Nombre: string = "";
   public Rol: string = "";
+  public Bodega: string = "";
 
   constructor(public DIALOG: MatDialog) {
 

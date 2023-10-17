@@ -276,6 +276,12 @@ export class FactFichaProductoComponent {
   }
 
   private LlenarPrecio(): void {
+
+
+    this.val.Get("txtPrecioCor").disable();
+    this.val.Get("txtPrecioDol").disable();
+
+
     let PrecioProd: iPrecio[] = this.lstPrecios.filter(
       (f) => f.EsPrincipal
     );
@@ -719,7 +725,7 @@ export class FactFichaProductoComponent {
 
     this.Detalle = {} as iDetalleFactura;
     let iDesc = this.lstDescuento.find(f => f.Descripcion == "ADICIONAL");
-
+    
 
     this.SubTotal = 0;
     this.Descuento = 0;
@@ -730,6 +736,9 @@ export class FactFichaProductoComponent {
     this.TotalDolar = 0;
 
     if (this.CodProducto == "") return;
+
+    let iPrec = this.lstPrecios.find(f => f.EsPrincipal && f.CodProducto == this.CodProducto);
+
 
     let Producto: iProducto[] = this.lstProductos.filter(
       (f) => f.Codigo == this.CodProducto
@@ -745,6 +754,7 @@ export class FactFichaProductoComponent {
     let PorcDescuentoAdicional: number = this.cFunciones.Redondeo(Number(iDesc?.PorcDescuento) / 100, "4");
     let PorcImpuesto: number = Producto[0].ConImpuesto ? 0.15 : 0;
     let ImpuestoExo: number = 0;
+    let CambioPrecio : boolean = false;
 
     if (PorcDescuentoAdicional == undefined) PorcDescuentoAdicional = 0;
     if (PorDescuento == undefined) PorDescuento = 0;
@@ -761,6 +771,10 @@ export class FactFichaProductoComponent {
     if (this.TC == 0) this.TC = 1;
 
     if (this.cFunciones.MonedaLocal == this.MonedaCliente) {
+
+      if(iPrec?.PrecioCordoba != PrecioCordoba) CambioPrecio = true;
+
+
       this.SubTotal = this.cFunciones.Redondeo(PrecioCordoba * Cantidad, "2");
       this.Descuento = this.cFunciones.Redondeo(
         this.SubTotal * PorDescuento,
@@ -790,6 +804,10 @@ export class FactFichaProductoComponent {
         "2"
       );
     } else {
+
+      if(iPrec?.PrecioDolar != PrecioDolar) CambioPrecio = true;
+
+
       this.SubTotal = this.cFunciones.Redondeo(PrecioDolar * Cantidad, "2");
       this.Descuento = this.cFunciones.Redondeo(
         this.SubTotal * PorDescuento,
@@ -850,7 +868,9 @@ export class FactFichaProductoComponent {
     this.Detalle.EsExonerado = this.TipoExoneracion == "Exonerado" ? true : false;
     this.Detalle.EsExento = !Producto[0].ConImpuesto
     if(this.bol_Exportacion)  this.Detalle.EsExento = true;
+    this.Detalle.PrecioLiberado = false;
     this.Detalle.PrecioLiberado = this.bol_EsPrecioLiberado;
+    this.Detalle.PrecioLiberado = CambioPrecio;
     this.Detalle.IndexUnion = -1;
 
   }

@@ -3,6 +3,7 @@ export interface iLogin{
     Nombre : string;
     Pwd : string;
     Rol: string;
+    Bodega : string,
     FechaLogin: string;
     Desconecion : boolean;
     FechaServer : string;
