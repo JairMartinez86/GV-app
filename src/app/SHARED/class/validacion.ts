@@ -9,7 +9,7 @@ import {
 } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material/core";
 
-import { formatDate } from "@angular/common";
+import { formatDate, formatNumber } from "@angular/common";
 import { EventEmitter, Injectable, Output } from "@angular/core";
 import { event } from "jquery";
 
@@ -49,9 +49,13 @@ interface iFocus {
   Evento : any;
 }
 
+interface iFormat {
+  Id: string;
+  Decimal: number;
+}
 
 const lstFocus: iFocus[] = [];
-
+const lstFormat: iFormat[] = [];
 
 export class Validacion {
   
@@ -120,6 +124,40 @@ export class Validacion {
     document.querySelector('#' + id)?.addEventListener('keypress', this.onKeyEnter);
    
   }
+  
+  
+  public addNumberFocusIn() {
+
+    var inputs, index;
+
+    inputs = document.getElementsByTagName('input');
+    for (index = 0; index < inputs.length; ++index) {
+      if(inputs[index].id != "")
+      {
+        document.querySelector('#' + inputs[index].id)?.addEventListener('focusin', this.onFocusIn);
+      }
+      
+    }
+
+
+  }
+
+  public addFocusOut(id: string, decimal : number) {
+
+    let i: number = lstFormat.findIndex(f => f.Id == id);
+
+    if (i != -1) {
+      lstFormat[i].Id == id;
+    }
+    else {
+      lstFormat.push({ Id: id, Decimal: decimal });
+    }
+
+
+    document.querySelector('#' + id)?.addEventListener('focusout', this.onFocusOut);
+
+  }
+
 
    onKeyEnter(event: any){
 
@@ -145,6 +183,37 @@ export class Validacion {
 
 
     event.preventDefault();
+
+  }
+  
+  onFocusIn(event: any) {
+
+
+    let id: string = event.target.id;
+
+    let elmento: any = document?.getElementById(id)!;
+
+    if (!isNaN(parseFloat(elmento.value.replaceAll(",", "")))) {
+      if (Number(elmento.value.replaceAll(",", "")) == 0) elmento.value = "";
+
+
+    }
+
+  }
+
+  onFocusOut(event: any) {
+
+
+    let id: string = event.target.id;
+    let iform = lstFormat.find(f => f.Id == id);
+
+    let elmento: any = document?.getElementById(id)!;
+
+    let numero : number = Number(elmento.value.replaceAll(",", ""));
+ 
+
+    elmento.value = formatNumber(numero, "en-IN",  "1."+iform?.Decimal+"-"+iform?.Decimal);
+
 
   }
 
