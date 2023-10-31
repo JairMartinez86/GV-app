@@ -134,6 +134,7 @@ export class Validacion {
     for (index = 0; index < inputs.length; ++index) {
       if(inputs[index].id != "")
       {
+		document.querySelector('#' + inputs[index].id)?.removeEventListener("focusin", this.onFocusIn);
         document.querySelector('#' + inputs[index].id)?.addEventListener('focusin', this.onFocusIn);
       }
       
