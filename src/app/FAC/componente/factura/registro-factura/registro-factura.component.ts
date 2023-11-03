@@ -63,6 +63,8 @@ export class RegistroFacturaComponent {
       }
     );
 
+    document.getElementById("btnRefrescar")?.setAttribute("disabled", "disabled");
+
     this.GET.Get(this.val.Get("txtFecha1").value, this.val.Get("txtFecha2").value, this.TipoDocumento, this.EsCola).subscribe(
       (s) => {
         dialogRef.close();
@@ -80,7 +82,7 @@ export class RegistroFacturaComponent {
           this.lstDocumentos.paginator = this.paginator;
 
           //this.lstFilter = this.lstDocumentos.map((obj : any) => ({...obj}));
-
+          document.getElementById("btnRefrescar")?.removeAttribute("disabled");
 
         }
       },
