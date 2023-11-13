@@ -15,10 +15,9 @@ import {
   IgxComboComponent,
   OverlaySettings,
   PositionSettings,
-  VerticalAlignment,
-  scaleInCenter,
-  scaleOutCenter,
+  VerticalAlignment
 } from "igniteui-angular";
+import { scaleInCenter, scaleOutCenter } from 'igniteui-angular/animations';
 import { iBodega } from "../../interface/i-Bodega";
 import { iCredito } from "../../interface/i-Credito";
 import { iVendedor } from "../../interface/i-venedor";

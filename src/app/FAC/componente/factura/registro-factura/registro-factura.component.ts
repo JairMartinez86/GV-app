@@ -324,7 +324,7 @@ export class RegistroFacturaComponent {
           //const pdfBytes = fs.readFileSync(pdfCopyDoc);
           const pdf = await PDFDocument.load(pdfBytes);
           const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-          copiedPages.forEach((page) => {
+          copiedPages.forEach((page : any) => {
             mergedPdf.addPage(page);
           });
         }

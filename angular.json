@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/gv-app",
+            "outputPath": "dist/GV-app",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -41,9 +41,7 @@
             ],
             "allowedCommonJsDependencies": [
               "jquery",
-              "disable-devtool",
-              "pako",
-              "print-js"
+              "disable-devtool"
           ],
           "stylePreprocessorOptions": {
             "includePaths": [
@@ -82,10 +80,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "GV-app:build:production"
+              "buildTarget": "GV-app:build:production"
             },
             "development": {
-              "browserTarget": "GV-app:build:development"
+              "buildTarget": "GV-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -93,7 +91,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "GV-app:build"
+            "buildTarget": "GV-app:build"
           }
         },
         "test": {
