@@ -50,6 +50,7 @@ export class FacturaComponent {
 
   public Panel: string = "";
   public BotonSiguienteLabel = "";
+  public PermitirGuardar : boolean = true;
 
   public TipoPago: string = "Contado";
   public TipoImpuesto: string = "Iva";
@@ -412,9 +413,11 @@ public customSettings: OverlaySettings = {
 
   public v_Select_Bodega(event: any) {
     if (event.added.length) {
-      event.newSelection = event.added;
-      this.val.Get("txtBodega").setValue(event.added);
-      this.CodBodega = event.added[0];
+      if(event.newValue.length > 1) event.newValue.splice(0, 1);
+      let _Item  = this.lstBodega.find(f => f.Codigo == event.newValue[0]);
+
+      this.val.Get("txtBodega").setValue(event.newValue[0]);
+      this.CodBodega = event.newValue[0];
       this.FichaProducto.lstDetalle.splice(
         1,
         this.FichaProducto.lstDetalle.length
@@ -442,14 +445,15 @@ public customSettings: OverlaySettings = {
 
   public v_Select_Vendedor(event: any) {
     if (event.added.length) {
-      event.newSelection = event.added;
-      this.val.Get("txtVendedor").setValue(event.added);
+      if(event.newValue.length > 1) event.newValue.splice(0, 1);
+      let _Item  = this.lstVendedores.find(f => f.Codigo == event.newValue[0]);
+      this.val.Get("txtVendedor").setValue(event.newValue[0]);
 
       if (this.isEvent) {
         this.isEvent = false;
         return;
       } else {
-        this.v_EsClienteClave(event.added);
+        this.v_EsClienteClave(event.newValue[0]);
       }
     }
   }
@@ -934,6 +938,8 @@ public customSettings: OverlaySettings = {
 
   public v_Guardar() : void{
 
+    
+
     let ErrorFicha : string = "";
     let ErrorConfirmar : string = "";
     let ErrorOtros : string = "";
@@ -998,6 +1004,12 @@ public customSettings: OverlaySettings = {
     else{
       if( this.RevisionFactura.lstDetalle.filter(f => !f.EsBonif && !f.EsBonifLibre).length == 0) ErrorOtros += "<li class='error-etiqueta'>Productos<ul><li class='error-mensaje'>Registre al menos un producto que no sea bonificado.</li></ul>";
 
+    }
+
+
+    if(!this.PermitirGuardar)
+    {
+      ErrorOtros = "No se permite modificar factura."
     }
     
 
@@ -1252,6 +1264,8 @@ public customSettings: OverlaySettings = {
 
     this.Panel = "Producto";
     this.v_FichaPanel("Siguiente");
+
+    if(det.TipoDocumento == "Factura") this.PermitirGuardar = false;
 
 
   }
