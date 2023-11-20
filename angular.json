@@ -41,7 +41,9 @@
             ],
             "allowedCommonJsDependencies": [
               "jquery",
-              "disable-devtool"
+              "disable-devtool",
+              "pako",
+              "print-js"
           ],
           "stylePreprocessorOptions": {
             "includePaths": [
