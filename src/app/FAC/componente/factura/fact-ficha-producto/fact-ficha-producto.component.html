@@ -10,30 +10,39 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-md-12 col-lg-3 mb-1">
-                                    <div class="input-group">
-                                        <span class="input-group-text"><button type="button" class="btn i-boton"
-                                            (click)="v_Borrar_Producto();"><i
-                                                    [ngClass]="CodProducto == '' ? 'bi bi-upc-scan' : 'fa-solid fa-eraser fa-beat-fade fa-lg'"></i></button></span>
-                                        <div class="form-floating">
-                                            <input type="text" id="txtCodProducto" class="form-control"
-                                                placeholder="Seleccione un producto" aria-label="CodProducto" matInput
-                                                formControlName="txtCodProducto" [matAutocomplete]="cmbProducto">
-                                            <label for="txtCodProducto">Codigo</label>
-
+                                  
+                                    <div class="row">
+                                        
+                                        <div class="col-12 col-sm-12 col-md-8 col-lg-2">
+                                            <button type="button" class="btn i-boton btn-borrar-producto"
+                                                (click)="v_Borrar_Producto();"><i
+                                                        [ngClass]="CodProducto == '' ? 'bi bi-upc-scan fa-xl' : 'fa-solid fa-eraser fa-beat-fade fa-xl'"></i></button>
                                         </div>
-                                        <span class="input-group-text"><button type="button" class="btn i-boton"
-                                                (click)="v_tabla_Producto('E');"><i
-                                                    class="fa-solid fa-warehouse fa-beat-fade fa-lg"></i></button></span>
 
 
-                                        <mat-autocomplete autoActiveFirstOption #cmbProducto="matAutocomplete"
-                                            (optionSelected)="v_Select_Producto($event)">
-                                            <mat-option *ngFor="let option of filteredProductos | async"
-                                                [value]="option.Codigo">
-                                                {{option.Key}}
-                                            </mat-option>
-                                        </mat-autocomplete>
+                                        <div class="col-12 col-sm-12 col-md-8 col-lg-8">
+                                            <igx-combo #cmbProducto [data]="lstProductos" valueKey="Codigo"
+                                                displayKey="Key" id="txtCodProducto" formControlName="txtCodProducto"
+                                                placeholder="Producto" searchPlaceholder="Seleccione un producto..."
+                                                [autoFocusSearch]="true" [overlaySettings]="overlaySettings"
+                                                (selectionChanging)="v_Select_Producto($event)"
+                                                (keyup)="v_Enter_Producto($event);" (closed)="v_Close_Producto()">
+                                                <label igxLabel>Producto</label>
+                                            </igx-combo>
+                                        </div>
+
+                                        <div class="col-12 col-sm-12 col-md-2 col-lg-2">
+
+                                            <button type="button" class="btn i-boton btn-existencia-producto"
+                                            (click)="v_tabla_Producto('E');"><i
+                                                class="fa-solid fa-warehouse fa-beat-fade fa-xl"></i></button>
+                                            
+                                        </div>
+
+
+
                                     </div>
+
                                 </div>
 
 

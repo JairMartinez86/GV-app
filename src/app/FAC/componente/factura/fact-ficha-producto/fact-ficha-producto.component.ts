@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { TablaDatosComponent } from "../../tabla-datos/tabla-datos.component";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { Observable, map, startWith } from "rxjs";
@@ -15,6 +15,7 @@ import { iDetalleFactura } from "src/app/FAC/interface/i-detalle-factura";
 import { iExistencia } from "src/app/FAC/interface/i-Existencia";
 import { iBonificacion } from "src/app/FAC/interface/i-Bonificacion";
 import { iDescuento } from "src/app/FAC/interface/i-Descuento";
+import { IgxComboComponent, OverlaySettings } from "igniteui-angular";
 
 @Component({
   selector: "app-fact-ficha-producto",
@@ -57,6 +58,8 @@ export class FactFichaProductoComponent {
   public TotalDolar: number = 0;
 
   private EsModal : boolean = false;
+
+  public overlaySettings: OverlaySettings = {};
 
   public constructor(
     private GET: getFactura,
@@ -165,7 +168,9 @@ export class FactFichaProductoComponent {
   }
 
   //████████████████████████████████████████████FICHA PRODUCTO████████████████████████████████████████████████████████████████████████
-
+  @ViewChild("cmbProducto", { static: false })
+  public cmbProducto: IgxComboComponent;
+  
   private v_Cargar_Productos(): void {
 
     this.lstPrecios.splice(0, this.lstPrecios.length);
@@ -241,24 +246,27 @@ export class FactFichaProductoComponent {
 
   }
 
+
   public v_Select_Producto(event: any): void {
-    let Producto: iProducto[] = this.lstProductos.filter(
-      (f) => f.Codigo == event.option.value
-    );
-
-    this.CodProducto = "";
-    this.bol_EsPrecioLiberado = false;
-    this.val.Get("txtProducto").setValue("");
-    this.val.Get("txtPrecioCor").setValue("0.0000");
-    this.val.Get("txtPrecioDol").setValue("0.0000");
-    this.val.Get("txtCantidad").setValue("1");
-    this.val.Get("txtProcDescuento").setValue("0.00");
 
 
-    if (Producto.length > 0) {
+    if (event.added.length) {
+      if (event.newValue.length > 1) event.newValue.splice(0, 1);
 
-      this.CodProducto = Producto[0].Codigo;
-      this.val.Get("txtProducto").setValue(Producto[0].Producto);
+      let _Item: iProducto = this.cmbProducto.dropdown.focusedItem.value;
+
+
+      this.CodProducto = "";
+      this.bol_EsPrecioLiberado = false;
+      this.val.Get("txtProducto").setValue("");
+      this.val.Get("txtPrecioCor").setValue("0.0000");
+      this.val.Get("txtPrecioDol").setValue("0.0000");
+      this.val.Get("txtCantidad").setValue("1");
+      this.val.Get("txtProcDescuento").setValue("0.00");
+
+
+      this.CodProducto = _Item.Codigo;
+      this.val.Get("txtProducto").setValue(_Item.Producto);
       this.val.Get("txtCodProducto").disable();
       this.val.Get("txtProducto").disable();
       //this.val.Get("txtPrecioCor").enable();
@@ -269,11 +277,28 @@ export class FactFichaProductoComponent {
       //document?.getElementById("txtPrecioCor")?.focus();
 
       this.v_Datos_Producto();
+
+
     }
 
 
 
+
   }
+
+  public v_Enter_Producto(event: any) {
+    if (event.key == "Enter") {
+      let _Item: iProducto = this.cmbProducto.dropdown.focusedItem.value;
+      this.cmbProducto.setSelectedItem(_Item.Codigo);
+      this.val.Get("txtCodProducto").setValue([_Item.Codigo]);
+      this.CodProducto = _Item.Codigo;
+    }
+  }
+
+  public v_Close_Producto() {
+    this.CodProducto = this.cmbProducto.value[0];
+  }
+
 
   private LlenarPrecio(): void {
 
@@ -389,6 +414,7 @@ export class FactFichaProductoComponent {
 
   public v_Borrar_Producto(): void {
     this.CodProducto = "";
+    this.cmbProducto.setSelectedItem([]);
     this.bol_EsPrecioLiberado = false;
     this.lstPrecios.splice(0, this.lstPrecios.length);
     this.lstBonificacion.splice(0, this.lstBonificacion.length);

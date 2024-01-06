@@ -305,6 +305,11 @@ export class FacturaComponent {
 
   //████████████████████████████████████████████DATOS CLIENTE████████████████████████████████████████████████████████████████████████
 
+  //CLIENTE
+  @ViewChild("cmbCliente", { static: false })
+  public cmbCliente: IgxComboComponent;
+
+
   public v_Select_Cliente(event: any): void {
     this.FichaProducto.lstDetalle.splice(
       0,
@@ -319,11 +324,31 @@ export class FacturaComponent {
     this.cmbVendedor.setSelectedItem("");
     this.val.Get("txtVendedor").setValue([]);
 
-    this.LlenarDatosCliente(event.option.value);
+    if (event.added.length) {
+      if (event.newValue.length > 1) event.newValue.splice(0, 1);
+      this.LlenarDatosCliente(event.newValue[0]);
+    }
+
   }
+
+
+  public v_Enter_Cliente(event: any) {
+    if (event.key == "Enter") {
+      let _Item: iCliente = this.cmbCliente.dropdown.focusedItem.value;
+      this.cmbCliente.setSelectedItem(_Item.Codigo);
+      this.val.Get("txtCliente").setValue([_Item.Codigo]);
+      this.CodCliente = _Item.Codigo;
+    }
+  }
+
+  public v_Close_Cliente() {
+    this.CodCliente = this.cmbCliente.value[0];
+  }
+
 
   public v_Borrar_Cliente(): void {
     this.CodCliente = "";
+    this.cmbCliente.setSelectedItem([]);
     this.FichaProducto.lstDetalle.splice(
       0,
       this.FichaProducto.lstDetalle.length
