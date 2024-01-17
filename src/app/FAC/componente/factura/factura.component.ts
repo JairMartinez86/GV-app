@@ -173,7 +173,8 @@ export class FacturaComponent {
           if (cl != undefined) {
             this.CodCliente = cl.Codigo;
             this.MonedaCliente = cl.Moneda;
-            this.val.Get("txtCliente").setValue(cl.Cliente);
+            this.cmbCliente.setSelectedItem([cl.Codigo]);
+            this.val.Get("txtCliente").setValue([cl.Codigo]);
             this.val.Get("txtVendedor").setValue([_iBodega.Vendedor]);
             this.val.Get("txtCliente").disable();
             this.MonedaCliente = cl.Moneda;
