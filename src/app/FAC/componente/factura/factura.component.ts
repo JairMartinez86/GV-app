@@ -61,6 +61,7 @@ export class FacturaComponent {
   private bol_Referescar: boolean = false;
   private Disponible : number = 0;
   public EsModal : boolean = false;
+   private LoadEditar : boolean = false;
 
   public SimboloMonedaCliente: string = "U$";
   private MonedaCliente: string;
@@ -254,7 +255,7 @@ export class FacturaComponent {
             this.cmbBodega.setSelectedItem(this.CodBodega);
   
   
-            if (this.CodCliente == "" && _iBodega != undefined) {
+            if ((this.CodCliente == "" || this.cmbCliente.value.length == 0) && _iBodega != undefined) {
               let cl = this.lstClientes.find((f) => f.Codigo == _iBodega?.ClienteContado);
   
               if (cl != undefined) {
@@ -375,7 +376,7 @@ export class FacturaComponent {
 
     if (Cliente.length > 0) {
       this.CodCliente = Cliente[0].Codigo;
-      this.val.Get("txtCliente").setValue(Cliente[0].Cliente);
+      this.val.Get("txtCliente").setValue([Cliente[0].Codigo]);
       this.val
         .Get("txtIdentificacion")
         .setValue(Cliente[0].Ruc + "/" + Cliente[0].Cedula);
@@ -1216,24 +1217,34 @@ public customSettings: OverlaySettings = {
     this.EsModal = true;
     this.isEvent = false;
     this.Fila_Doc = det;
+	this.LoadEditar = true;
+    this.ConfirmarFactura.LoadEditar = this.LoadEditar;
   
+
+    this.cmbBodega.setSelectedItem(this.Fila_Doc.CodBodega);
+    this.val.Get("txtBodega").setValue([this.Fila_Doc.CodBodega]);
+
+     
+    this.cmbCliente.setSelectedItem(this.Fila_Doc.CodCliente);
+    this.val.Get("txtCliente").setValue([this.Fila_Doc.CodCliente]);
+
+
 
     
 
-    this.RevisionFactura.EsModal = true;
+   this.RevisionFactura.EsModal = true;
     this.ConfirmarFactura.EsModal = true;
     this.CodCliente = this.Fila_Doc.CodCliente;
     this.MonedaCliente = this.Fila_Doc.Moneda;
-    this.val.Get("txtCliente").setValue(this.Fila_Doc.NomCliente);
+    this.CodBodega = this.Fila_Doc.CodBodega;
+	
     this.val.Get("txtNombre").setValue(this.Fila_Doc.Nombre);
     this.val.Get("txtIdentificacion").setValue(this.Fila_Doc.RucCedula);
     this.val.Get("txtContacto").setValue(this.Fila_Doc.Contacto);
     this.val.Get("txtLimite").setValue(this.Fila_Doc.Limite);
     this.val.Get("txtDisponible").setValue(this.Fila_Doc.Disponible);
 
-    this.CodBodega = this.Fila_Doc.CodBodega;
-    this.cmbBodega.setSelectedItem(this.Fila_Doc.CodBodega);
-    this.val.Get("txtBodega").setValue([this.Fila_Doc.CodBodega]);
+
 
     this.cmbVendedor.setSelectedItem(this.Fila_Doc.CodVendedor);
     this.val.Get("txtVendedor").setValue([this.Fila_Doc.CodVendedor]);
@@ -1292,6 +1303,8 @@ public customSettings: OverlaySettings = {
     this.v_FichaPanel("Siguiente");
 
     if(det.TipoDocumento == "Factura") this.PermitirGuardar = false;
+	this.LoadEditar = true;
+    this.ConfirmarFactura.LoadEditar = this.LoadEditar;
 
 
   }

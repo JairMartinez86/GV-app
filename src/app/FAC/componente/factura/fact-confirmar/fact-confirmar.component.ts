@@ -55,6 +55,7 @@ export class FactConfirmarComponent {
   public i_Credito: iCredito[];
   public bol_Exportacion : boolean = false;
   public EsModal: boolean = false;
+  public LoadEditar : boolean = false;
 
 
 
@@ -463,6 +464,7 @@ export class FactConfirmarComponent {
   //████████████████████████████████████████████VER FACTURA████████████████████████████████████████████████████████████████████████
 
   public v_TipoFactura(event: any): void {
+  if(this.LoadEditar) return;
 
     if (this.isEvent) {
       this.isEvent = false;
