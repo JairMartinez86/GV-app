@@ -261,7 +261,8 @@ export class FacturaComponent {
               if (cl != undefined) {
                 this.CodCliente = cl.Codigo;
                 this.MonedaCliente = cl.Moneda;
-                this.val.Get("txtCliente").setValue(cl.Cliente);
+                this.cmbCliente.setSelectedItem(cl.Codigo);
+                this.val.Get("txtCliente").setValue([cl.Codigo]);
                 this.val.Get("txtVendedor").setValue([_iBodega.Vendedor]);
                 this.val.Get("txtCliente").disable();
   
@@ -531,7 +532,7 @@ public customSettings: OverlaySettings = {
             let Clave: any = Datos[0].d;
   
             if (Clave.length > 0) {
-              if (Clave[0].EsClave && Clave[0].CodVendedor != CodNewVend[0]) {
+              if (Clave[0].EsClave && Clave[0].CodVendedor != CodNewVend) {
                 this.cmbVendedor.setSelectedItem(Clave[0].CodVendedor);
                 this.val.Get("txtVendedor").setValue(Clave[0].CodVendedor);
                 this.cmbVendedor.close();
