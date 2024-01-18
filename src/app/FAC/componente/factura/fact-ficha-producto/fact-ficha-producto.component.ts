@@ -85,7 +85,7 @@ export class FactFichaProductoComponent {
     this.val.add(
       "txtPrecioDol",
       "1",
-      "DEC>=",
+      "NUM>=",
       "0",
       "Precio Dolar",
       "Ingrese  precio dolar."
@@ -101,7 +101,7 @@ export class FactFichaProductoComponent {
     this.val.add(
       "txtProcDescuento",
       "1",
-      "DEC>=",
+      "NUM>=",
       "0",
       "% Descuento",
       "Ingrese un descuento valido."
