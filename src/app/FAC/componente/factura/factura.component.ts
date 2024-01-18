@@ -945,13 +945,14 @@ public customSettings: OverlaySettings = {
   private LlenarDatosConfirmacion(): void {
     this.ConfirmarFactura.lstBodega = this.lstBodega;
     this.ConfirmarFactura.lstVendedores = this.lstVendedores;
+    let c_Cliente : iCliente = this.lstClientes.find(f => f.Codigo == this.CodCliente)!;
 
     this.ConfirmarFactura.Iniciar(
       this.TipoFactura,
       this.CodBodega,
       this.CodCliente,
       this.Plazo,
-      this.val.Get("txtCliente").value,
+      c_Cliente.Codigo,
       this.val.Get("txtNombre").value,
       this.val.Get("txtVendedor").value[0],
       this.MonedaCliente,

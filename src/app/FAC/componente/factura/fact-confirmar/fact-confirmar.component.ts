@@ -121,7 +121,7 @@ export class FactConfirmarComponent {
 
 
 
-    this.val.Get("txtCliente").setValue([this.NombreCliente]);
+    this.val.Get("txtCliente").setValue(this.NombreCliente);
     this.val.Get("txtVendedor").setValue([this.CodVendedor]);
     this.val.Get("txtNombre_Confirmar").setValue(this.Nombre);
     this.val.Get("txtBodega").setValue([this.CodBodega]);
