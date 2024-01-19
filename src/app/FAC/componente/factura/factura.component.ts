@@ -952,7 +952,7 @@ public customSettings: OverlaySettings = {
       this.CodBodega,
       this.CodCliente,
       this.Plazo,
-      c_Cliente.Codigo,
+      c_Cliente.Cliente,
       this.val.Get("txtNombre").value,
       this.val.Get("txtVendedor").value[0],
       this.MonedaCliente,
