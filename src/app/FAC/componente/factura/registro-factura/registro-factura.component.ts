@@ -244,7 +244,7 @@ export class RegistroFacturaComponent {
             DatosImpresion = _json["d"];
 
             this.CargarDocumentos();
-            //this.printPDFS();
+            this.printPDFS();
             
     
           }

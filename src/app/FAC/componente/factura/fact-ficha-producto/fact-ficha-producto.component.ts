@@ -607,10 +607,10 @@ export class FactFichaProductoComponent {
         DetalleBonificado.Index = index;
         DetalleBonificado.Codigo = this.CodProducto;
         DetalleBonificado.Producto = det.Producto;
-        DetalleBonificado.Precio = det.Precio;
-        DetalleBonificado.PrecioCordoba = det.PrecioCordoba;
-        DetalleBonificado.PrecioDolar = det.PrecioDolar;
-        DetalleBonificado.PorcDescuento = 1;
+        DetalleBonificado.Precio = 0;//det.Precio;
+        DetalleBonificado.PrecioCordoba = 0;//det.PrecioCordoba;
+        DetalleBonificado.PrecioDolar = 0;//det.PrecioDolar;
+        DetalleBonificado.PorcDescuento = 0;//1;
         DetalleBonificado.PorcDescuentoAdicional = 0;
         DetalleBonificado.PorcImpuesto = det.PorcImpuesto;
         DetalleBonificado.Cantidad = Bonificado.Bonifica;
