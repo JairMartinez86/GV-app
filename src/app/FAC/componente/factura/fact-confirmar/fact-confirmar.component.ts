@@ -221,8 +221,11 @@ export class FactConfirmarComponent {
 
 
 
+
+
+
   public v_Select_Vendedor(event: any) {
-    if (event.added.length) {
+    if (event.added.length && event.newSelection[0].Codigo != event.added[0].Codigo ) {
       event.newSelection = event.added;
       this.val.Get("txtVendedor").setValue(event.added);
 

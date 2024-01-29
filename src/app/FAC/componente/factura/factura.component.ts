@@ -62,9 +62,12 @@ export class FacturaComponent {
   private Disponible : number = 0;
   public EsModal : boolean = false;
    private LoadEditar : boolean = false;
+   public TipoPermiso : string = "";
+
 
   public SimboloMonedaCliente: string = "U$";
   private MonedaCliente: string;
+  
 
   
   public overlaySettings: OverlaySettings = {};
@@ -473,8 +476,8 @@ public customSettings: OverlaySettings = {
 
   public v_Select_Vendedor(event: any) {
     if (event.added.length) {
-      if(event.newValue.length > 1) event.newValue.splice(0, 1);
-      let _Item  = this.lstVendedores.find(f => f.Codigo == event.newValue[0]);
+      if (event.newValue.length > 1) event.newValue.splice(0, 1);
+      let _Item = this.lstVendedores.find(f => f.Codigo == event.newValue[0]);
       this.val.Get("txtVendedor").setValue(event.newValue[0]);
 
       if (this.isEvent) {
@@ -501,13 +504,14 @@ public customSettings: OverlaySettings = {
     // this.f_key_Enter(this.cmbVendedor.id);
   }
 
+
   private v_EsClienteClave(CodNewVend: string): void {
     if (CodNewVend == "") return;
 
     let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
       {
-        
+
         panelClass: "escasan-dialog-full-blur",
         data: "",
       }
@@ -519,9 +523,9 @@ public customSettings: OverlaySettings = {
 
           dialogRef.close();
           let _json = JSON.parse(s);
-  
+
           if (_json["esError"] == 1) {
-            if(this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined){
+            if (this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined) {
               this.cFunciones.DIALOG.open(DialogErrorComponent, {
                 id: "error-servidor-msj",
                 data: _json["msj"].Mensaje,
@@ -530,13 +534,13 @@ public customSettings: OverlaySettings = {
           } else {
             let Datos: iDatos[] = _json["d"];
             let Clave: any = Datos[0].d;
-  
+
             if (Clave.length > 0) {
               if (Clave[0].EsClave && Clave[0].CodVendedor != CodNewVend) {
                 this.cmbVendedor.setSelectedItem(Clave[0].CodVendedor);
                 this.val.Get("txtVendedor").setValue(Clave[0].CodVendedor);
                 this.cmbVendedor.close();
-  
+
                 this.cFunciones.DIALOG.open(DialogErrorComponent, {
                   data:
                     "<p>Cliente Clave solo se permite seleccionar el vendedor:<b class='error'>" +
@@ -550,8 +554,7 @@ public customSettings: OverlaySettings = {
         },
         error: (err) => {
           dialogRef.close();
-          if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
-          {
+          if (this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) {
             this.cFunciones.DIALOG.open(DialogErrorComponent, {
               id: "error-servidor",
               data: "<b class='error'>" + err.message + "</b>",
@@ -567,6 +570,7 @@ public customSettings: OverlaySettings = {
 
   }
 
+  
   public v_TipoPago(event: any): void {
     if (!event.target.checked) {
       this.TipoPago = "Contado";
@@ -858,9 +862,8 @@ public customSettings: OverlaySettings = {
         this.Disponible = this.ConfirmarFactura.Disponible;
         this.val.Get("txtDisponible").setValue(this.cFunciones.NumFormat(this.ConfirmarFactura.Disponible, "2"));
         if(this.TipoPago == "Credito") this.val.Get("txtDisponible").setValue(this.cFunciones.NumFormat(this.ConfirmarFactura.Restante, "2") );
-        this.cmbVendedor.setSelectedItem(this.ConfirmarFactura.val.Get("txtVendedor").value);
-        this.val.Get("txtVendedor").setValue(this.ConfirmarFactura.val.Get("txtVendedor").value);
-     
+        this.cmbVendedor.setSelectedItem(this.ConfirmarFactura.val.Get("txtVendedor").value[0]);
+       // this.val.Get("txtVendedor").setValue(this.ConfirmarFactura.val.Get("txtVendedor").value);
       }
   
       this.LlenarRevision();
@@ -882,7 +885,8 @@ public customSettings: OverlaySettings = {
 
         this.BotonSiguienteLabel = "Guardar";
         if(TotalAutorizado > 0)this.BotonSiguienteLabel = "Autorizar Parcial";
-        if(TotalPorAutorizar == TotalAutorizado) this.BotonSiguienteLabel = "Autorización";
+        if(TotalPorAutorizar == TotalAutorizado ) this.BotonSiguienteLabel = "Autorización";
+        if(this.TipoPermiso == "2") this.BotonSiguienteLabel = "Pedido";
       }
 
       this.LlenarDatosConfirmacion();
@@ -1017,7 +1021,7 @@ public customSettings: OverlaySettings = {
       }
       else
       {
-        if(this.ConfirmarFactura.i_Credito[0].SaldoVencido >0 && !this.ConfirmarFactura.i_Credito[0].FacturarVencido)
+        if(this.ConfirmarFactura.i_Credito[0].SaldoVencido >0 && !this.ConfirmarFactura.i_Credito[0].FacturarVencido && !this.EsModal)
         {
           ErrorOtros += "<li class='error-etiqueta'>Credito<ul><li class='error-mensaje'>El cliente tiene saldo vencido.</li></ul>";
         }
@@ -1215,7 +1219,8 @@ public customSettings: OverlaySettings = {
     );
   }
 
-  public v_Editar(det : iFactPed){
+  public v_Editar(det : iFactPed, TipoPermiso : string){
+    this.TipoPermiso = TipoPermiso;
     this.EsModal = true;
     this.isEvent = false;
     this.Fila_Doc = det;
@@ -1307,6 +1312,7 @@ public customSettings: OverlaySettings = {
     if(det.TipoDocumento == "Factura") this.PermitirGuardar = false;
 	this.LoadEditar = true;
     this.ConfirmarFactura.LoadEditar = this.LoadEditar;
+    this.RevisionFactura.TipoPermiso = TipoPermiso;
 
 
   }

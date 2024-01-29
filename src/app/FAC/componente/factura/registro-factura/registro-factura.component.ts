@@ -133,7 +133,7 @@ export class RegistroFacturaComponent {
   }
 
 
-  public v_Editar(det: iFactPed) {
+  public v_Editar(det: iFactPed, Visualizar : boolean) {
 
 
 
@@ -145,7 +145,7 @@ export class RegistroFacturaComponent {
       }
     );
 
-    this.GET.GetDetalle(det.IdVenta, this.cFunciones.User).subscribe(
+    this.GET.GetDetalle(det.IdVenta, this.cFunciones.User, Visualizar).subscribe(
       {
         next: (s) => {
 
@@ -163,7 +163,7 @@ export class RegistroFacturaComponent {
             let Datos: iDatos[] = _json["d"];
 
 
-            if(Datos[1].d != "")
+            if(Datos[1].d != "1" && Datos[1].d != "2")
             {
               this.cFunciones.DIALOG.open(DialogErrorComponent, {
                 data: Datos[1].d ,
@@ -184,7 +184,7 @@ export class RegistroFacturaComponent {
               });
 
             dialogRef.afterOpened().subscribe(s => {
-              dialogRef.componentInstance.v_Editar(det);
+              dialogRef.componentInstance.v_Editar(det, Datos[1].d);
 
             });
 

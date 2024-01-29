@@ -59,8 +59,8 @@ export class getFactura{
    }
    
 
-   public GetDetalle(IdVenta : string, User : string) : Observable<string>{
-      return this.http.get<any>(this._Cnx.Url() + "Factura/GetDetalle?IdVenta=" + IdVenta + "&User=" + User);
+   public GetDetalle(IdVenta : string, User : string, Visualizar : boolean) : Observable<string>{
+      return this.http.get<any>(this._Cnx.Url() + "Factura/GetDetalle?IdVenta=" + IdVenta + "&User=" + User + "&Visualizar=" + Visualizar);
    }
 
 

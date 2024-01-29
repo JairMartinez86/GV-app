@@ -23,6 +23,7 @@ export class FactRevisionComponent {
   private TipoExoneracion: string;
   private bol_Exportacion : boolean = false;
   public EsModal: boolean;
+  public TipoPermiso : string;
 
   constructor(public cFunciones: Funciones) { }
 

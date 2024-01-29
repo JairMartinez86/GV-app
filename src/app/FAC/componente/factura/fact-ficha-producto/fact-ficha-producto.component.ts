@@ -379,8 +379,15 @@ export class FactFichaProductoComponent {
             });
   
             this.lstPrecios.forEach((f) => {
-              f.PrecioCordoba = this.cFunciones.Redondeo(f.PrecioCordoba, "4");
-              f.PrecioDolar = this.cFunciones.Redondeo(f.PrecioDolar, "4");
+              if (this.bol_BonificacionLibre){
+                f.PrecioCordoba = 0;
+                f.PrecioDolar = 0;
+              }
+              else{
+                f.PrecioCordoba = this.cFunciones.Redondeo(f.PrecioCordoba, "4");
+                f.PrecioDolar = this.cFunciones.Redondeo(f.PrecioDolar, "4");
+              }
+             
             });
   
   
@@ -579,7 +586,7 @@ export class FactFichaProductoComponent {
 
     this.val.EsValido();
 
-    if (det.Precio == 0) MsjError += "<li class='error-etiqueta'>Precio<ul><li class='error-mensaje'>El producto no tiene precio.</li></ul>";
+    if (det.Precio == 0 && !this.bol_BonificacionLibre) MsjError += "<li class='error-etiqueta'>Precio<ul><li class='error-mensaje'>El producto no tiene precio.</li></ul>";
     if (det.PorcDescuento > 100) MsjError += "<li class='error-etiqueta'>Descuento<ul><li class='error-mensaje'>Por favor revise el descuento.</li></ul>";
 
 	if (Existencia == undefined) MsjError += "<li class='error-etiqueta'>Existencia<ul><li class='error-mensaje'>El producto no tiene existencia.</li></ul>";
@@ -674,7 +681,7 @@ export class FactFichaProductoComponent {
 
 
     if (this.bol_BonificacionLibre) {
-      det.PorcDescuento = 1;
+      det.PorcDescuento = 0;//1;
       det.SubTotal = 0;
       det.Descuento = 0;
       det.SubTotalNeto = 0;
@@ -794,7 +801,7 @@ export class FactFichaProductoComponent {
     this.Detalle.PorcDescuento = this.cFunciones.Redondeo(PorDescuento * 100, "2");
 
 
-    if (Cantidad == 0 || PrecioCordoba == 0 || PrecioDolar == 0) return;
+    if(!this.bol_BonificacionLibre) if (Cantidad == 0 || PrecioCordoba == 0 || PrecioDolar == 0) return;
     if (this.TC == 0) this.TC = 1;
 
     if (this.cFunciones.MonedaLocal == this.MonedaCliente) {

@@ -206,7 +206,11 @@
 
                             <span>
                                 <button type="button" class="btn" *ngIf="det.PedirAutorizacion || det.TipoDocumento == 'Factura'"
-                                (click)="v_Editar(det);"><i class="fa-solid fa-eye fa-beat-fade fa-lg'"></i>
+                                (click)="v_Editar(det, false);"><i class="fa-solid fa-eye fa-beat-fade fa-lg'"></i>
+                                </button>
+                                
+                                <button type="button" class="btn" *ngIf="det.TipoDocumento == 'Pedido'"
+                                (click)="v_Editar(det, true);"><i class="fa-solid fa-eye fa-beat-fade fa-lg'"></i>
                                 </button>
 
                                 <!-- <button type="button" class="btn" *ngIf="(det.Estado == 'Autorizado' || det.TipoDocumento == 'Factura') || EsCola "
