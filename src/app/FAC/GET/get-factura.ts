@@ -64,8 +64,8 @@ export class getFactura{
    }
 
 
-   public Imprimir(IdVenta : string) : Observable<string>{
-      return this.http.get<any>(this._Cnx.Url() + "Factura/Imprimir?IdVenta=" + IdVenta);
+   public Imprimir(IdVenta : string, User : string) : Observable<string>{
+      return this.http.get<any>(this._Cnx.Url() + "Factura/Imprimir?IdVenta=" + IdVenta + "&User=" + User);
    }
    
 

@@ -226,7 +226,7 @@ export class RegistroFacturaComponent {
       }
     );
 
-    this.GET.Imprimir(det.IdVenta).subscribe(
+    this.GET.Imprimir(det.IdVenta, this.cFunciones.User).subscribe(
       {
         next: (s) => {
 
