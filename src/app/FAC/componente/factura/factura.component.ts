@@ -507,6 +507,7 @@ public customSettings: OverlaySettings = {
 
   private v_EsClienteClave(CodNewVend: string): void {
     if (CodNewVend == "") return;
+    if(this.LoadEditar) return;
 
     let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
@@ -886,7 +887,7 @@ public customSettings: OverlaySettings = {
         this.BotonSiguienteLabel = "Guardar";
         if(TotalAutorizado > 0)this.BotonSiguienteLabel = "Autorizar Parcial";
         if(TotalPorAutorizar == TotalAutorizado ) this.BotonSiguienteLabel = "Autorización";
-        if(this.TipoPermiso == "2") this.BotonSiguienteLabel = "Pedido";
+        if(this.TipoPermiso == "1") this.BotonSiguienteLabel = "Modificar Pedido";
       }
 
       this.LlenarDatosConfirmacion();
@@ -1221,6 +1222,8 @@ public customSettings: OverlaySettings = {
 
   public v_Editar(det : iFactPed, TipoPermiso : string){
     this.TipoPermiso = TipoPermiso;
+    this.RevisionFactura.TipoPermiso = TipoPermiso;
+
     this.EsModal = true;
     this.isEvent = false;
     this.Fila_Doc = det;
@@ -1312,8 +1315,7 @@ public customSettings: OverlaySettings = {
     if(det.TipoDocumento == "Factura") this.PermitirGuardar = false;
 	this.LoadEditar = true;
     this.ConfirmarFactura.LoadEditar = this.LoadEditar;
-    this.RevisionFactura.TipoPermiso = TipoPermiso;
-
+    
 
   }
 
