@@ -244,7 +244,8 @@ export class FactConfirmarComponent {
   public v_Enter_Vendedor(event: any) {
     if (event.key == "Enter") {
       this.isEvent = true;
-      let _Item: iVendedor = this.cmbVendedor.dropdown.focusedItem.value;
+      let cmb: any = this.cmbVendedor.dropdown;
+      let _Item: iVendedor = cmb._focusedItem.value;
       this.cmbVendedor.setSelectedItem(_Item.Codigo);
       this.val.Get("txtVendedor").setValue([_Item.Codigo]);
 

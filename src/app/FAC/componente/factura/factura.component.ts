@@ -342,7 +342,8 @@ export class FacturaComponent {
 
   public v_Enter_Cliente(event: any) {
     if (event.key == "Enter") {
-      let _Item: iCliente = this.cmbCliente.dropdown.focusedItem.value;
+      let cmb: any = this.cmbCliente.dropdown;
+      let _Item: iCliente = cmb._focusedItem.value;
       this.cmbCliente.setSelectedItem(_Item.Codigo);
       this.val.Get("txtCliente").setValue([_Item.Codigo]);
       this.CodCliente = _Item.Codigo;
@@ -457,7 +458,8 @@ public customSettings: OverlaySettings = {
 
   public v_Enter_Bodega(event: any) {
     if (event.key == "Enter") {
-      let _Item: iBodega = this.cmbBodega.dropdown.focusedItem.value;
+      let cmb: any = this.cmbBodega.dropdown;
+      let _Item: iBodega = cmb._focusedItem.value;
       this.cmbBodega.setSelectedItem(_Item.Codigo);
       this.val.Get("txtBodega").setValue([_Item.Codigo]);
       this.CodBodega = _Item.Codigo;
@@ -491,7 +493,8 @@ public customSettings: OverlaySettings = {
   public v_Enter_Vendedor(event: any) {
     if (event.key == "Enter") {
       this.isEvent = true;
-      let _Item: iVendedor = this.cmbVendedor.dropdown.focusedItem.value;
+      let cmb: any = this.cmbVendedor.dropdown;
+      let _Item: iVendedor = cmb._focusedItem.value;
       this.cmbVendedor.setSelectedItem(_Item.Codigo);
       this.val.Get("txtVendedor").setValue([_Item.Codigo]);
 

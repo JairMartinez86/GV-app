@@ -299,7 +299,8 @@ export class FactFichaProductoComponent {
 
   public v_Enter_Producto(event: any) {
     if (event.key == "Enter") {
-      let _Item: iProducto = this.cmbProducto.dropdown.focusedItem.value;
+      let cmb: any = this.cmbProducto.dropdown;
+      let _Item: iProducto = cmb._focusedItem.value;
       this.cmbProducto.setSelectedItem(_Item.Codigo);
       this.val.Get("txtCodProducto").setValue([_Item.Codigo]);
       this.CodProducto = _Item.Codigo;
