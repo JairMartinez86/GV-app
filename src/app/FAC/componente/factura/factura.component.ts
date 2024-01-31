@@ -609,6 +609,8 @@ public customSettings: OverlaySettings = {
                 id: "error-servidor-msj",
                 data: _json["msj"].Mensaje,
               });
+
+              chk.bootstrapToggle("off");
             }
           } else {
             let Datos: iDatos[] = _json["d"];

@@ -134,7 +134,8 @@ export class FactFichaProductoComponent {
         this.bol_EsPrecioLiberado = false;
         this.i_Bonif = undefined;
         this.CodProducto = "";
-        this.val.Get("txtCodProducto").setValue("");
+        this.cmbProducto?.setSelectedItem([]);
+        this.val.Get("txtCodProducto").setValue([]);
         this.val.Get("txtProducto").setValue("");
         this.val.Get("txtPrecioCor").setValue("0.0000");
         this.val.Get("txtPrecioDol").setValue("0.0000");
@@ -150,6 +151,7 @@ export class FactFichaProductoComponent {
 
         this.SubTotal = 0;
         this.Descuento = 0;
+        this.Adicional = 0;
         this.SubTotalNeto = 0;
         this.Impuesto = 0;
         this.TotalCordoba = 0;
@@ -421,12 +423,13 @@ export class FactFichaProductoComponent {
 
   public v_Borrar_Producto(): void {
     this.CodProducto = "";
-    this.cmbProducto.setSelectedItem([]);
+    this.cmbProducto.deselectAllItems();
+
     this.bol_EsPrecioLiberado = false;
     this.lstPrecios.splice(0, this.lstPrecios.length);
     this.lstBonificacion.splice(0, this.lstBonificacion.length);
     this.lstExistencia.splice(0, this.lstExistencia.length);
-    this.val.Get("txtCodProducto").setValue("");
+    this.val.Get("txtCodProducto").setValue([]);
     this.val.Get("txtProducto").setValue("");
     this.val.Get("txtPrecioCor").setValue("0.0000");
     this.val.Get("txtPrecioDol").setValue("0.0000");
@@ -458,7 +461,6 @@ export class FactFichaProductoComponent {
     else {
       document?.getElementById("txtCodProducto")?.focus();
     }
-
 
 
 
@@ -617,7 +619,7 @@ export class FactFichaProductoComponent {
         DetalleBonificado.Precio = 0;//det.Precio;
         DetalleBonificado.PrecioCordoba = 0;//det.PrecioCordoba;
         DetalleBonificado.PrecioDolar = 0;//det.PrecioDolar;
-        DetalleBonificado.PorcDescuento = 0;//1;
+        DetalleBonificado.PorcDescuento = 1;
         DetalleBonificado.PorcDescuentoAdicional = 0;
         DetalleBonificado.PorcImpuesto = det.PorcImpuesto;
         DetalleBonificado.Cantidad = Bonificado.Bonifica;
@@ -681,7 +683,7 @@ export class FactFichaProductoComponent {
 
 
     if (this.bol_BonificacionLibre) {
-      det.PorcDescuento = 0;//1;
+      det.PorcDescuento = 1;
       det.SubTotal = 0;
       det.Descuento = 0;
       det.SubTotalNeto = 0;
@@ -759,7 +761,8 @@ export class FactFichaProductoComponent {
 
     this.Detalle = {} as iDetalleFactura;
     let iDesc = this.lstDescuento.find(f => f.Descripcion == "ADICIONAL");
-    
+    if(this.CodProducto == "") return;
+
 
     this.SubTotal = 0;
     this.Descuento = 0;
