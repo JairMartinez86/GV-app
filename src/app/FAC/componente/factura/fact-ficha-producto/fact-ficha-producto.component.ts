@@ -48,6 +48,8 @@ export class FactFichaProductoComponent {
   private lstBonificacion: iBonificacion[] = [];
   private lstDescuento: iDescuento[] = [];
   public TipoExoneracion: string;
+  public TipoPago : string = "";
+  public EsClienteConvenio : boolean = false;
 
   public SubTotal: number = 0;
   public Descuento: number = 0;
@@ -110,13 +112,15 @@ export class FactFichaProductoComponent {
     this._Evento("Limpiar");
   }
 
-  public Iniciar(CodBodega: string, CodCliente: string, MonedaCliente: string, TipoExoneracion: string, Exportacion: boolean, EsModal : boolean): void {
+  public Iniciar(CodBodega: string, CodCliente: string, MonedaCliente: string, TipoExoneracion: string, Exportacion: boolean, TipoPago : string, EsClienteConvenio : boolean, EsModal : boolean): void {
     this._Evento("Limpiar");
     this.CodBodega = CodBodega;
     this.CodCliente = CodCliente;
     this.MonedaCliente = MonedaCliente;
     this.TipoExoneracion = TipoExoneracion;
     this.bol_Exportacion = Exportacion;
+    this.TipoPago = TipoPago;
+    this.EsClienteConvenio = EsClienteConvenio;
     this.EsModal = EsModal;
 
     document.getElementById("btnAgregarProducto")?.setAttribute("disabled", "disabled");
@@ -128,13 +132,18 @@ export class FactFichaProductoComponent {
     switch (e) {
       case "Limpiar":
 
+
+      this.lstPrecios.splice(0, this.lstPrecios.length);
+      this.lstBonificacion.splice(0, this.lstBonificacion.length);
+      this.lstExistencia.splice(0, this.lstExistencia.length);
+
         this.Detalle = {} as iDetalleFactura;
         this.bol_Referescar = false;
         this.bol_BonificacionLibre = false;
         this.bol_EsPrecioLiberado = false;
         this.i_Bonif = undefined;
         this.CodProducto = "";
-        this.cmbProducto?.setSelectedItem([]);
+        this.cmbProducto?.deselectAllItems();
         this.val.Get("txtCodProducto").setValue([]);
         this.val.Get("txtProducto").setValue("");
         this.val.Get("txtPrecioCor").setValue("0.0000");
@@ -351,7 +360,7 @@ export class FactFichaProductoComponent {
       }
     );
 
-    this.GET.Datos_Producto(this.CodProducto, this.CodBodega, this.CodCliente).subscribe(
+    this.GET.Datos_Producto(this.CodProducto, this.CodBodega, this.CodCliente, this.TipoPago).subscribe(
       {
         next: (s) => {
 
@@ -394,6 +403,11 @@ export class FactFichaProductoComponent {
   
   
             this.LlenarPrecio();
+            if(this.EsClienteConvenio && !this.bol_BonificacionLibre && this.TipoPago == "Contado" && this.lstDescuento.length > 0)
+            {
+              this.val.Get("txtProcDescuento").setValue(this.cFunciones.NumFormat(this.lstDescuento[0].PorcDescuento, "2"));
+            }
+
             if (this.bol_BonificacionLibre) this.v_Agregar_Producto();
   
           }
@@ -734,7 +748,7 @@ export class FactFichaProductoComponent {
     
 
     this.lstDetalle.push(det);
-    if (AgregarBonificado && det.Descuento == 0) this.lstDetalle.push(DetalleBonificado);
+    if (AgregarBonificado && det.Descuento == 0 || AgregarBonificado && this.EsClienteConvenio && this.TipoPago == "Contado" ) this.lstDetalle.push(DetalleBonificado);
 
     this._Evento("Limpiar");
   }
@@ -759,9 +773,9 @@ export class FactFichaProductoComponent {
 
   public Calcular(): void {
 
+
     this.Detalle = {} as iDetalleFactura;
     let iDesc = this.lstDescuento.find(f => f.Descripcion == "ADICIONAL");
-    if(this.CodProducto == "") return;
 
 
     this.SubTotal = 0;

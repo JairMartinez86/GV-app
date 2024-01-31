@@ -8,6 +8,7 @@ export interface iCliente{
     Moneda : string
     CodVendedor : string;
     EsClave : boolean;
+    EsClienteConvenio : boolean;
     Filtro: string;
     Key: string;
 }

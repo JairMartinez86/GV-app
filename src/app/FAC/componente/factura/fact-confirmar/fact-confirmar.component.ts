@@ -56,6 +56,7 @@ export class FactConfirmarComponent {
   public bol_Exportacion : boolean = false;
   public EsModal: boolean = false;
   public LoadEditar : boolean = false;
+  public EsClienteConvenio = false;
 
 
 
@@ -93,7 +94,7 @@ export class FactConfirmarComponent {
   }
 
   public Iniciar(TipoFactura: string, CodBodega: string, CodCliente: string, Plazo: number, NombreCliente: string, Nombre: string, CodVendedor: string, Moneda: string,
-    TipoPago: string, Exportacion : boolean, TC: number, lst: iDetalleFactura[]): void {
+    TipoPago: string, EsClienteConvenio : boolean, Exportacion : boolean, TC: number, lst: iDetalleFactura[]): void {
 
     this._Evento("Limpiar");
     this.Vizualizado = true;
@@ -108,6 +109,7 @@ export class FactConfirmarComponent {
     this.TC = TC;
     this.TipoPago = TipoPago;
     this.TipoFactura = TipoFactura;
+    this.EsClienteConvenio = EsClienteConvenio;
 
 
     this.lstDetalle = lst;
@@ -339,6 +341,14 @@ export class FactConfirmarComponent {
     // chk.bootstrapToggle("off");
 
 
+    if(this.EsClienteConvenio && this.lstDetalle.length > 0) {
+      chk.bootstrapToggle("off");
+      this.cFunciones.DIALOG.open(DialogErrorComponent, {
+        data: "<b class='error'>Cliente de convenio por favor elimine los productos antes de cambiar la forma de pago.</b>",
+      });
+      return;
+    }
+
 
     let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
@@ -363,6 +373,7 @@ export class FactConfirmarComponent {
                 id: "error-servidor-msj",
                 data: _json["msj"].Mensaje,
               });
+              chk.bootstrapToggle("off");
             }
           } else {
             let Datos: iDatos[] = _json["d"];

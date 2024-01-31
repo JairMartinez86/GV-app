@@ -63,6 +63,7 @@ export class FacturaComponent {
   public EsModal : boolean = false;
    private LoadEditar : boolean = false;
    public TipoPermiso : string = "";
+   public EsClienteConvenio : boolean = false;
 
 
   public SimboloMonedaCliente: string = "U$";
@@ -127,6 +128,7 @@ export class FacturaComponent {
         break;
 
       case "Limpiar":
+        this.EsClienteConvenio = false;
         this.isEvent = true;
         this.Fila_Doc.IdVenta = "00000000-0000-0000-0000-000000000000";
         this.Fila_Doc.NoFactura = "";
@@ -381,14 +383,11 @@ export class FacturaComponent {
     if (Cliente.length > 0) {
       this.CodCliente = Cliente[0].Codigo;
       this.val.Get("txtCliente").setValue([Cliente[0].Codigo]);
-      this.val
-        .Get("txtIdentificacion")
-        .setValue(Cliente[0].Ruc + "/" + Cliente[0].Cedula);
-      this.val
-        .Get("txtLimite")
-        .setValue(this.cFunciones.NumFormat(Cliente[0].Limite, "2"));
+      this.val.Get("txtIdentificacion").setValue(Cliente[0].Ruc + "/" + Cliente[0].Cedula);
+      this.val.Get("txtLimite").setValue(this.cFunciones.NumFormat(Cliente[0].Limite, "2"));
       this.val.Get("txtContacto").setValue(Cliente[0].Contacto);
       this.val.Get("txtDisponible").setValue("0.00");
+      this.EsClienteConvenio = Cliente[0].EsClienteConvenio;
 
       if (this.val.Get("txtVendedor").value == "" || Cliente[0].EsClave) {
         this.cmbVendedor.setSelectedItem(Cliente[0].CodVendedor);
@@ -585,6 +584,19 @@ public customSettings: OverlaySettings = {
     let chk: any = document.querySelector("#chkTipoFactura");
     // chk.bootstrapToggle("off");
 
+    
+    if(this.EsClienteConvenio && this.FichaProducto.lstDetalle.length > 0) {
+      chk.bootstrapToggle("off");
+
+      this.cFunciones.DIALOG.open(DialogErrorComponent, {
+        data: "<b class='error'>Cliente de convenio por favor elimine los productos antes de cambiar la forma de pago.</b>",
+      });
+
+      return;
+    }
+
+
+
     let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
       {
@@ -595,7 +607,7 @@ public customSettings: OverlaySettings = {
     );
 
     this.Plazo = 0;
-
+   
     this.GET.Datos_Credito(this.CodCliente).subscribe(
       {
         next: (s) => {
@@ -925,6 +937,8 @@ public customSettings: OverlaySettings = {
       this.MonedaCliente,
       this.ConfirmarFactura.TipoExoneracion,
       this.EsExportacion,
+      this.TipoPago,
+      this.EsClienteConvenio,
       this.EsModal
     );
   }
@@ -964,6 +978,7 @@ public customSettings: OverlaySettings = {
       this.val.Get("txtVendedor").value[0],
       this.MonedaCliente,
       this.TipoPago,
+      this.EsClienteConvenio,
       this.EsExportacion,
       this.RevisionFactura.TC,
       this.RevisionFactura.lstDetalle

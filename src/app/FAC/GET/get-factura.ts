@@ -43,8 +43,8 @@ export class getFactura{
      }
 
 
-     public Datos_Producto(CodProducto : string, CodBodega : string, CodCliente : string) : Observable<string>{
-        return this.http.get<any>(this._Cnx.Url() + "Factura/DatosProducto?CodProducto=" + CodProducto + "&CodBodega=" + CodBodega + "&CodCliente=" + CodCliente);
+     public Datos_Producto(CodProducto : string, CodBodega : string, CodCliente : string,TipoPago : string) : Observable<string>{
+        return this.http.get<any>(this._Cnx.Url() + "Factura/DatosProducto?CodProducto=" + CodProducto + "&CodBodega=" + CodBodega + "&CodCliente=" + CodCliente + "&TipoPago=" + TipoPago);
      }
      
      
