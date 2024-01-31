@@ -445,7 +445,8 @@ public customSettings: OverlaySettings = {
   public v_Select_Bodega(event: any) {
     if (event.added.length) {
       if(event.newValue.length > 1) event.newValue.splice(0, 1);
-      let _Item  = this.lstBodega.find(f => f.Codigo == event.newValue[0]);
+      let cmb: any = this.cmbBodega.dropdown;
+      let _Item: iBodega = cmb._focusedItem.value;
 
       this.val.Get("txtBodega").setValue(event.newValue[0]);
       this.CodBodega = event.newValue[0];
@@ -478,7 +479,10 @@ public customSettings: OverlaySettings = {
   public v_Select_Vendedor(event: any) {
     if (event.added.length) {
       if (event.newValue.length > 1) event.newValue.splice(0, 1);
-      let _Item = this.lstVendedores.find(f => f.Codigo == event.newValue[0]);
+
+      let cmb: any = this.cmbVendedor.dropdown;
+      let _Item: iVendedor = cmb._focusedItem.value;
+
       this.val.Get("txtVendedor").setValue(event.newValue[0]);
 
       if (this.isEvent) {

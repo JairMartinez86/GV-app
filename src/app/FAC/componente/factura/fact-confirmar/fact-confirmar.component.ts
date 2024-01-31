@@ -227,8 +227,12 @@ export class FactConfirmarComponent {
 
 
   public v_Select_Vendedor(event: any) {
-    if (event.added.length && event.newSelection[0].Codigo != event.added[0].Codigo ) {
-      event.newSelection = event.added;
+    if (event.added.length) {
+      if(event.newValue.length > 1) event.newValue.splice(0, 1);
+
+      let cmb: any = this.cmbVendedor.dropdown;
+      let _Item: iVendedor = cmb._focusedItem.value;
+      
       this.val.Get("txtVendedor").setValue(event.added);
 
       if (this.isEvent) {
