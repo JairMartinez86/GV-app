@@ -335,6 +335,7 @@ export class FacturaComponent {
     if (event.added.length) {
       if (event.newValue.length > 1) event.newValue.splice(0, 1);
       this.LlenarDatosCliente(event.newValue[0]);
+      if(window.innerWidth <= this.cFunciones.TamanoPantalla("md")) this.cmbCliente.close();
     }
 
   }
@@ -454,6 +455,8 @@ public customSettings: OverlaySettings = {
         1,
         this.FichaProducto.lstDetalle.length
       );
+
+      if(window.innerWidth <= this.cFunciones.TamanoPantalla("md")) this.cmbBodega.close();
     }
   }
 
@@ -491,6 +494,8 @@ public customSettings: OverlaySettings = {
       } else {
         this.v_EsClienteClave(event.newValue[0]);
       }
+
+      if(window.innerWidth <= this.cFunciones.TamanoPantalla("md")) this.cmbVendedor.close();
     }
   }
 

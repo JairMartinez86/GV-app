@@ -194,4 +194,34 @@ export class Funciones {
   }
 
 
+  public TamanoPantalla(t: string): number {
+
+    let x: number = 0;
+    switch (t) {
+
+      case "sm":
+        x = 576
+        break;
+
+      case "md":
+        x = 768;
+        break;
+
+      case "lg":
+        x = 992;
+        break;
+      
+      case "xl":
+        x = 1200;
+        break;
+
+
+    }
+
+
+    return x;
+
+  }
+
+
 }
