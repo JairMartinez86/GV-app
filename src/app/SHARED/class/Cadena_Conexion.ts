@@ -10,7 +10,7 @@ export class Conexion {
 
  
 
-    private IP : string = "208.96.138.98";
+   private IP : string = "208.96.138.98";
     private PORT : String =  "91";
 
 

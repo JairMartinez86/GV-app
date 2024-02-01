@@ -29,6 +29,9 @@ import { FactRevisionComponent } from "./fact-revision/fact-revision.component";
 import { postFactura } from "../../POST/post-factura";
 import { iFactPed } from "../../interface/i-Factura-Pedido";
 import { DialogoConfirmarComponent } from "src/app/SHARED/componente/dialogo-confirmar/dialogo-confirmar.component";
+import { ImprimirFacturaComponent } from "./registro-factura/imprimir-factura/imprimir-factura.component";
+import { PDFDocument } from "pdf-lib";
+import * as printJS from "print-js";
 
 @Component({
   selector: "app-factura",
@@ -42,15 +45,15 @@ export class FacturaComponent {
   public CodCliente: string = "";
   lstClientes: iCliente[] = [];
   filteredClientes: Observable<iCliente[]> | undefined;
-  private Fila_Doc : iFactPed = {} as iFactPed;
-  public TipoFactura : string = "Factura";
+  private Fila_Doc: iFactPed = {} as iFactPed;
+  public TipoFactura: string = "Factura";
 
   lstBodega: iBodega[] = [];
   lstVendedores: iVendedor[] = [];
 
   public Panel: string = "";
   public BotonSiguienteLabel = "";
-  public PermitirGuardar : boolean = true;
+  public PermitirGuardar: boolean = true;
 
   public TipoPago: string = "Contado";
   public TipoImpuesto: string = "Iva";
@@ -59,18 +62,17 @@ export class FacturaComponent {
   public EsExportacion: boolean = false;
   public isEvent: boolean = false;
   private bol_Referescar: boolean = false;
-  private Disponible : number = 0;
-  public EsModal : boolean = false;
-   private LoadEditar : boolean = false;
-   public TipoPermiso : string = "";
-   public EsClienteConvenio : boolean = false;
-
+  private Disponible: number = 0;
+  public EsModal: boolean = false;
+  private LoadEditar: boolean = false;
+  public TipoPermiso: string = "";
+  public EsClienteConvenio: boolean = false;
 
   public SimboloMonedaCliente: string = "U$";
   private MonedaCliente: string;
-  
 
-  
+
+
   public overlaySettings: OverlaySettings = {};
 
 
@@ -170,10 +172,9 @@ export class FacturaComponent {
         this.val.Get("txtLimite").disable();
         this.val.Get("txtDisponible").disable();
 
-        let _iBodega  = this.lstBodega.find(f => f.Codigo == this.CodBodega);
+        let _iBodega = this.lstBodega.find(f => f.Codigo == this.CodBodega);
 
-        if(_iBodega != undefined)
-        {
+        if (_iBodega != undefined) {
           let cl = this.lstClientes.find((f) => f.Codigo == _iBodega?.ClienteContado);
 
           if (cl != undefined) {
@@ -186,34 +187,34 @@ export class FacturaComponent {
             this.MonedaCliente = cl.Moneda;
             this.SimboloMonedaCliente = "U$";
             if (cl.Moneda == "C") this.SimboloMonedaCliente = "C$";
-            
+
           }
         }
 
-        
-       
+
+
 
         let chk: any = document.querySelector("#chkImpuesto");
-        if(chk != undefined)chk.bootstrapToggle("on");
+        if (chk != undefined) chk.bootstrapToggle("on");
 
         let chk2: any = document.querySelector("#chkTipoFactura");
-        if(chk2 != undefined) chk2.bootstrapToggle("off");
+        if (chk2 != undefined) chk2.bootstrapToggle("off");
         this.isEvent = false;
 
         let chk3: any = document.querySelector("#chkExportacion");
-        if(chk3 != undefined)chk3.bootstrapToggle("off");
+        if (chk3 != undefined) chk3.bootstrapToggle("off");
 
         let chk4: any = document.querySelector("#chkContraEntrega");
-        if(chk4 != undefined) chk4.bootstrapToggle("off");
+        if (chk4 != undefined) chk4.bootstrapToggle("off");
 
         let chk5: any = document.querySelector("#chkExoneracion");
-        if(chk5 != undefined) chk5.bootstrapToggle("off");
+        if (chk5 != undefined) chk5.bootstrapToggle("off");
 
 
         this.isEvent = false;
-    
-    
-        
+
+
+
 
         break;
     }
@@ -239,9 +240,9 @@ export class FacturaComponent {
           document.getElementById("btnRefrescar")?.removeAttribute("disabled");
           dialogRef.close();
           let _json = JSON.parse(s);
-       
+
           if (_json["esError"] == 1) {
-            if(this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined){
+            if (this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined) {
               this.cFunciones.DIALOG.open(DialogErrorComponent, {
                 id: "error-servidor-msj",
                 data: _json["msj"].Mensaje,
@@ -249,20 +250,20 @@ export class FacturaComponent {
             }
           } else {
             let Datos: iDatos[] = _json["d"];
-  
+
             this.lstClientes = Datos[0].d;
             this.lstBodega = Datos[1].d;
             this.lstVendedores = Datos[2].d;
-  
-            let _iBodega  = this.lstBodega.find(f => f.Codigo == this.CodBodega);
-  
-  
+
+            let _iBodega = this.lstBodega.find(f => f.Codigo == this.CodBodega);
+
+
             this.cmbBodega.setSelectedItem(this.CodBodega);
-  
-  
+
+
             if ((this.CodCliente == "" || this.cmbCliente.value.length == 0) && _iBodega != undefined) {
               let cl = this.lstClientes.find((f) => f.Codigo == _iBodega?.ClienteContado);
-  
+
               if (cl != undefined) {
                 this.CodCliente = cl.Codigo;
                 this.MonedaCliente = cl.Moneda;
@@ -270,13 +271,13 @@ export class FacturaComponent {
                 this.val.Get("txtCliente").setValue([cl.Codigo]);
                 this.val.Get("txtVendedor").setValue([_iBodega.Vendedor]);
                 this.val.Get("txtCliente").disable();
-  
+
                 this.MonedaCliente = cl.Moneda;
                 this.SimboloMonedaCliente = "U$";
                 if (cl.Moneda == "C") this.SimboloMonedaCliente = "C$";
               }
             }
-  
+
             //LLENAR DATOS AL REFRESCAR
             if (this.bol_Referescar) {
               this.LlenarDatosCliente(this.CodCliente);
@@ -288,9 +289,8 @@ export class FacturaComponent {
         error: (err) => {
           document.getElementById("btnRefrescar")?.removeAttribute("disabled");
           dialogRef.close();
-  
-          if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
-          {
+
+          if (this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) {
             this.cFunciones.DIALOG.open(DialogErrorComponent, {
               id: "error-servidor",
               data: "<b class='error'>" + err.message + "</b>",
@@ -302,8 +302,8 @@ export class FacturaComponent {
         }
       }
     );
-    
-   
+
+
   }
 
   public v_Refrescar(): void {
@@ -444,7 +444,7 @@ public customSettings: OverlaySettings = {
 
   public v_Select_Bodega(event: any) {
     if (event.added.length) {
-      if(event.newValue.length > 1) event.newValue.splice(0, 1);
+      if (event.newValue.length > 1) event.newValue.splice(0, 1);
       let cmb: any = this.cmbBodega.dropdown;
       let _Item: iBodega = cmb._focusedItem.value;
 
@@ -513,7 +513,7 @@ public customSettings: OverlaySettings = {
 
   private v_EsClienteClave(CodNewVend: string): void {
     if (CodNewVend == "") return;
-    if(this.LoadEditar) return;
+    if (this.LoadEditar) return;
 
     let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
@@ -577,7 +577,7 @@ public customSettings: OverlaySettings = {
 
   }
 
-  
+
   public v_TipoPago(event: any): void {
     if (!event.target.checked) {
       this.TipoPago = "Contado";
@@ -591,8 +591,8 @@ public customSettings: OverlaySettings = {
     let chk: any = document.querySelector("#chkTipoFactura");
     // chk.bootstrapToggle("off");
 
-    
-    if(this.EsClienteConvenio && this.FichaProducto.lstDetalle.length > 0) {
+
+    if (this.EsClienteConvenio && this.FichaProducto.lstDetalle.length > 0) {
       chk.bootstrapToggle("off");
 
       this.cFunciones.DIALOG.open(DialogErrorComponent, {
@@ -607,23 +607,23 @@ public customSettings: OverlaySettings = {
     let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
       {
-        
+
         panelClass: "escasan-dialog-full-blur",
         data: "",
       }
     );
 
     this.Plazo = 0;
-   
+
     this.GET.Datos_Credito(this.CodCliente).subscribe(
       {
         next: (s) => {
 
           dialogRef.close();
           let _json = JSON.parse(s);
-  
+
           if (_json["esError"] == 1) {
-            if(this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined){
+            if (this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined) {
               this.cFunciones.DIALOG.open(DialogErrorComponent, {
                 id: "error-servidor-msj",
                 data: _json["msj"].Mensaje,
@@ -634,11 +634,11 @@ public customSettings: OverlaySettings = {
           } else {
             let Datos: iDatos[] = _json["d"];
             let Credito: iCredito[] = Datos[0].d;
-  
+
             this.val.Get("txtLimite").setValue("0.00");
             this.val.Get("txtDisponible").setValue("0.00");
             this.Disponible = 0;
-  
+
             if (Credito.length > 0) {
               this.TipoPago = "Credito";
               this.val
@@ -647,24 +647,23 @@ public customSettings: OverlaySettings = {
               this.val
                 .Get("txtDisponible")
                 .setValue(this.cFunciones.NumFormat(Credito[0].Disponible, "2"));
-                this.Disponible = this.cFunciones.Redondeo(Credito[0].Disponible, "2");
-  
-                if(this.ConfirmarFactura.Vizualizado)
-                {
-                  this.ConfirmarFactura.Disponible = this.Disponible;
-                  this.ConfirmarFactura.Calcular();
-                  this.val.Get("txtDisponible").setValue(this.cFunciones.NumFormat(this.ConfirmarFactura.Restante, "2"));
-                }
-  
-  
-  
+              this.Disponible = this.cFunciones.Redondeo(Credito[0].Disponible, "2");
+
+              if (this.ConfirmarFactura.Vizualizado) {
+                this.ConfirmarFactura.Disponible = this.Disponible;
+                this.ConfirmarFactura.Calcular();
+                this.val.Get("txtDisponible").setValue(this.cFunciones.NumFormat(this.ConfirmarFactura.Restante, "2"));
+              }
+
+
+
               //this.Plazo = Number(Credito[0].Plazo) + Number(Credito[0].Gracia);
               this.Plazo = Number(Credito[0].Plazo);
-  
+
               this.MonedaCliente = Credito[0].Moneda;
               this.SimboloMonedaCliente = "U$";
               if (Credito[0].Moneda == "C") this.SimboloMonedaCliente = "C$";
-  
+
               if (Credito[0].Plazo == 0) {
                 this.Plazo = 0;
                 this.TipoPago = "Contado";
@@ -676,7 +675,7 @@ public customSettings: OverlaySettings = {
             } else {
               this.TipoPago = "Contado";
               chk.bootstrapToggle("off");
-  
+
               this.cFunciones.DIALOG.open(DialogErrorComponent, {
                 data: "<b class='error'>No tiene crédito asignado.</b>",
               });
@@ -688,9 +687,8 @@ public customSettings: OverlaySettings = {
           dialogRef.close();
           this.TipoPago = "Contado";
           chk.bootstrapToggle("off");
-  
-          if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
-          {
+
+          if (this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) {
             this.cFunciones.DIALOG.open(DialogErrorComponent, {
               id: "error-servidor",
               data: "<b class='error'>" + err.message + "</b>",
@@ -703,12 +701,12 @@ public customSettings: OverlaySettings = {
       }
     );
 
- 
+
   }
 
   public v_TipoImpuesto(event: any): void {
 
-    if(this.isEvent){
+    if (this.isEvent) {
       this.isEvent = false;
       return;
     }
@@ -716,15 +714,14 @@ public customSettings: OverlaySettings = {
 
     let chk: any = document.querySelector("#chkImpuesto");
 
-    if( this.ConfirmarFactura.TipoExoneracion == "Sin Exoneración" && !this.EsExportacion)
-    {
+    if (this.ConfirmarFactura.TipoExoneracion == "Sin Exoneración" && !this.EsExportacion) {
       chk.bootstrapToggle("on");
     }
-    else{
-     
+    else {
+
       chk.bootstrapToggle("off");
     }
-    
+
 
     /*
 
@@ -746,11 +743,10 @@ public customSettings: OverlaySettings = {
   public v_Exportacion(event: any): void {
 
 
-    if(this.ConfirmarFactura!.TipoExoneracion == "Exonerado")
-    {
+    if (this.ConfirmarFactura!.TipoExoneracion == "Exonerado") {
 
       let chkExport: any = document.querySelector("#chkExportacion");
-      if(chkExport != undefined)chkExport.bootstrapToggle("off");
+      if (chkExport != undefined) chkExport.bootstrapToggle("off");
       return;
     }
 
@@ -761,18 +757,17 @@ public customSettings: OverlaySettings = {
     this.TipoImpuesto = "Iva"
 
     let chk: any = document.querySelector("#chkImpuesto");
-    if(chk != undefined)chk.bootstrapToggle("on");
+    if (chk != undefined) chk.bootstrapToggle("on");
 
-    if(this.EsExportacion)
-    {
+    if (this.EsExportacion) {
       this.TipoImpuesto = "Sin Iva"
 
       let chk: any = document.querySelector("#chkImpuesto");
-      if(chk != undefined)chk.bootstrapToggle("off");
-  
+      if (chk != undefined) chk.bootstrapToggle("off");
+
     }
 
-   
+
   }
 
   public v_FichaPanel(evento: string): void {
@@ -875,19 +870,18 @@ public customSettings: OverlaySettings = {
         "display:initial;"
       );
 
-      if(evento == "Atras")
-      {
+      if (evento == "Atras") {
         this.FichaProducto.lstDetalle = this.ConfirmarFactura.lstDetalle;
         this.FichaProducto.TC = this.ConfirmarFactura.TC;
         this.MonedaCliente = this.ConfirmarFactura.MonedaCliente;
         this.TipoPago = this.ConfirmarFactura.TipoPago;
         this.Disponible = this.ConfirmarFactura.Disponible;
         this.val.Get("txtDisponible").setValue(this.cFunciones.NumFormat(this.ConfirmarFactura.Disponible, "2"));
-        if(this.TipoPago == "Credito") this.val.Get("txtDisponible").setValue(this.cFunciones.NumFormat(this.ConfirmarFactura.Restante, "2") );
+        if (this.TipoPago == "Credito") this.val.Get("txtDisponible").setValue(this.cFunciones.NumFormat(this.ConfirmarFactura.Restante, "2"));
         this.cmbVendedor.setSelectedItem(this.ConfirmarFactura.val.Get("txtVendedor").value[0]);
-       // this.val.Get("txtVendedor").setValue(this.ConfirmarFactura.val.Get("txtVendedor").value);
+        // this.val.Get("txtVendedor").setValue(this.ConfirmarFactura.val.Get("txtVendedor").value);
       }
-  
+
       this.LlenarRevision();
 
       return;
@@ -895,20 +889,19 @@ public customSettings: OverlaySettings = {
 
     if (evento == "Siguiente" && this.Panel == "Revision") {
       this.Panel = "Confirmar";
-      this.BotonSiguienteLabel = this.TipoFactura == "Factura"?  "Facturar" : "Pedido";
+      this.BotonSiguienteLabel = this.TipoFactura == "Factura" ? "Facturar" : "Pedido";
       (
         document.querySelector("#frmConfirmarFactura") as HTMLElement
       ).setAttribute("style", "display:initial;");
 
-      if(this.TipoFactura == "Pedido" && this.EsModal)
-      {
+      if (this.TipoFactura == "Pedido" && this.EsModal) {
         let TotalPorAutorizar = this.RevisionFactura.lstDetalle.filter(f => f.PedirAutorizado || f.PrecioLiberado).length;
         let TotalAutorizado = this.RevisionFactura.lstDetalle.filter(f => f.Autorizado).length;
 
         this.BotonSiguienteLabel = "Guardar";
-        if(TotalAutorizado > 0)this.BotonSiguienteLabel = "Autorizar Parcial";
-        if(TotalPorAutorizar == TotalAutorizado ) this.BotonSiguienteLabel = "Autorización";
-        if(this.TipoPermiso == "1") this.BotonSiguienteLabel = "Modificar Pedido";
+        if (TotalAutorizado > 0) this.BotonSiguienteLabel = "Autorizar Parcial";
+        if (TotalPorAutorizar == TotalAutorizado) this.BotonSiguienteLabel = "Autorización";
+        if (this.TipoPermiso == "1") this.BotonSiguienteLabel = "Modificar Pedido";
       }
 
       this.LlenarDatosConfirmacion();
@@ -918,9 +911,9 @@ public customSettings: OverlaySettings = {
 
     if (evento == "Siguiente" && this.Panel == "Confirmar") {
       this.Panel = "Confirmar";
-      this.BotonSiguienteLabel = this.TipoFactura == "Factura"?  "Facturar" : "Pedido";
+      this.BotonSiguienteLabel = this.TipoFactura == "Factura" ? "Facturar" : "Pedido";
 
-      
+
       (
         document.querySelector("#frmConfirmarFactura") as HTMLElement
       ).setAttribute("style", "display:initial;");
@@ -973,7 +966,7 @@ public customSettings: OverlaySettings = {
   private LlenarDatosConfirmacion(): void {
     this.ConfirmarFactura.lstBodega = this.lstBodega;
     this.ConfirmarFactura.lstVendedores = this.lstVendedores;
-    let c_Cliente : iCliente = this.lstClientes.find(f => f.Codigo == this.CodCliente)!;
+    let c_Cliente: iCliente = this.lstClientes.find(f => f.Codigo == this.CodCliente)!;
 
     this.ConfirmarFactura.Iniciar(
       this.TipoFactura,
@@ -994,14 +987,14 @@ public customSettings: OverlaySettings = {
 
 
 
-  public v_Guardar() : void{
+  public v_Guardar(): void {
 
-    
 
-    let ErrorFicha : string = "";
-    let ErrorConfirmar : string = "";
-    let ErrorOtros : string = "";
-    let PedirAutorizacion : boolean = false;
+
+    let ErrorFicha: string = "";
+    let ErrorConfirmar: string = "";
+    let ErrorOtros: string = "";
+    let PedirAutorizacion: boolean = false;
 
     this.val.EsValido();
     this.ConfirmarFactura.val.EsValido();
@@ -1028,26 +1021,22 @@ public customSettings: OverlaySettings = {
       return;
     }
 
-    if(this.ConfirmarFactura.TipoPago == "Credito")
-    {
-      let Total : number = 0;
-      let Restante : number = 0;
+    if (this.ConfirmarFactura.TipoPago == "Credito") {
+      let Total: number = 0;
+      let Restante: number = 0;
       Total = this.cFunciones.Redondeo(this.ConfirmarFactura.TotalDolar, "2");
-      if(this.MonedaCliente == "C")  Total = this.cFunciones.Redondeo(this.ConfirmarFactura.TotalCordoba, "2");
+      if (this.MonedaCliente == "C") Total = this.cFunciones.Redondeo(this.ConfirmarFactura.TotalCordoba, "2");
 
       Restante = this.cFunciones.Redondeo(this.ConfirmarFactura.Disponible - Total, "2");
-      
 
-      if( Restante < 0) ErrorOtros += "<li class='error-etiqueta'>Disponible<ul><li class='error-mensaje'>No tiene disponible.</li></ul>";
 
-      if(this.ConfirmarFactura.i_Credito.length == 0)
-      {
+      if (Restante < 0) ErrorOtros += "<li class='error-etiqueta'>Disponible<ul><li class='error-mensaje'>No tiene disponible.</li></ul>";
+
+      if (this.ConfirmarFactura.i_Credito.length == 0) {
         ErrorOtros += "<li class='error-etiqueta'>Credito<ul><li class='error-mensaje'>El cliente no tiene configurado el credito.</li></ul>";
       }
-      else
-      {
-        if(this.ConfirmarFactura.i_Credito[0].SaldoVencido >0 && !this.ConfirmarFactura.i_Credito[0].FacturarVencido && !this.EsModal)
-        {
+      else {
+        if (this.ConfirmarFactura.i_Credito[0].SaldoVencido > 0 && !this.ConfirmarFactura.i_Credito[0].FacturarVencido && !this.EsModal) {
           ErrorOtros += "<li class='error-etiqueta'>Credito<ul><li class='error-mensaje'>El cliente tiene saldo vencido.</li></ul>";
         }
       }
@@ -1055,49 +1044,47 @@ public customSettings: OverlaySettings = {
 
     }
 
-    if( this.RevisionFactura.lstDetalle.length == 0) {
+    if (this.RevisionFactura.lstDetalle.length == 0) {
       ErrorOtros += "<li class='error-etiqueta'>Productos<ul><li class='error-mensaje'>Registre al menos un producto para facturar.</li></ul>";
 
-    } 
-    else{
-      if( this.RevisionFactura.lstDetalle.filter(f => !f.EsBonif && !f.EsBonifLibre).length == 0) ErrorOtros += "<li class='error-etiqueta'>Productos<ul><li class='error-mensaje'>Registre al menos un producto que no sea bonificado.</li></ul>";
+    }
+    else {
+      if (this.RevisionFactura.lstDetalle.filter(f => !f.EsBonif && !f.EsBonifLibre).length == 0) ErrorOtros += "<li class='error-etiqueta'>Productos<ul><li class='error-mensaje'>Registre al menos un producto que no sea bonificado.</li></ul>";
 
     }
 
 
-    if(!this.PermitirGuardar)
-    {
+    if (!this.PermitirGuardar) {
       ErrorOtros = "No se permite modificar factura."
     }
-    
 
-    if(ErrorOtros != "")
-    {
+
+    if (ErrorOtros != "") {
       this.cFunciones.DIALOG.open(DialogErrorComponent, {
         data:
-          "<ul>"+ErrorOtros+"</ul>",
+          "<ul>" + ErrorOtros + "</ul>",
       });
 
       return;
-  
+
     }
 
 
     let iBodega = this.lstBodega.find(f => f.Codigo == this.CodBodega);
     let iCLiente = this.lstClientes.find(f => f.Codigo == this.CodCliente);
     let iVendedor = this.lstVendedores.find(f => f.Codigo == this.cmbVendedor.value[0]);
-    if( this.RevisionFactura.lstDetalle.filter(f => f.PrecioLiberado  || f.PedirAutorizado).length > 0) PedirAutorizacion = true;
+    if (this.RevisionFactura.lstDetalle.filter(f => f.PrecioLiberado || f.PedirAutorizado).length > 0) PedirAutorizacion = true;
 
 
 
-    
+
     //this.Fila_Doc.IdVenta = "";
     //this.Fila_Doc.NoFactura = "";
     //this.Fila_Doc.NoPedido = "";
     this.Fila_Doc.TipoDocumento = this.ConfirmarFactura.TipoFactura;
     this.Fila_Doc.Serie = this.ConfirmarFactura.Serie;
-    if(this.ConfirmarFactura.TipoFactura == "Factura")this.Fila_Doc.NoFactura = this.ConfirmarFactura.val.Get("txtNoDoc").value;
-    if(this.ConfirmarFactura.TipoFactura == "Pedido")this.Fila_Doc.NoPedido = this.ConfirmarFactura.val.Get("txtNoDoc").value;
+    if (this.ConfirmarFactura.TipoFactura == "Factura") this.Fila_Doc.NoFactura = this.ConfirmarFactura.val.Get("txtNoDoc").value;
+    if (this.ConfirmarFactura.TipoFactura == "Pedido") this.Fila_Doc.NoPedido = this.ConfirmarFactura.val.Get("txtNoDoc").value;
     this.Fila_Doc.CodCliente = this.ConfirmarFactura.CodCliente;
     this.Fila_Doc.NomCliente = iCLiente!.Cliente;
     this.Fila_Doc.Nombre = this.ConfirmarFactura.val.Get("txtNombre_Confirmar").value;
@@ -1137,39 +1124,36 @@ public customSettings: OverlaySettings = {
 
     let TotalPorAutorizar = this.RevisionFactura.lstDetalle.filter(f => f.PedirAutorizado || f.PrecioLiberado).length;
     let TotalAutorizado = this.RevisionFactura.lstDetalle.filter(f => f.Autorizado).length;
-    
-    if(TotalAutorizado > 0 &&  this.EsModal)
-    {
 
-      let dialogoConfirmar : MatDialogRef<DialogoConfirmarComponent> = this.cFunciones.DIALOG.open(DialogoConfirmarComponent, { disableClose: true })
+    if (TotalAutorizado > 0 && this.EsModal) {
+
+      let dialogoConfirmar: MatDialogRef<DialogoConfirmarComponent> = this.cFunciones.DIALOG.open(DialogoConfirmarComponent, { disableClose: true })
 
       dialogoConfirmar.componentInstance.mensaje = "<p ><b class='bold'>Autorizar Margenes / Precios?</b></p>";
       dialogoConfirmar.componentInstance.textBoton1 = "Si";
       dialogoConfirmar.componentInstance.textBoton2 = "No";
 
-      
-      dialogoConfirmar.afterClosed().subscribe(s=>{
-      
-        if(dialogoConfirmar.componentInstance.retorno=="1"){ 
+
+      dialogoConfirmar.afterClosed().subscribe(s => {
+
+        if (dialogoConfirmar.componentInstance.retorno == "1") {
           this.Fila_Doc.PedirAutorizacion = true;
-          if(TotalPorAutorizar == TotalAutorizado) this.Fila_Doc.PedirAutorizacion = false;
+          if (TotalPorAutorizar == TotalAutorizado) this.Fila_Doc.PedirAutorizacion = false;
           this.EnviarDatos();
         }
 
       });
 
     }
-    else
-    {
+    else {
       this.EnviarDatos();
     }
 
 
   }
 
-  private EnviarDatos()
-  {
-    
+  private EnviarDatos() {
+
     let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
       {
@@ -1184,53 +1168,68 @@ public customSettings: OverlaySettings = {
 
           dialogRef.close();
           let _json = JSON.parse(s);
-  
+
           if (_json["esError"] == 1) {
-            if(this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined){
+            if (this.cFunciones.DIALOG.getDialogById("error-servidor-msj") == undefined) {
               this.cFunciones.DIALOG.open(DialogErrorComponent, {
                 id: "error-servidor-msj",
                 data: _json["msj"].Mensaje,
               });
             }
-          } 
+          }
           else {
-  
-  
-            let Datos: iDatos[] = _json["d"];
-            let Consecutivo: string = Datos[0].d;
 
-            if(this.EsModal){
-              if(this.cFunciones.DIALOG.getDialogById("dialog-factura-editar") != undefined) this.cFunciones.DIALOG.getDialogById("dialog-factura-editar")?.close();
+            if (this.TipoFactura == "Factura") {
+ 
+              this.printPDFS(_json["d"]);
 
 
-              return;
             }
-  
+            else {
+
+              let Datos: iDatos[] = _json["d"];
+              let Consecutivo: string = Datos[0].d;
+
+
+              if (this.EsModal) {
+                if (this.cFunciones.DIALOG.getDialogById("dialog-factura-editar") != undefined) this.cFunciones.DIALOG.getDialogById("dialog-factura-editar")?.close();
+
+
+                return;
+              }
+
+
+
+              
             this.cFunciones.DIALOG.open(DialogErrorComponent, {
               data: "<p>Documento Generado: <b class='bold'>" + Consecutivo + "</b></p>"
             });
-  
-  
-              this._Evento("Limpiar");
-  
-              (document.querySelector("#frmFichaFactura") as HTMLElement).setAttribute(
-                "style",
-                "display:initial;"
-              );
-          
-              (document.querySelector("#frmConfirmarFactura") as HTMLElement).setAttribute(
-                "style",
-                "display:none;"
-              );
-              
+
+            }
+
+
+
+
+
+            this._Evento("Limpiar");
+
+            (document.querySelector("#frmFichaFactura") as HTMLElement).setAttribute(
+              "style",
+              "display:initial;"
+            );
+
+            (document.querySelector("#frmConfirmarFactura") as HTMLElement).setAttribute(
+              "style",
+              "display:none;"
+            );
+
           }
 
         },
         error: (err) => {
           dialogRef.close();
-      
-          if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
-          {
+
+          if (this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) {
             this.cFunciones.DIALOG.open(DialogErrorComponent, {
               id: "error-servidor",
               data: "<b class='error'>" + err.message + "</b>",
@@ -1244,34 +1243,34 @@ public customSettings: OverlaySettings = {
     );
   }
 
-  public v_Editar(det : iFactPed, TipoPermiso : string){
+  public v_Editar(det: iFactPed, TipoPermiso: string) {
     this.TipoPermiso = TipoPermiso;
     this.RevisionFactura.TipoPermiso = TipoPermiso;
 
     this.EsModal = true;
     this.isEvent = false;
     this.Fila_Doc = det;
-	this.LoadEditar = true;
+    this.LoadEditar = true;
     this.ConfirmarFactura.LoadEditar = this.LoadEditar;
-  
+
 
     this.cmbBodega.setSelectedItem(this.Fila_Doc.CodBodega);
     this.val.Get("txtBodega").setValue([this.Fila_Doc.CodBodega]);
 
-     
+
     this.cmbCliente.setSelectedItem(this.Fila_Doc.CodCliente);
     this.val.Get("txtCliente").setValue([this.Fila_Doc.CodCliente]);
 
 
 
-    
 
-   this.RevisionFactura.EsModal = true;
+
+    this.RevisionFactura.EsModal = true;
     this.ConfirmarFactura.EsModal = true;
     this.CodCliente = this.Fila_Doc.CodCliente;
     this.MonedaCliente = this.Fila_Doc.Moneda;
     this.CodBodega = this.Fila_Doc.CodBodega;
-	
+
     this.val.Get("txtNombre").setValue(this.Fila_Doc.Nombre);
     this.val.Get("txtIdentificacion").setValue(this.Fila_Doc.RucCedula);
     this.val.Get("txtContacto").setValue(this.Fila_Doc.Contacto);
@@ -1285,39 +1284,39 @@ public customSettings: OverlaySettings = {
 
     this.val.Get("txtOC").setValue(this.Fila_Doc.OrdenCompra);
 
-    
+
     let chk1: any = document.querySelector("#chkTipoFactura");
     chk1.bootstrapToggle("off");
-    if(this.Fila_Doc.TipoVenta == "Credito") chk1.bootstrapToggle("on");
-    
+    if (this.Fila_Doc.TipoVenta == "Credito") chk1.bootstrapToggle("on");
+
 
     let chk2: any = document.querySelector("#chkExportacion");
     chk2.bootstrapToggle("off");
-    if(this.Fila_Doc.EsExportacion)chk2.bootstrapToggle("on");
+    if (this.Fila_Doc.EsExportacion) chk2.bootstrapToggle("on");
 
     let chk3: any = document.querySelector("#chkContraEntrega");
     chk3.bootstrapToggle("off");
-    if(this.Fila_Doc.EsContraentrega) chk3.bootstrapToggle("on");
+    if (this.Fila_Doc.EsContraentrega) chk3.bootstrapToggle("on");
 
 
 
     let chk4: any = document.querySelector("#chkEsPedido");
     chk4.bootstrapToggle("off");
-    if(this.Fila_Doc.TipoDocumento == "Factura") chk4.bootstrapToggle("on");
+    if (this.Fila_Doc.TipoDocumento == "Factura") chk4.bootstrapToggle("on");
 
     this.TipoFactura = this.Fila_Doc.TipoDocumento;
     this.ConfirmarFactura.TipoPago = this.Fila_Doc.TipoVenta;
     this.FichaProducto.TC = this.Fila_Doc.TasaCambio;
     this.ConfirmarFactura.TipoFactura = this.Fila_Doc.TipoDocumento;
     this.ConfirmarFactura.Serie = this.Fila_Doc.Serie;
-    if(this.Fila_Doc.TipoDocumento == "Factura") this.ConfirmarFactura.val.Get("txtNoDoc").setValue(this.Fila_Doc.NoFactura);
-    if(this.Fila_Doc.TipoDocumento == "Pedido") this.ConfirmarFactura.val.Get("txtNoDoc").setValue(this.Fila_Doc.NoPedido);
+    if (this.Fila_Doc.TipoDocumento == "Factura") this.ConfirmarFactura.val.Get("txtNoDoc").setValue(this.Fila_Doc.NoFactura);
+    if (this.Fila_Doc.TipoDocumento == "Pedido") this.ConfirmarFactura.val.Get("txtNoDoc").setValue(this.Fila_Doc.NoPedido);
 
     this.Plazo = this.Fila_Doc.Plazo;
     this.ConfirmarFactura.Fecha = new Date(this.cFunciones.DateFormat(this.Fila_Doc.Fecha, 'yyyy-MM-dd hh:mm:ss'));
     this.ConfirmarFactura.val.Get("txtFecha").setValue(this.cFunciones.DateFormat(this.ConfirmarFactura.Fecha, "yyyy-MM-dd"));
     this.ConfirmarFactura.val.Get("txtPlazo").setValue(this.Plazo);
-    this.ConfirmarFactura.val.Get("txtVence").setValue(this.cFunciones.DateAdd("Day",this.ConfirmarFactura.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
+    this.ConfirmarFactura.val.Get("txtVence").setValue(this.cFunciones.DateAdd("Day", this.ConfirmarFactura.Fecha, this.Plazo + (this.Plazo != 0 ? 1 : 0)));
 
 
     this.ConfirmarFactura.val.Get("txtMoneda").setValue(this.Fila_Doc.Moneda);
@@ -1327,7 +1326,7 @@ public customSettings: OverlaySettings = {
 
     let chk5: any = document.querySelector("#chkExoneracion");
     chk5.bootstrapToggle("off");
-    if(this.Fila_Doc.TipoExoneracion == "Exonerado") chk5.bootstrapToggle("on");
+    if (this.Fila_Doc.TipoExoneracion == "Exonerado") chk5.bootstrapToggle("on");
     this.ConfirmarFactura.val.Get("txtNoExoneracion").setValue(this.Fila_Doc.NoExoneracion);
 
     this.FichaProducto.lstDetalle = this.Fila_Doc.VentaDetalle;
@@ -1336,30 +1335,66 @@ public customSettings: OverlaySettings = {
     this.Panel = "Producto";
     this.v_FichaPanel("Siguiente");
 
-    if(det.TipoDocumento == "Factura") this.PermitirGuardar = false;
-	this.LoadEditar = true;
+    if (det.TipoDocumento == "Factura") this.PermitirGuardar = false;
+    this.LoadEditar = true;
     this.ConfirmarFactura.LoadEditar = this.LoadEditar;
-    
+
 
   }
+
+
+
+  async printPDFS(datos: any) {
+
+
+
+    let byteArray = new Uint8Array(atob(datos[0].d).split('').map(char => char.charCodeAt(0)));
+
+    var file = new Blob([byteArray], { type: 'application/pdf' });
+
+    let url = URL.createObjectURL(file);
+
+    let tabOrWindow : any = window.open(url, '_blank');
+    tabOrWindow.focus();
+
+
+
+
+    
+    let byteArray2 = new Uint8Array(atob(datos[1].d).split('').map(char => char.charCodeAt(0)));
+
+    var file2 = new Blob([byteArray2], { type: 'application/pdf' });
+
+    let url2 = URL.createObjectURL(file2);
+
+    let tabOrWindow2 : any = window.open(url2, '_blank');
+    tabOrWindow2.focus();
+
+
+
+  }
+
+  
+
 
   ngDoCheck() {
 
     this.overlaySettings = {};
 
-    if(window.innerWidth <= 992)
-    {
-      this.overlaySettings = {positionStrategy: new GlobalPositionStrategy({ openAnimation: scaleInCenter  , closeAnimation: scaleOutCenter }),
-      modal: true,
-      closeOnOutsideClick: true};
+    if (window.innerWidth <= 992) {
+      this.overlaySettings = {
+        positionStrategy: new GlobalPositionStrategy({ openAnimation: scaleInCenter, closeAnimation: scaleOutCenter }),
+        modal: true,
+        closeOnOutsideClick: true
+      };
     }
-   
+
   }
 
   private ngOnInit() {
 
 
-    
+
 
 
 

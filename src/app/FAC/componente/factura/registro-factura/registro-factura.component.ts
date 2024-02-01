@@ -55,6 +55,7 @@ export class RegistroFacturaComponent {
 
   public CargarDocumentos(): void {
 
+
     let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
       WaitComponent,
       {
@@ -241,10 +242,10 @@ export class RegistroFacturaComponent {
               });
             }
           } else {
-            DatosImpresion = _json["d"];
+           // DatosImpresion = _json["d"];
 
             this.CargarDocumentos();
-            this.printPDFS();
+            this.printPDFS2(_json["d"]);
             
     
           }
@@ -282,6 +283,41 @@ export class RegistroFacturaComponent {
     })
 
   }
+
+
+  
+
+  async printPDFS2(datos: any) {
+
+
+
+    let byteArray = new Uint8Array(atob(datos.d[0].d).split('').map(char => char.charCodeAt(0)));
+
+    var file = new Blob([byteArray], { type: 'application/pdf' });
+
+    let url = URL.createObjectURL(file);
+
+    let tabOrWindow : any = window.open(url, '_blank');
+    tabOrWindow.focus();
+
+
+
+
+    
+    let byteArray2 = new Uint8Array(atob(datos.d[1].d).split('').map(char => char.charCodeAt(0)));
+
+    var file2 = new Blob([byteArray2], { type: 'application/pdf' });
+
+    let url2 = URL.createObjectURL(file2);
+
+    let tabOrWindow2 : any = window.open(url2, '_blank');
+    tabOrWindow2.focus();
+
+
+
+  }
+
+  
 
 
   async printPDFS() {
@@ -372,6 +408,7 @@ export class RegistroFacturaComponent {
 
   private ngAfterViewInit() {
 
+   
 
     ///CAMBIO DE FOCO
     this.val.addFocus("txtFecha1", "txtFecha2", undefined);
