@@ -167,7 +167,7 @@ export class FacturaComponent {
 
         this.Disponible = 0;
         this.CodCliente == "";
-        this.val.Get("txtBodega").disable();
+        //this.val.Get("txtBodega").disable();
         this.val.Get("txtCliente").enable();
         this.val.Get("txtLimite").disable();
         this.val.Get("txtDisponible").disable();
@@ -451,11 +451,9 @@ public customSettings: OverlaySettings = {
 
       this.val.Get("txtBodega").setValue(event.newValue[0]);
       this.CodBodega = event.newValue[0];
-      this.FichaProducto.lstDetalle.splice(
-        1,
-        this.FichaProducto.lstDetalle.length
-      );
 
+      this.FichaProducto?.lstDetalle.splice(0,this.FichaProducto?.lstDetalle?.length);
+   
       if(window.innerWidth <= this.cFunciones.TamanoPantalla("md")) this.cmbBodega.close();
     }
   }
