@@ -939,10 +939,11 @@ export class FactFichaProductoComponent {
     this.val.addFocus("txtCantidad", "txtProcDescuento", undefined);
     this.val.addFocus("txtProcDescuento", "btnAgregarProducto", "click");
 
-    this.val.addNumberFocusIn();
-    this.val.addFocusOut("txtCantidad", 0);
-    this.val.addFocusOut("txtPrecioCor", 4);
-    this.val.addFocusOut("txtProcDescuento", 2);
+    this.val.addNumberFocus("txtCantidad", 0);
+    this.val.addNumberFocus("txtPrecioCor", 4);
+    this.val.addNumberFocus("txtProcDescuento", 2);
+
+
 
 
     //FILTRO PRODUCTO
