@@ -10,8 +10,91 @@ import {
 import { ErrorStateMatcher } from "@angular/material/core";
 
 import { formatDate, formatNumber } from "@angular/common";
-import { EventEmitter, Injectable, Output } from "@angular/core";
-import { event } from "jquery";
+import { IgxComboComponent } from "igniteui-angular";
+import { QueryList } from "@angular/core";
+
+
+
+function getRectArea(elmento: HTMLElement) {
+
+  let _element_next = lstFocus.find(f => f.Id == elmento.id)!;
+  if (_element_next == undefined) return elmento;
+
+  elmento = document?.getElementById(_element_next.IdNext)!;
+
+  if (elmento.getAttribute("disabled") == undefined) return elmento;
+
+  return getRectArea(elmento)
+
+}
+
+
+
+function onKeyEnter(event: any)
+{
+  if (event.key !== "Enter") return;
+
+
+  let id: string = event.target.id;
+
+  if (id == "" && event.target.name == "comboInput") {
+    id = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+    event.target.setAttribute("id", id);
+  }
+
+  if (id == "" && event.target.localName == "input") {
+    id = event.target.parentElement.parentElement.parentElement.parentElement.id;
+    event.target.setAttribute("id", id);
+  }
+
+
+
+  let _element_next = lstFocus.find(f => f.Id == id);
+
+  if (_element_next == undefined) return;
+  if (_element_next.IdNext == "") return;
+
+
+  let elmento: HTMLElement = document?.getElementById(_element_next.Id)!;
+  elmento = getRectArea(elmento);
+
+
+
+
+
+  elmento?.focus();
+
+
+
+  if (cmb != undefined && elmento.localName == "igx-combo") {
+    
+    let elment: IgxComboComponent = cmb.find(f => f.id == _element_next?.IdNext)!;
+
+    if (elment != undefined) elment.open();
+
+    let __next = lstFocus.find(f => f.Id ==  _element_next?.IdNext);
+
+
+    
+    elment.searchInput.nativeElement.setAttribute("id", __next?.Id!);
+    elment.searchInput.nativeElement.addEventListener('keypress', onKeyEnter)
+
+
+
+
+  }
+
+
+
+  if (_element_next.Evento != undefined) $("#" + _element_next.IdNext)?.trigger(_element_next.Evento);
+
+
+
+
+  event.preventDefault();
+
+}
+
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -35,6 +118,8 @@ class ReglasValidacion {
   public valor: string = "";
   public Mensaje: string = "";
   public Index: string = "";
+  public Etiqueta: string = "";
+  public ErrorMensaje: string = "";
 }
 
 interface I_Frm {
@@ -46,7 +131,7 @@ interface I_Frm {
 interface iFocus {
   Id: string;
   IdNext: string;
-  Evento : any;
+  Evento: any;
 }
 
 interface iFormat {
@@ -54,24 +139,36 @@ interface iFormat {
   Decimal: number;
 }
 
+
 const lstFocus: iFocus[] = [];
 const lstFormat: iFormat[] = [];
+let cmb: QueryList<IgxComboComponent>;
 
 export class Validacion {
-  
+
+
+
   private fb = new FormBuilder();
   public Iniciar: boolean = false;
   public Errores: string = "";
   private Index: string = "-1";
 
+
   private lstReglas: ReglasValidacion[] = [];
   private lstFrm: I_Frm[] = [];
- 
 
-  constructor() {}
+
+
+  constructor() {
+    lstFocus.splice(0, lstFocus.length);
+    lstFormat.splice(0, lstFocus.length);
+  }
 
   public ValForm = this.fb.nonNullable.group({});
 
+  public Combo(c: any) {
+    cmb = c;
+  }
   public CambioRegla(id: string, r: string): string {
     return this.lstReglas.filter((f) => f.Id == id && f.Regla == r)[0].valor;
   }
@@ -93,40 +190,54 @@ export class Validacion {
     etiqueta: string,
     msj: string
   ) {
+
+
+    let NuevoItem : boolean = false;
+    let NuevaRegla : boolean = false;
     this.Index = String(Number.parseInt(this.Index) + 1);
 
     const _frm = new FormControl("", this.Cls_Validaciones(id));
-    this.ValForm.addControl(id, _frm);
-    const _Regla: ReglasValidacion = new ReglasValidacion();
-    _Regla.Id = id;
-    _Regla.Regla = regla;
-    _Regla.Condicon = condicion;
-    _Regla.valor = valor;
-    _Regla.Mensaje = msj;
-    _Regla.Index = this.Index + "_" + id;
 
-    this.lstReglas.push(_Regla);
-    if (this.Get(id) == undefined)
-      this.lstFrm.push({ Id: id, Frm: _frm, Etiqueta: etiqueta });
+    if (this.Get(id) == undefined) 
+    {
+      this.ValForm.addControl(id, _frm);
+      NuevoItem = true;
+    }
+    
+
+    if(this.lstReglas.findIndex(f => f.Id == id && f.Regla == regla) == -1)
+    {
+      const _Regla: ReglasValidacion = new ReglasValidacion();
+      _Regla.Id = id;
+      _Regla.Regla = regla;
+      _Regla.Condicon = condicion;
+      _Regla.valor = valor;
+      _Regla.Mensaje = msj;
+      _Regla.Index = this.Index + "_" + id;
+      _Regla.Etiqueta = etiqueta;
+      this.lstReglas.push(_Regla);
+    }
+
+    if(NuevoItem) this.lstFrm.push({ Id: id, Frm: _frm, Etiqueta: etiqueta });
+
   }
 
-  public addFocus(id : string, idNext : string, evento : any){
-    let i : number = lstFocus.findIndex(f => f.Id == id);
+  public addFocus(id: string, idNext: string, evento: any) {
+    let i: number = lstFocus.findIndex(f => f.Id == id);
 
-    if(i != -1){
+    if (i != -1) {
       lstFocus[i].IdNext == idNext;
     }
-    else{
-      lstFocus.push({Id: id, IdNext : idNext, Evento : evento});
+    else {
+      lstFocus.push({ Id: id, IdNext: idNext, Evento: evento });
     }
 
 
-    document.querySelector('#' + id)?.addEventListener('keypress', this.onKeyEnter);
-   
+    document.querySelector('#' + id)?.addEventListener('keypress', onKeyEnter);
+
   }
-  
-  
-  public addNumberFocusIn() {
+/*
+  public addNumberFocus() {
 
     var inputs, index;
 
@@ -134,69 +245,46 @@ export class Validacion {
     for (index = 0; index < inputs.length; ++index) {
       if(inputs[index].id != "")
       {
-		document.querySelector('#' + inputs[index].id)?.removeEventListener("focusin", this.onFocusIn);
-        document.querySelector('#' + inputs[index].id)?.addEventListener('focusin', this.onFocusIn);
+        document.querySelector('#' + inputs[index].id)?.removeEventListener("focusin", this.onFocusIn);
+        document.querySelector('#' + inputs[index].id)?.removeEventListener("focusout", this.onFocusOut);
       }
       
     }
 
 
-  }
+  }*/
 
-  public addFocusOut(id: string, decimal : number) {
+  public addNumberFocus(id: string, decimal : number) {
 
     let i: number = lstFormat.findIndex(f => f.Id == id);
 
-    if (i != -1) {
-      lstFormat[i].Id == id;
-    }
-    else {
-      lstFormat.push({ Id: id, Decimal: decimal });
+    if (i != -1)
+    {
+      lstFormat.splice(i, 1);
     }
 
+    lstFormat.push({ Id: id, Decimal: decimal });
 
+    document.querySelector('#' + id)?.addEventListener('focusin', this.onFocusIn);
     document.querySelector('#' + id)?.addEventListener('focusout', this.onFocusOut);
 
   }
 
 
-   onKeyEnter(event: any){
-
-    if(event.key !== "Enter") return;
-
-    
-    let id : string = event.target.id;
-    let _element_next  = lstFocus.find(f => f.Id == id);
-
-    if(_element_next == undefined) return;
 
 
-    document?.getElementById(_element_next.IdNext)?.focus();
-
-    if(_element_next.Evento != undefined) $("#" + _element_next.IdNext)?.trigger(_element_next.Evento);
-
-    /*
-    if(String(event.target.value) == "") {
-      document?.getElementById(_input)?.focus();
-      event.preventDefault();
-      return;
-    }*/
-
-
-    event.preventDefault();
-
-  }
-  
   onFocusIn(event: any) {
 
 
     let id: string = event.target.id;
+    let i: number = lstFormat.findIndex(f => f.Id == id);
 
+   
     let elmento: any = document?.getElementById(id)!;
+
 
     if (!isNaN(parseFloat(elmento.value.replaceAll(",", "")))) {
       if (Number(elmento.value.replaceAll(",", "")) == 0) elmento.value = "";
-
 
     }
 
@@ -210,7 +298,13 @@ export class Validacion {
 
     let elmento: any = document?.getElementById(id)!;
 
-    let numero : number = Number(elmento.value.replaceAll(",", ""));
+
+
+    let numero : number =  0
+    
+    if(elmento.value != "") numero = Number(elmento.value.replaceAll(",", ""));
+
+
  
 
     elmento.value = formatNumber(numero, "en-IN",  "1."+iform?.Decimal+"-"+iform?.Decimal);
@@ -218,13 +312,31 @@ export class Validacion {
 
   }
 
-  public del(id: string): void {
-    let i: number = this.lstReglas.findIndex((f) => f.Id == id);
+public del(id: string): void {
 
-    if (i == -1) return;
+    this.lstReglas.filter( w=> w.Id == id).forEach( w=>{
 
-    this.ValForm.removeControl(id);
-    this.lstReglas.splice(i, 1);
+      
+    let i: number = this.lstReglas.findIndex((f) => f.Id == id && f.Regla == w.Regla);
+
+    if (i != -1) {
+      this.ValForm.removeControl(id);
+      this.lstReglas.splice(i, 1);
+    }
+
+
+
+    i = lstFocus.findIndex((f) => f.Id == id);
+
+    if (i != -1) {
+      lstFocus.splice(i, 1);
+    }
+
+
+    });
+
+
+
   }
 
   public delRule(id: string, regla: string): void {
@@ -252,74 +364,75 @@ export class Validacion {
   }
 
   public EsValido(): boolean {
+    return this._EsValido([]);
+  }
+
+  public ItemValido(formControlName: string[]) {
+    return this._EsValido(formControlName);
+  }
+
+  private _EsValido(formControlName: string[]): boolean {
     this.Errores = "";
 
     let i: number = 0;
-    let er: string = "";
-    let esError : boolean = false;
+    let esError: boolean = false;
 
-    this.lstReglas.sort((a, b) => a.Index.localeCompare(b.Index));
-/*
-    let contenedorSpan  = document.getElementsByClassName("info-validacion");
+    //this.lstReglas.sort((a, b) => a.Index.localeCompare(b.Index));
 
-    for (let i = 0; i < contenedorSpan.length; i++) {
-      let elemnt = contenedorSpan[i] as HTMLElement;
-      elemnt.remove();
-  }
-*/
+    let reglas: ReglasValidacion[] = JSON.parse(JSON.stringify(this.lstReglas.filter(f => (formControlName.includes(f.Id)) || formControlName.length == 0).sort((a, b) => a.Etiqueta.localeCompare(b.Etiqueta))));
 
-    this.lstReglas.forEach((f) => {
+    reglas.forEach((f) => {
       let retorno = "0";
       let errores = "";
       let frm: any = this.Get(f.Id);
       let etiqueta: string = this.lstFrm.find((ff) => ff.Id == f.Id)?.Etiqueta!;
-      let _Id : string = "";
+      let _Id: string = "";
 
-      let elemnto =  document.getElementById(f.Id);
-      elemnto?.parentElement?.classList.remove("contenedor-info-validacion");
-      
+      let elmento = document.getElementById(f.Id);
+      elmento?.parentElement?.classList.remove("contenedor-info-validacion");
+
       let span = document.getElementById("info-validacion-" + f.Id);
       span?.remove();
 
-    
+	  frm.value = this.ValForm.get(f.Id)?.value;
+
+      if ( (String(frm.value) == "undefined" || String(frm.value) == "")) {
+
+        if (elmento?.localName == "igx-combo") {
+          let combo: any = cmb?.find(w => w.id == f.Id)!;
+          frm.setValue(combo?._value);
+        }
+        else
+        {
+          frm.setValue((<HTMLInputElement>document.getElementById(f.Id))?.value);
+        }
+
+
+     
+        
+      }
+
       let r: string[] = this._Validar(f.Id, f, frm, retorno, errores);
+      reglas[i].ErrorMensaje = "";
 
       if (r[1] != "" && f.Mensaje != "") {
 
-        if(_Id != f.Id)
-        {
+        if (_Id != f.Id) {
           _Id = f.Id;
           esError = true;
         }
 
-        
+        reglas[i].ErrorMensaje = "<li class='error-mensaje'>" + f.Mensaje + "</li>";
 
-        er += "<li class='error-mensaje'>" + f.Mensaje + "</li>";
 
-        if (i + 1 < this.lstReglas.length) {
-          if (this.lstReglas[i + 1].Id != f.Id) {
-            if(!this.Errores.includes(etiqueta))
-            {
-              this.Errores += "<li class='error-etiqueta'>" + etiqueta + "<ul>" + er + "</ul></li>";
-              er = "";
-            }
-          
-          }
-        } else {
-          if(!this.Errores.includes(etiqueta))
-          {
-            this.Errores += "<li class='error-etiqueta'>" + etiqueta + "<ul>" + er + "</ul></li>";
-            er = "";
-          }
-          
-        }
+
       }
 
 
-       //AGREGANDO ICONO DE VALIDACION
-      span  = document.getElementById("-info-validacion-" + f.Id);
-       if(span == undefined && esError)
-       {
+      //AGREGANDO ICONO DE VALIDACION
+	  esError = reglas.filter(w => w.Id == f.Id && w.ErrorMensaje != "").length > 0 ? true : false;
+      span = document.getElementById("-info-validacion-" + f.Id);
+      if (span == undefined && esError) {
         esError = false;
         span = document.createElement("span");
         span.id = "info-validacion-" + f.Id;
@@ -327,14 +440,40 @@ export class Validacion {
         let ei = document.createElement("i");
         ei.className = "fa-solid fa-info fa-fade fa-xl opcional";
         span.appendChild(ei);
-        elemnto?.parentNode?.insertBefore(span, elemnto);
-        elemnto?.parentElement?.classList.add("contenedor-info-validacion");
+        elmento?.parentNode?.insertBefore(span, elmento);
+        elmento?.parentElement?.classList.add("contenedor-info-validacion");
 
- 
-       }
-      
+
+      }
+
       i++;
     });
+
+
+    this.Errores = "";
+    let er: string = "";
+    let lst = JSON.parse(JSON.stringify(reglas.filter(f => f.ErrorMensaje != "").sort((a, b) => a.Etiqueta.localeCompare(b.Etiqueta))));
+    i = 0;
+    lst.forEach((f: ReglasValidacion) => {
+
+      if(!er.includes(f.ErrorMensaje))er += f.ErrorMensaje;
+
+
+      if (i < lst.length - 1 && f.Etiqueta != "") {
+        if (lst[i + 1].Etiqueta != f.Etiqueta) {
+          this.Errores += "<li class='error-etiqueta'>" + f.Etiqueta + "<ul>" + er + "</ul></li>";
+          er = "";
+        }
+
+      }
+      else{
+        this.Errores +=  "<li class='error-etiqueta'>" + f.Etiqueta + "<ul>" + er + "</ul></li>";
+      }
+
+      i++;
+
+    });
+
 
     if (this.Errores != "") {
       this.Errores = "<ul>" + this.Errores + "</ul>";
@@ -343,6 +482,12 @@ export class Validacion {
 
     return true;
   }
+
+
+  public ActulizarValores(id : string, value : any){
+    this.ValForm.get(id)?.setValue(value);
+  }
+
 
   private Cls_Validaciones(id: string): ValidatorFn {
     return (control: AbstractControl): { [key: string]: string } | null => {
@@ -389,7 +534,7 @@ export class Validacion {
       let dtFecha2!: Date;
       let parts: string[];
 
-      if (str_cadena == undefined || str_cadena == "null") {
+      if (str_cadena == "undefined" || str_cadena == "null") {
         str_cadena = "";
       }
 
@@ -541,3 +686,4 @@ export class Validacion {
 
 
 }
+
