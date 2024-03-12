@@ -54,8 +54,16 @@ function onKeyEnter(event: any)
   if (_element_next == undefined) return;
   if (_element_next.IdNext == "") return;
 
+  let elmento: HTMLElement = document?.getElementById(id)!;
 
-  let elmento: HTMLElement = document?.getElementById(_element_next.Id)!;
+  if (cmb != undefined && elmento.localName == "igx-combo")
+  {
+    let combo: IgxComboComponent = cmb.find(f => f.id == id)!;
+    combo.close();
+  }
+
+
+  elmento = document?.getElementById(_element_next.Id)!;
   elmento = getRectArea(elmento);
 
 
