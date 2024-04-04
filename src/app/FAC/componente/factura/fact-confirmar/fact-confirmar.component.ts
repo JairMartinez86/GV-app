@@ -57,6 +57,7 @@ export class FactConfirmarComponent {
   public EsModal: boolean = false;
   public LoadEditar : boolean = false;
   public EsClienteConvenio = false;
+  public LoadVenedor : boolean = false;
 
 
 
@@ -227,7 +228,10 @@ export class FactConfirmarComponent {
 
 
   public v_Select_Vendedor(event: any) {
+    console.log("as")
+    if( this.LoadVenedor) return;
     if (event.added.length) {
+
       if(event.newValue.length > 1) event.newValue.splice(0, 1);
 
       let cmb: any = this.cmbVendedor.dropdown;
@@ -259,8 +263,8 @@ export class FactConfirmarComponent {
     }
   }
 
-  private v_EsClienteClave(CodNewVend: string): void {
-    if (CodNewVend == "") return;
+  private v_EsClienteClave(CodNewVend: any): void {
+    if (CodNewVend[0] == "") return;
 
 
 
@@ -292,7 +296,7 @@ export class FactConfirmarComponent {
             let Clave: any = Datos[0].d;
 
             if (Clave.length > 0) {
-              if (Clave[0].EsClave && Clave[0].CodVendedor != CodNewVend[0]) {
+              if (Clave[0].EsClave && Clave[0].CodVendedor != CodNewVend[0].Codigo) {
                 this.cmbVendedor.setSelectedItem(Clave[0].CodVendedor);
                 this.val.Get("txtVendedor").setValue(Clave[0].CodVendedor);
                 this.cmbVendedor.close();
