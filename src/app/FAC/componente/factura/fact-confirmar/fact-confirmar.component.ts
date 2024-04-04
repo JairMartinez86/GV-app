@@ -228,7 +228,7 @@ export class FactConfirmarComponent {
 
 
   public v_Select_Vendedor(event: any) {
-    console.log("as")
+  
     if( this.LoadVenedor) return;
     if (event.added.length) {
 
@@ -335,8 +335,29 @@ export class FactConfirmarComponent {
   //████████████████████████████████████████████FICHA FACTURA████████████████████████████████████████████████████████████████████████
   public v_TipoPago(event: any): void {
 
+    let chk: any = document.querySelector("#chkTipoPago_Confirmar");
+
+
+    if(this.TipoPago == "Credito" && !event.target.checked && this.EsClienteConvenio && this.lstDetalle.length > 0)
+      {
+        chk.bootstrapToggle("on");
+      this.cFunciones.DIALOG.open(DialogErrorComponent, {
+        data: "<b class='error'>Cliente de convenio por favor elimine los productos antes de cambiar la forma de pago.</b>",
+      });
+  
+      }
+
 
     if (!event.target.checked) {
+
+      if(this.EsClienteConvenio && this.lstDetalle.length > 0 && this.TipoPago == "Credito") 
+        {
+         
+          this.cFunciones.DIALOG.open(DialogErrorComponent, {
+            data: "<b class='error'>Cliente de convenio por favor elimine los productos antes de cambiar la forma de pago.</b>",
+          });
+          return;
+        }
       this.TipoPago = "Contado";
       this.val.Get("txtLimite_Confirmar").setValue("0.00");
       this.val.Get("txtDisponible_Confirmar").setValue("0.00");
@@ -348,17 +369,17 @@ export class FactConfirmarComponent {
       return;
     }
 
-    let chk: any = document.querySelector("#chkTipoPago_Confirmar");
+  
     // chk.bootstrapToggle("off");
 
 
-    if(this.EsClienteConvenio && this.lstDetalle.length > 0) {
+   /* if(this.EsClienteConvenio && this.lstDetalle.length > 0 && this.TipoPago == "Credito") {
       chk.bootstrapToggle("off");
       this.cFunciones.DIALOG.open(DialogErrorComponent, {
         data: "<b class='error'>Cliente de convenio por favor elimine los productos antes de cambiar la forma de pago.</b>",
       });
       return;
-    }
+    }*/
 
 
     let dialogRef: MatDialogRef<WaitComponent> = this.cFunciones.DIALOG.open(
