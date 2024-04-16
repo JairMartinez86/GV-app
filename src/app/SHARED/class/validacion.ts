@@ -294,6 +294,13 @@ export class Validacion {
        
          elmento?.focus();
 
+
+         
+         let elment: IgxComboComponent = cmb.find(f => f.id == _element_next?.IdNext)!;
+      
+         if (elment != undefined) elment.open();
+     
+         
          
 
         

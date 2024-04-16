@@ -1,4 +1,4 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component, QueryList, ViewChild, ViewChildren } from "@angular/core";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
@@ -75,7 +75,9 @@ export class FacturaComponent {
 
   public overlaySettings: OverlaySettings = {};
 
-
+  @ViewChildren(IgxComboComponent)
+  public lstCmb: QueryList<IgxComboComponent>;
+  
 
   constructor(
     private cFunciones: Funciones,
@@ -1399,18 +1401,6 @@ public customSettings: OverlaySettings = {
 
 
 
-
-
-    ///CAMBIO DE FOCO
-    this.val.addFocus("txtCliente", "txtNombre", undefined);
-    this.val.addFocus("txtNombre", "txtIdentificacion", undefined);
-    this.val.addFocus("txtIdentificacion", "txtContacto", undefined);
-    this.val.addFocus("txtContacto", "txtOC", undefined);
-    this.val.addFocus("txtOC", "btnSiguiente", "click");
-
-
-
-
     //FILTRO CLIENTE
     this.filteredClientes = this.val.Get("txtCliente").valueChanges.pipe(
       startWith(""),
@@ -1425,6 +1415,24 @@ public customSettings: OverlaySettings = {
   }
 
   private ngAfterViewInit() {
+
+
+    
+
+    ///CAMBIO DE FOCO
+    this.val.addFocus("txtCliente", "txtNombre", undefined);
+    this.val.addFocus("txtNombre", "txtIdentificacion", undefined);
+    this.val.addFocus("txtIdentificacion", "txtContacto", undefined);
+    this.val.addFocus("txtContacto", "txtBodega", undefined);
+    this.val.addFocus("txtBodega", "txtVendedor", undefined);
+    this.val.addFocus("txtVendedor", "txtOC", undefined);
+    this.val.addFocus("txtOC", "btnSiguiente", "click");
+
+
+
+
+
+
     //HABILITANDO CHECKBOK POR PROBLEMAS DE VIZUALIZACION
     let lstcheckbox: any = document.querySelectorAll("input[type='checkbox']");
     lstcheckbox.forEach((f: any) => {
