@@ -243,24 +243,11 @@ export class Validacion {
 
     document.querySelector('#' + id)?.addEventListener('keypress', onKeyEnter);
 
+    let elemento  = document.getElementById(id);
+    if(elemento?.tagName == "IGX-COMBO") elemento.addEventListener("keyup", this.V_Forcer_Key_Enter_Combo);
+
   }
-/*
-  public addNumberFocus() {
 
-    var inputs, index;
-
-    inputs = document.getElementsByTagName('input');
-    for (index = 0; index < inputs.length; ++index) {
-      if(inputs[index].id != "")
-      {
-        document.querySelector('#' + inputs[index].id)?.removeEventListener("focusin", this.onFocusIn);
-        document.querySelector('#' + inputs[index].id)?.removeEventListener("focusout", this.onFocusOut);
-      }
-      
-    }
-
-
-  }*/
 
   public addNumberFocus(id: string, decimal : number) {
 
@@ -278,6 +265,42 @@ export class Validacion {
 
   }
 
+
+  private V_Forcer_Key_Enter_Combo(event: any): void {
+
+    if (event.key == "Enter")
+      {
+         let id = event.srcElement.parentElement.parentElement.parentElement.parentElement.parentElement.id
+
+         let elmento: HTMLElement = document?.getElementById(id)!;
+
+
+         let combo: IgxComboComponent = cmb.find(f => f.id == id)!;
+         combo.close();
+         
+
+         let _element_next = lstFocus.find(f => f.Id == id);
+
+         if (_element_next == undefined) return;
+         if (_element_next.IdNext == "") return;
+       
+        
+         elmento = document?.getElementById(_element_next.Id)!;
+         elmento = getRectArea(elmento);
+       
+       
+       
+       
+       
+         elmento?.focus();
+
+         
+
+        
+      }
+
+
+  }
 
 
 
