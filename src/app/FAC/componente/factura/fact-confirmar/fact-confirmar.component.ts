@@ -186,6 +186,7 @@ export class FactConfirmarComponent {
           this.val.Get("txtObservaciones").setValue("");
           this.val.Get("chkDelivery").setValue(false);
           this.val.Get("txtDireccion").setValue("");
+          
 
           document.getElementById("btnDelivery")?.setAttribute("disabled", "disabled");
 

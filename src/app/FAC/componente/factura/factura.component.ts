@@ -132,6 +132,7 @@ export class FacturaComponent {
         break;
 
       case "Limpiar":
+        
         this.EsClienteConvenio = false;
         this.isEvent = true;
         this.Fila_Doc.IdVenta = "00000000-0000-0000-0000-000000000000";
@@ -161,6 +162,7 @@ export class FacturaComponent {
           0,
           this.FichaProducto.lstDetalle.length
         );
+        if(this.ConfirmarFactura != undefined)this.ConfirmarFactura.Vizualizado = false;
         this.ConfirmarFactura?._Evento("Limpiar");
         this.RevisionFactura?.lstDetalle.splice(
           0,
