@@ -450,7 +450,7 @@ public del(id: string): void {
       }
       else
       {
-        if(frm.value != hmtlValue) frm.setValue(hmtlValue);
+        if(frm.value != hmtlValue && elmento?.localName != "igx-combo") frm.setValue(hmtlValue);
       }
 
      
