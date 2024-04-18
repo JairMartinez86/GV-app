@@ -409,6 +409,7 @@ public del(id: string): void {
     return this._EsValido(formControlName);
   }
 
+ 
   private _EsValido(formControlName: string[]): boolean {
     this.Errores = "";
 
@@ -425,6 +426,7 @@ public del(id: string): void {
       let frm: any = this.Get(f.Id);
       let etiqueta: string = this.lstFrm.find((ff) => ff.Id == f.Id)?.Etiqueta!;
       let _Id: string = "";
+      let hmtlValue = "";
 
       let elmento = document.getElementById(f.Id);
       elmento?.parentElement?.classList.remove("contenedor-info-validacion");
@@ -432,23 +434,26 @@ public del(id: string): void {
       let span = document.getElementById("info-validacion-" + f.Id);
       span?.remove();
 
-	  frm.value = this.ValForm.get(f.Id)?.value;
+      frm.value = this.ValForm.get(f.Id)?.value;
+      hmtlValue = (<HTMLInputElement>document.getElementById(f.Id))?.value
 
-      if ( (String(frm.value) == "undefined" || String(frm.value) == "")) {
+      if ((String(frm.value) == "undefined" || String(frm.value) == "")) {
 
         if (elmento?.localName == "igx-combo") {
           let combo: any = cmb?.find(w => w.id == f.Id)!;
           frm.setValue(combo?._value);
         }
-        else
-        {
-          frm.setValue((<HTMLInputElement>document.getElementById(f.Id))?.value);
+        else {
+          frm.setValue(hmtlValue);
         }
 
+      }
+      else
+      {
+        if(frm.value != hmtlValue) frm.setValue(hmtlValue);
+      }
 
      
-        
-      }
 
       let r: string[] = this._Validar(f.Id, f, frm, retorno, errores);
       reglas[i].ErrorMensaje = "";
@@ -468,7 +473,7 @@ public del(id: string): void {
 
 
       //AGREGANDO ICONO DE VALIDACION
-	  esError = reglas.filter(w => w.Id == f.Id && w.ErrorMensaje != "").length > 0 ? true : false;
+      esError = reglas.filter(w => w.Id == f.Id && w.ErrorMensaje != "").length > 0 ? true : false;
       span = document.getElementById("-info-validacion-" + f.Id);
       if (span == undefined && esError) {
         esError = false;
@@ -494,7 +499,7 @@ public del(id: string): void {
     i = 0;
     lst.forEach((f: ReglasValidacion) => {
 
-      if(!er.includes(f.ErrorMensaje))er += f.ErrorMensaje;
+      if (!er.includes(f.ErrorMensaje)) er += f.ErrorMensaje;
 
 
       if (i < lst.length - 1 && f.Etiqueta != "") {
@@ -504,8 +509,8 @@ public del(id: string): void {
         }
 
       }
-      else{
-        this.Errores +=  "<li class='error-etiqueta'>" + f.Etiqueta + "<ul>" + er + "</ul></li>";
+      else {
+        this.Errores += "<li class='error-etiqueta'>" + f.Etiqueta + "<ul>" + er + "</ul></li>";
       }
 
       i++;
