@@ -12,7 +12,7 @@ import { ErrorStateMatcher } from "@angular/material/core";
 import { formatDate, formatNumber } from "@angular/common";
 import { IgxComboComponent } from "igniteui-angular";
 import { QueryList } from "@angular/core";
-
+import { IComboSelectionChangingEventArgs } from 'igniteui-angular';
 
 
 function getRectArea(elmento: HTMLElement) {
@@ -24,14 +24,15 @@ function getRectArea(elmento: HTMLElement) {
 
   if (elmento.getAttribute("disabled") == undefined) return elmento;
 
+
+
   return getRectArea(elmento)
 
 }
 
 
 
-function onKeyEnter(event: any)
-{
+function onKeyEnter(event: any) {
   if (event.key !== "Enter") return;
 
 
@@ -49,6 +50,7 @@ function onKeyEnter(event: any)
 
 
 
+
   let _element_next = lstFocus.find(f => f.Id == id);
 
   if (_element_next == undefined) return;
@@ -56,8 +58,7 @@ function onKeyEnter(event: any)
 
   let elmento: HTMLElement = document?.getElementById(id)!;
 
-  if (cmb != undefined && elmento.localName == "igx-combo")
-  {
+  if (cmb != undefined && elmento.localName == "igx-combo") {
     let combo: IgxComboComponent = cmb.find(f => f.id == id)!;
     combo.close();
   }
@@ -75,15 +76,15 @@ function onKeyEnter(event: any)
 
 
   if (cmb != undefined && elmento.localName == "igx-combo") {
-    
+
     let elment: IgxComboComponent = cmb.find(f => f.id == _element_next?.IdNext)!;
 
     if (elment != undefined) elment.open();
 
-    let __next = lstFocus.find(f => f.Id ==  _element_next?.IdNext);
+    let __next = lstFocus.find(f => f.Id == _element_next?.IdNext);
 
 
-    
+
     elment.searchInput.nativeElement.setAttribute("id", __next?.Id!);
     elment.searchInput.nativeElement.addEventListener('keypress', onKeyEnter)
 
@@ -177,6 +178,21 @@ export class Validacion {
   public Combo(c: any) {
     cmb = c;
   }
+
+
+
+
+
+  public V_SingleSelection(event: IComboSelectionChangingEventArgs) {
+  
+    if (event.added.length) {
+      if (event.newValue.length > 1) event.newValue.splice(0, 1);
+      this.Get(event.owner.id).setValue(event.newValue[0]);
+      event.owner.close();
+    }
+}
+
+
   public CambioRegla(id: string, r: string): string {
     return this.lstReglas.filter((f) => f.Id == id && f.Regla == r)[0].valor;
   }
@@ -200,21 +216,19 @@ export class Validacion {
   ) {
 
 
-    let NuevoItem : boolean = false;
-    let NuevaRegla : boolean = false;
+    let NuevoItem: boolean = false;
+    let NuevaRegla: boolean = false;
     this.Index = String(Number.parseInt(this.Index) + 1);
 
     const _frm = new FormControl("", this.Cls_Validaciones(id));
 
-    if (this.Get(id) == undefined) 
-    {
+    if (this.Get(id) == undefined) {
       this.ValForm.addControl(id, _frm);
       NuevoItem = true;
     }
-    
 
-    if(this.lstReglas.findIndex(f => f.Id == id && f.Regla == regla) == -1)
-    {
+
+    if (this.lstReglas.findIndex(f => f.Id == id && f.Regla == regla) == -1) {
       const _Regla: ReglasValidacion = new ReglasValidacion();
       _Regla.Id = id;
       _Regla.Regla = regla;
@@ -226,7 +240,11 @@ export class Validacion {
       this.lstReglas.push(_Regla);
     }
 
-    if(NuevoItem) this.lstFrm.push({ Id: id, Frm: _frm, Etiqueta: etiqueta });
+    if (NuevoItem) this.lstFrm.push({ Id: id, Frm: _frm, Etiqueta: etiqueta });
+
+
+
+
 
   }
 
@@ -242,19 +260,20 @@ export class Validacion {
 
 
     document.querySelector('#' + id)?.addEventListener('keypress', onKeyEnter);
-
     let elemento  = document.getElementById(id);
     if(elemento?.tagName == "IGX-COMBO") elemento.addEventListener("keyup", this.V_Forcer_Key_Enter_Combo);
 
+
+    
+
+
   }
-
-
-  public addNumberFocus(id: string, decimal : number) {
+  
+  public addNumberFocus(id: string, decimal: number) {
 
     let i: number = lstFormat.findIndex(f => f.Id == id);
 
-    if (i != -1)
-    {
+    if (i != -1) {
       lstFormat.splice(i, 1);
     }
 
@@ -264,6 +283,7 @@ export class Validacion {
     document.querySelector('#' + id)?.addEventListener('focusout', this.onFocusOut);
 
   }
+
 
 
   private V_Forcer_Key_Enter_Combo(event: any): void {
@@ -294,22 +314,15 @@ export class Validacion {
        
          elmento?.focus();
 
-
          
          let elment: IgxComboComponent = cmb.find(f => f.id == _element_next?.IdNext)!;
       
          if (elment != undefined) elment.open();
-     
-         
-         
-
         
       }
 
 
   }
-
-
 
   onFocusIn(event: any) {
 
@@ -317,7 +330,7 @@ export class Validacion {
     let id: string = event.target.id;
     let i: number = lstFormat.findIndex(f => f.Id == id);
 
-   
+
     let elmento: any = document?.getElementById(id)!;
 
 
@@ -338,37 +351,37 @@ export class Validacion {
 
 
 
-    let numero : number =  0
-    
-    if(elmento.value != "") numero = Number(elmento.value.replaceAll(",", ""));
+    let numero: number = 0
+
+    if (elmento.value != "") numero = Number(elmento.value.replaceAll(",", ""));
 
 
- 
 
-    elmento.value = formatNumber(numero, "en-IN",  "1."+iform?.Decimal+"-"+iform?.Decimal);
+
+    elmento.value = formatNumber(numero, "en-IN", "1." + iform?.Decimal + "-" + iform?.Decimal);
 
 
   }
 
-public del(id: string): void {
+  public del(id: string): void {
 
-    this.lstReglas.filter( w=> w.Id == id).forEach( w=>{
-
-      
-    let i: number = this.lstReglas.findIndex((f) => f.Id == id && f.Regla == w.Regla);
-
-    if (i != -1) {
-      this.ValForm.removeControl(id);
-      this.lstReglas.splice(i, 1);
-    }
+    this.lstReglas.filter(w => w.Id == id).forEach(w => {
 
 
+      let i: number = this.lstReglas.findIndex((f) => f.Id == id && f.Regla == w.Regla);
 
-    i = lstFocus.findIndex((f) => f.Id == id);
+      if (i != -1) {
+        this.ValForm.removeControl(id);
+        this.lstReglas.splice(i, 1);
+      }
 
-    if (i != -1) {
-      lstFocus.splice(i, 1);
-    }
+
+
+      i = lstFocus.findIndex((f) => f.Id == id);
+
+      if (i != -1) {
+        lstFocus.splice(i, 1);
+      }
 
 
     });
@@ -409,7 +422,6 @@ public del(id: string): void {
     return this._EsValido(formControlName);
   }
 
- 
   private _EsValido(formControlName: string[]): boolean {
     this.Errores = "";
 
@@ -527,7 +539,7 @@ public del(id: string): void {
   }
 
 
-  public ActulizarValores(id : string, value : any){
+  public ActulizarValores(id: string, value: any) {
     this.ValForm.get(id)?.setValue(value);
   }
 
