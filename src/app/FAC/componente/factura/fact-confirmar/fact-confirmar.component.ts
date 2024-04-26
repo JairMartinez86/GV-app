@@ -536,7 +536,7 @@ export class FactConfirmarComponent {
     this.isEvent = true;
     let chk: any = document.querySelector("#chkImpuesto_Confirmar");
 
-    this.val.replace("txtNoExoneracion", "1", "LEN>=", "0", "");
+   // this.val.replace("txtNoExoneracion", "1", "LEN>=", "0", "");
 
 
 
@@ -560,7 +560,7 @@ export class FactConfirmarComponent {
     }
 
     if (event.target.checked) {
-      this.val.replace("txtNoExoneracion", "1", "LEN>", "0", "Ingrese el numero de exoneración.");
+      //this.val.replace("txtNoExoneracion", "1", "LEN>", "0", "Ingrese el numero de exoneración.");
 
       this.TipoExoneracion = "Exonerado";
       chk.bootstrapToggle("off");

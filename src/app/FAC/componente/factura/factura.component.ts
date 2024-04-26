@@ -1114,7 +1114,7 @@ public customSettings: OverlaySettings = {
     this.Fila_Doc.TipoImpuesto = this.ConfirmarFactura.TipoImpuesto;
     this.Fila_Doc.TipoExoneracion = this.ConfirmarFactura.TipoExoneracion;
     this.Fila_Doc.NoExoneracion = this.ConfirmarFactura.val.Get("txtNoExoneracion").value;
-    this.Fila_Doc.EsDelivery = this.ConfirmarFactura.val.Get("chkDelivery").value;
+    this.Fila_Doc.EsDelivery = this.ConfirmarFactura.val.Get("chkDelivery").value == "on" ? true : false;
     this.Fila_Doc.Direccion = this.ConfirmarFactura.val.Get("txtDireccion").value;
     this.Fila_Doc.Observaciones = this.ConfirmarFactura.val.Get("txtObservaciones").value;
     this.Fila_Doc.Impuesto = this.ConfirmarFactura.Impuesto;
@@ -1128,6 +1128,8 @@ public customSettings: OverlaySettings = {
     this.Fila_Doc.Estado = "Solicitado";
     this.Fila_Doc.MotivoAnulacion = "";
     this.Fila_Doc.VentaDetalle = this.RevisionFactura.lstDetalle;
+
+
 
     let TotalPorAutorizar = this.RevisionFactura.lstDetalle.filter(f => f.PedirAutorizado || f.PrecioLiberado).length;
     let TotalAutorizado = this.RevisionFactura.lstDetalle.filter(f => f.Autorizado).length;
