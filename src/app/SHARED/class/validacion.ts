@@ -440,14 +440,15 @@ export class Validacion {
       let _Id: string = "";
       let hmtlValue = "";
 
-      let elmento = document.getElementById(f.Id);
+      let elmento : any = document.getElementById(f.Id);
       elmento?.parentElement?.classList.remove("contenedor-info-validacion");
 
       let span = document.getElementById("info-validacion-" + f.Id);
       span?.remove();
 
       frm.value = this.ValForm.get(f.Id)?.value;
-      hmtlValue = (<HTMLInputElement>document.getElementById(f.Id))?.value
+      hmtlValue = elmento.type == "checkbox" ?  frm.value : elmento?.value;
+     
 
       if ((String(frm.value) == "undefined" || String(frm.value) == "")) {
 
