@@ -1,11 +1,10 @@
-
 @use "igniteui-angular/theming" as *;
 // Uncomment the following lines if you want to add a custom palette:
- //$primary: #009d43 !default;
- //$secondary: #ff4500 !default;
- //$surface: white !default;
- //$search-separator-border-color: #1a5214;
- //$app-palette: palette($primary, $secondary, $surface, $search-separator-border-color);
+//$primary: #009d43 !default;
+//$secondary: #ff4500 !default;
+//$surface: white !default;
+//$search-separator-border-color: #1a5214;
+//$app-palette: palette($primary, $secondary, $surface, $search-separator-border-color);
 
 
 /* autoprefixer grid: on */
@@ -17,19 +16,16 @@
 @import 'minireset.css/minireset';
 /* You can add global styles to this file, and also import other style files */
 
-$custom-combo-theme: combo-theme(
-    $search-separator-border-color:  var(--escan-primario),
-    
-);
+$custom-combo-theme: combo-theme($search-separator-border-color: var(--escan-primario),
 
-$custom-checkbox-theme: checkbox-theme(
-    $border-radius: 10px,
+  );
+
+$custom-checkbox-theme: checkbox-theme($border-radius: 10px,
     $fill-color: var(--escan-primario),
     $empty-color: var(--escan-primario),
-);
+  );
 
-$custom-drop-down-theme: drop-down-theme(
-    $background-color: #d9f5d6,
+$custom-drop-down-theme: drop-down-theme($background-color: #d9f5d6,
     $header-text-color: #1a5214,
     $item-text-color: black,
 
@@ -44,33 +40,65 @@ $custom-drop-down-theme: drop-down-theme(
     $selected-hover-item-text-color: var(--escan-fondo),
     $selected-focus-item-background: #72da67,
     $selected-focus-item-text-color: var(--escan-fondo),
-   
-);
+
+  );
+
+
+$custom-datepicker-theme: calendar-theme($header-background: var(--escan-primario),
+    $content-background: var(--escan-fondo),
+    /*$date-selected-text-color: var(--escan-fondo),*/
+
+    $date-selected-background: var(--escan-primario),
+
+
+    $date-selected-hover-background: var(--escan-secundario),
+    $date-selected-hover-foreground: var(--escan-fondo),
+    $date-selected-focus-background: var(--escan-secundario),
+    $date-selected-focus-foreground : var(--escan-fondo),
+
+    $date-current-hover-background: var(--escan-secundario),
+    $date-current-hover-foreground: var(--escan-fondo),
+    $date-current-focus-background: var(--escan-secundario),
+    $date-current-focus-foreground: var(--escan-fondo),
+
+
+    $date-selected-current-background: var(--escan-primario),
+    $date-selected-current-foreground: var(--escan-fondo),
+    $date-selected-current-hover-background: var(--escan-secundario),
+    $date-selected-current-hover-foreground: var(--escan-fondo),
+    $date-selected-current-focus-background: var(--escan-secundario),
+    $date-selected-current-focus-foreground: var(--escan-fondo),
+
+
+
+
+  );
 
 
 
 @include css-vars($custom-combo-theme);
 @include css-vars($custom-drop-down-theme);
 @include css-vars($custom-checkbox-theme);
+@include css-vars($custom-datepicker-theme);
 
 
 [class^=igx-] {
 
-  
-  --box-background : transparent;
+
+  --box-background: transparent;
   --box-background-hover: transparent;
   --box-background-focus: transparent;
-  --toggle-button-background : transparent;
-  --toggle-button-background-focus : transparent;
+  --toggle-button-background: transparent;
+  --toggle-button-background-focus: transparent;
 
 
-  .igx-input-group{
+  .igx-input-group {
     --focused-secondary-color: var(--escan-secundario);
-    --success-secondary-color: var(--escan-secundario) ;
+    --success-secondary-color: var(--escan-secundario);
     --error-secondary-color: var(--escan-primario);
   }
 
-  .igx-input-group--disabled .igx-input-group__input{
+  .igx-input-group--disabled .igx-input-group__input {
     font-weight: bold;
     color: black !important;
   }
@@ -127,11 +155,34 @@ auto - for classes that set the margin to auto, like mx-auto
   --escan-primario-sombra: rgba(0, 157, 67, 0.5);
 
   --escan-opcional: #4e4e4e;
-    --escan-opcional-sombra: rgba(78, 78, 78, 0.5);
+  --escan-opcional-sombra: rgba(78, 78, 78, 0.5);
 
   --escan-fondo: white;
 
-  --min-width: 300px;;
+  --min-width: 300px;
+
+  --min-width-sm: 576px;
+  --min-width-md: 768px;
+  --min-width-lg: 992px;
+  --min-width-xl: 1200px;
+  --min-width-xxl: 1200px;
+
+  //igx-calendar
+  --igx-calendar-date-focus-background: var(--escan-primario);
+  --igx-calendar-date-hover-background: var(--escan-primario);
+}
+
+//igx-calendar
+.igx-calendar__header-date>span,
+.igx-calendar__date-content>span,
+.igx-calendar__date-content:hover {
+  color: var(--escan-fondo);
+}
+
+.igx-days-view__date--current .igx-days-view__date-inner {
+  color: var(--escan-primario);
+  border-color: var(--escan-secundario);
+  background: transparent;
 }
 
 
@@ -142,6 +193,7 @@ body {
   height: 100%;
   min-width: var(--min-width);
 }
+
 body {
   margin: 0;
 }
@@ -150,6 +202,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   color: black;
 }
+
 a {
   text-decoration: none;
   color: initial;
@@ -159,15 +212,15 @@ i {
   color: var(--escan-secundario);
 }
 
-.primario{
+.primario {
   color: var(--escan-primario);
 }
 
-.secundario{
+.secundario {
   color: var(--escan-secundario);
 }
 
-.opcional{
+.opcional {
   color: var(--escan-opcional);
 }
 
@@ -177,12 +230,12 @@ i {
 
 
 
-.linea-top-primario{
+.linea-top-primario {
   border-top: 2px solid var(--escan-primario);
 }
 
 
-.linea-top-primario-dashed{
+.linea-top-primario-dashed {
   border-top: 2px dashed var(--escan-primario);
 }
 
@@ -192,16 +245,16 @@ i {
   border-bottom: 2px solid var(--escan-primario);
 }
 
-.linea-bottom-primario-dashed{
+.linea-bottom-primario-dashed {
   border-bottom: 2px dashed var(--escan-primario);
 }
 
 
-.linea-top-secundario{
+.linea-top-secundario {
   border-top: 2px solid var(--escan-secundario);
 }
 
-.linea-top-secundario-dashed{
+.linea-top-secundario-dashed {
   border-top: 2px dashed var(--escan-secundario);
 }
 
@@ -214,10 +267,11 @@ i {
 }
 
 
-.linea-top-opcional{
+.linea-top-opcional {
   border-top: 2px solid var(--escan-opcional);
 }
-.linea-top-opcional-dashed{
+
+.linea-top-opcional-dashed {
   border-top: 2px dashed var(--escan-opcional);
 }
 
@@ -232,7 +286,7 @@ i {
 
 
 input:disabled,
-textarea:disabled{
+textarea:disabled {
   font-weight: bold;
   color: black;
 }
@@ -270,6 +324,7 @@ textarea:disabled{
   background-color: var(--escan-secundario);
   color: white;
 }
+
 .on:hover {
   background-color: var(--escan-primario);
   color: white;
@@ -285,6 +340,7 @@ textarea:disabled{
     color: white;
   }
 }
+
 //FIN TOGGLET BOTON
 
 //████████████████████████████████████████████TEXT████████████████████████████████████████████████████████████████████████
@@ -292,8 +348,7 @@ textarea:disabled{
 textarea::-webkit-resizer {
   border-width: 8px;
   border-style: solid;
-  border-color: transparent var(--escan-primario) var(--escan-primario)
-    transparent;
+  border-color: transparent var(--escan-primario) var(--escan-primario) transparent;
 }
 
 input[type=number]::-webkit-outer-spin-button,
@@ -304,17 +359,17 @@ input[type=number]::-webkit-inner-spin-button {
 
 input[type="date"]::-webkit-inner-spin-button,
 input[type="date"]::-webkit-calendar-picker-indicator {
-    display: none;
-    -webkit-appearance: none;
-    pointer-events: none
+  display: none;
+  -webkit-appearance: none;
+  pointer-events: none
 }
 
 
 
-input[type=number]{
-  
+input[type=number] {
+
   appearance: none;
-  -moz-appearance:textfield;
+  -moz-appearance: textfield;
 
 }
 
@@ -322,17 +377,20 @@ input[type=number]{
 
 //████████████████████████████████████████████BOTONES██████████████████████████████████████████████████████████████████████
 
-button{
-  transition: all 0.2s ease;;
+button {
+  transition: all 0.2s ease;
+  ;
 }
-button:active{
+
+button:active {
   transform: scale(0.96);
 }
 
 .btn-primario {
   background-color: var(--escan-primario);
   color: var(--escan-fondo);
-  i{
+
+  i {
     color: var(--escan-fondo);
   }
 }
@@ -347,10 +405,10 @@ button:active{
   background-color: var(--escan-secundario);
   color: var(--escan-fondo);
 
-  i{
+  i {
     color: var(--escan-fondo);
   }
-  
+
 }
 
 .btn-secundario:hover {
@@ -365,7 +423,7 @@ button:active{
   color: var(--escan-fondo);
 
   i {
-      color: var(--escan-fondo);
+    color: var(--escan-fondo);
   }
 }
 
@@ -385,7 +443,7 @@ button:active{
   width: 100%;
   height: 100%;
 
- 
+
 }
 
 
@@ -397,7 +455,7 @@ button:active{
 
 
 .escasan-dialog {
-  
+
   h1 {
     text-align: center;
   }
@@ -465,19 +523,19 @@ button:active{
 
 //████████████████████████████████████████████DIALOG ERROR██████████████████████████████████████████████████████████████████████
 
-.error-etiqueta{
+.error-etiqueta {
   font-weight: bold;
   color: black;
 }
 
-.error-mensaje{
+.error-mensaje {
   font-weight: normal;
 
   text-align: justify;
   text-justify: inter-word;
 }
 
-.error{
+.error {
   font-weight: normal;
 
   text-align: justify;
@@ -491,11 +549,11 @@ button:active{
 //████████████████████████████████████████████SIMBOLO VALIDACION██████████████████████████████████████████████████████████████████████
 
 
-.contenedor-info-validacion{
+.contenedor-info-validacion {
   position: relative;
 }
 
-.info-validacion{
+.info-validacion {
   position: absolute;
   top: 50%;
   right: 5px;

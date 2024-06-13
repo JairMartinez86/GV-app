@@ -94,6 +94,12 @@ function onKeyEnter(event: any) {
   }
 
 
+  if (elmento.localName == "igx-date-picker") {
+    let _input_Picker: HTMLElement = elmento.getElementsByTagName("input")[0];
+    _input_Picker?.focus();
+  }
+
+
 
   if (_element_next.Evento != undefined) $("#" + _element_next.IdNext)?.trigger(_element_next.Evento);
 
@@ -446,9 +452,13 @@ export class Validacion {
       let span = document.getElementById("info-validacion-" + f.Id);
       span?.remove();
 
-      frm.value = this.ValForm.get(f.Id)?.value;
-      hmtlValue = elmento.type == "checkbox" ?  frm.value : elmento?.value;
      
+      frm.value = this.ValForm.get(f.Id)?.value;
+      hmtlValue = elmento?.value
+      if(elmento.type == "checkbox") hmtlValue = frm.value;
+      if(elmento.localName == "igx-date-picker") hmtlValue = frm.value;
+
+
 
       if ((String(frm.value) == "undefined" || String(frm.value) == "")) {
 
