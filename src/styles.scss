@@ -44,35 +44,86 @@ $custom-drop-down-theme: drop-down-theme($background-color: #d9f5d6,
   );
 
 
-$custom-datepicker-theme: calendar-theme($header-background: var(--escan-primario),
-    $content-background: var(--escan-fondo),
-    /*$date-selected-text-color: var(--escan-fondo),*/
-
-    $date-selected-background: var(--escan-primario),
-
-
-    $date-selected-hover-background: var(--escan-secundario),
-    $date-selected-hover-foreground: var(--escan-fondo),
-    $date-selected-focus-background: var(--escan-secundario),
-    $date-selected-focus-foreground : var(--escan-fondo),
-
-    $date-current-hover-background: var(--escan-secundario),
-    $date-current-hover-foreground: var(--escan-fondo),
-    $date-current-focus-background: var(--escan-secundario),
-    $date-current-focus-foreground: var(--escan-fondo),
-
-
-    $date-selected-current-background: var(--escan-primario),
-    $date-selected-current-foreground: var(--escan-fondo),
-    $date-selected-current-hover-background: var(--escan-secundario),
-    $date-selected-current-hover-foreground: var(--escan-fondo),
-    $date-selected-current-focus-background: var(--escan-secundario),
-    $date-selected-current-focus-foreground: var(--escan-fondo),
+  $custom-datepicker-theme: calendar-theme($content-background: var(--escan-fondo),
+  $content-foreground: var(--escan-fondo),
+  $header-background: var(--escan-primario),
+  $header-foreground: var(--escan-fondo),
+  /*$date-selected-text-color: var(--escan-fondo),*/
 
 
 
+  $year-hover-foreground: var(--escan-fondo),
+  $year-hover-background: var(--escan-secundario),
 
-  );
+  $year-current-foreground: var(--escan-fondo),
+  $year-current-background: var(--escan-primario),
+  $year-current-hover-foreground: var(--escan-fondo),
+  $year-current-hover-background: var(--escan-secundario),
+
+  $year-selected-current-foreground: var(--escan-fondo),
+  $year-selected-current-background: var(--escan-primario),
+  $year-selected-current-hover-foreground: var(--escan-fondo),
+  $year-selected-current-hover-background: var(--escan-primario),
+
+  $year-selected-foreground: var(--escan-fondo),
+  $year-selected-background: var(--escan-primario),
+  $year-selected-hover-foreground: var(--escan-fondo),
+  $year-selected-hover-background: var(--escan-primario),
+
+
+
+
+  $month-hover-foreground: var(--escan-fondo),
+  $month-hover-background: var(--escan-secundario),
+
+  $month-current-foreground: var(--escan-fondo),
+  $month-current-background: var(--escan-primario),
+  $month-current-hover-foreground: var(--escan-fondo),
+  $month-current-hover-background: var(--escan-secundario),
+
+
+
+  $month-selected-current-foreground: var(--escan-fondo),
+  $month-selected-current-background: var(--escan-primario),
+  $month-selected-current-hover-foreground: var(--escan-fondo),
+  $month-selected-current-hover-background: var(--escan-primario),
+
+  $month-selected-foreground: var(--escan-fondo),
+  $month-selected-background: var(--escan-primario),
+  $month-selected-hover-foreground: var(--escan-fondo),
+  $month-selected-hover-background: var(--escan-primario),
+
+
+
+  $date-selected-background: var(--escan-primario),
+
+
+  $date-selected-hover-background: var(--escan-secundario),
+  $date-selected-hover-foreground: var(--escan-fondo),
+  $date-selected-focus-background: var(--escan-secundario),
+  $date-selected-focus-foreground : var(--escan-fondo),
+
+  $date-current-hover-background: var(--escan-secundario),
+  $date-current-hover-foreground: var(--escan-fondo),
+  $date-current-focus-background: var(--escan-secundario),
+  $date-current-focus-foreground: var(--escan-fondo),
+
+
+  $date-selected-current-background: var(--escan-primario),
+  $date-selected-current-foreground: var(--escan-fondo),
+  $date-selected-current-hover-background: var(--escan-secundario),
+  $date-selected-current-hover-foreground: var(--escan-fondo),
+  $date-selected-current-focus-background: var(--escan-secundario),
+  $date-selected-current-focus-foreground: var(--escan-fondo),
+
+
+  $navigation-hover-color: var(--escan-primario),
+  $navigation-focus-color: var(--escan-secundario),
+
+
+);
+
+
 
 
 
@@ -173,16 +224,27 @@ auto - for classes that set the margin to auto, like mx-auto
 }
 
 //igx-calendar
-.igx-calendar__header-date>span,
-.igx-calendar__date-content>span,
-.igx-calendar__date-content:hover {
+.igx-days-view__date-inner:hover {
   color: var(--escan-fondo);
 }
+
+.igx-calendar-picker__date:hover {
+  color: var(--escan-primario);
+}
+
+
 
 .igx-days-view__date--current .igx-days-view__date-inner {
   color: var(--escan-primario);
   border-color: var(--escan-secundario);
   background: transparent;
+}
+
+.igx-months-view__month--current .igx-months-view__month-inner,
+.igx-years-view__year--current .igx-years-view__year-inner {
+  color: var(--escan-primario);
+  background: transparent;
+  box-shadow: inset 0 0 0 0.0625rem var(--escan-secundario);
 }
 
 
