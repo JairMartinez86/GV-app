@@ -27,6 +27,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@igniteui/material-icons-extended": "^3.0.2",
+    "@jridgewell/sourcemap-codec": "^1.4.15",
     "@ng-bootstrap/ng-bootstrap": "^17.0.0",
     "@popperjs/core": "^2.11.8",
     "angular-disable-browser-back-button": "^2.0.0",
