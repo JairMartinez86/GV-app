@@ -477,7 +477,7 @@ export class Validacion {
       elmento?.parentElement?.classList.remove("contenedor-info-validacion");
 
   
-      console.log(elmento.querySelectorAll('.igx-input-group'))
+  
     
 
       let span = document.getElementById("info-validacion-" + f.Id);
