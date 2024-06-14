@@ -144,9 +144,9 @@ $custom-drop-down-theme: drop-down-theme($background-color: #d9f5d6,
 
 
   .igx-input-group {
-    --focused-secondary-color: var(--escan-secundario);
-    --success-secondary-color: var(--escan-secundario);
-    --error-secondary-color: var(--escan-primario);
+    --focused-secondary-color: var(--escan-primario);
+    --success-secondary-color: var(--escan-primario);
+    //--error-secondary-color: var(--escan-primario);
   }
 
   .igx-input-group--disabled .igx-input-group__input {
@@ -217,6 +217,10 @@ auto - for classes that set the margin to auto, like mx-auto
   --min-width-lg: 992px;
   --min-width-xl: 1200px;
   --min-width-xxl: 1200px;
+
+  //input
+  --igx-input-group-error-secondary-color : var(--escan-secundario);
+  --igx-input-group-focused-secondary-color : var(--escan-primario);
 
   //igx-calendar
   --igx-calendar-date-focus-background: var(--escan-primario);

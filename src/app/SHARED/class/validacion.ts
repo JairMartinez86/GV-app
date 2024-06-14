@@ -49,7 +49,7 @@ function onKeyEnter(event: any) {
   }
 
 
-
+  
 
   let _element_next = lstFocus.find(f => f.Id == id);
 
@@ -62,6 +62,9 @@ function onKeyEnter(event: any) {
     let combo: IgxComboComponent = cmb.find(f => f.id == id)!;
     combo.close();
   }
+
+
+
 
 
   elmento = document?.getElementById(_element_next.Id)!;
@@ -101,6 +104,8 @@ function onKeyEnter(event: any) {
 
 
 
+
+
   if (_element_next.Evento != undefined) $("#" + _element_next.IdNext)?.trigger(_element_next.Evento);
 
 
@@ -109,6 +114,8 @@ function onKeyEnter(event: any) {
   event.preventDefault();
 
 }
+
+
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -187,16 +194,29 @@ export class Validacion {
 
 
 
+  
+  public ResetCssError()
+  {
+ 
+    setTimeout(() => {
+      document.querySelectorAll('.igx-input-group').forEach((key : any) => {
+        key.classList.remove('igx-input-group--invalid');
+      });
+    }, 300);
+
+
+    
+  }
 
 
   public V_SingleSelection(event: IComboSelectionChangingEventArgs) {
-  
+
     if (event.added.length) {
       if (event.newValue.length > 1) event.newValue.splice(0, 1);
       this.Get(event.owner.id).setValue(event.newValue[0]);
       event.owner.close();
     }
-}
+  }
 
 
   public CambioRegla(id: string, r: string): string {
@@ -231,7 +251,11 @@ export class Validacion {
     if (this.Get(id) == undefined) {
       this.ValForm.addControl(id, _frm);
       NuevoItem = true;
+      
+  
+     
     }
+
 
 
     if (this.lstReglas.findIndex(f => f.Id == id && f.Regla == regla) == -1) {
@@ -248,8 +272,7 @@ export class Validacion {
 
     if (NuevoItem) this.lstFrm.push({ Id: id, Frm: _frm, Etiqueta: etiqueta });
 
-
-
+  
 
 
   }
@@ -266,15 +289,14 @@ export class Validacion {
 
 
     document.querySelector('#' + id)?.addEventListener('keypress', onKeyEnter);
-    let elemento  = document.getElementById(id);
-    if(elemento?.tagName == "IGX-COMBO") elemento.addEventListener("keyup", this.V_Forcer_Key_Enter_Combo);
-
-
-    
+    let elemento = document.getElementById(id);
+    if (elemento?.tagName == "IGX-COMBO") elemento.addEventListener("keyup", this.V_Forcer_Key_Enter_Combo);
 
 
   }
-  
+
+
+
   public addNumberFocus(id: string, decimal: number) {
 
     let i: number = lstFormat.findIndex(f => f.Id == id);
@@ -287,6 +309,8 @@ export class Validacion {
 
     document.querySelector('#' + id)?.addEventListener('focusin', this.onFocusIn);
     document.querySelector('#' + id)?.addEventListener('focusout', this.onFocusOut);
+    //document.getElementById('input')?.addEventListener('input', this.onValid);
+
 
   }
 
@@ -294,38 +318,37 @@ export class Validacion {
 
   private V_Forcer_Key_Enter_Combo(event: any): void {
 
-    if (event.key == "Enter")
-      {
-         let id = event.srcElement.parentElement.parentElement.parentElement.parentElement.parentElement.id
+    if (event.key == "Enter") {
+      let id = event.srcElement.parentElement.parentElement.parentElement.parentElement.parentElement.id
 
-         let elmento: HTMLElement = document?.getElementById(id)!;
+      let elmento: HTMLElement = document?.getElementById(id)!;
 
 
-         let combo: IgxComboComponent = cmb.find(f => f.id == id)!;
-         combo.close();
-         
+      let combo: IgxComboComponent = cmb.find(f => f.id == id)!;
+      combo.close();
 
-         let _element_next = lstFocus.find(f => f.Id == id);
 
-         if (_element_next == undefined) return;
-         if (_element_next.IdNext == "") return;
-       
-        
-         elmento = document?.getElementById(_element_next.Id)!;
-         elmento = getRectArea(elmento);
-       
-       
-       
-       
-       
-         elmento?.focus();
+      let _element_next = lstFocus.find(f => f.Id == id);
 
-         
-         let elment: IgxComboComponent = cmb.find(f => f.id == _element_next?.IdNext)!;
-      
-         if (elment != undefined) elment.open();
-        
-      }
+      if (_element_next == undefined) return;
+      if (_element_next.IdNext == "") return;
+
+
+      elmento = document?.getElementById(_element_next.Id)!;
+      elmento = getRectArea(elmento);
+
+
+
+
+
+      elmento?.focus();
+
+
+      let elment: IgxComboComponent = cmb.find(f => f.id == _element_next?.IdNext)!;
+
+      if (elment != undefined) elment.open();
+
+    }
 
 
   }
@@ -368,6 +391,7 @@ export class Validacion {
 
 
   }
+
 
   public del(id: string): void {
 
@@ -438,6 +462,9 @@ export class Validacion {
 
     let reglas: ReglasValidacion[] = JSON.parse(JSON.stringify(this.lstReglas.filter(f => (formControlName.includes(f.Id)) || formControlName.length == 0).sort((a, b) => a.Etiqueta.localeCompare(b.Etiqueta))));
 
+
+
+
     reglas.forEach((f) => {
       let retorno = "0";
       let errores = "";
@@ -446,18 +473,20 @@ export class Validacion {
       let _Id: string = "";
       let hmtlValue = "";
 
-      let elmento : any = document.getElementById(f.Id);
+      let elmento: any = document.getElementById(f.Id);
       elmento?.parentElement?.classList.remove("contenedor-info-validacion");
+
+  
+      console.log(elmento.querySelectorAll('.igx-input-group'))
+    
 
       let span = document.getElementById("info-validacion-" + f.Id);
       span?.remove();
 
-     
       frm.value = this.ValForm.get(f.Id)?.value;
       hmtlValue = elmento?.value
       if(elmento.type == "checkbox") hmtlValue = frm.value;
       if(elmento.localName == "igx-date-picker") hmtlValue = frm.value;
-
 
 
       if ((String(frm.value) == "undefined" || String(frm.value) == "")) {
@@ -471,12 +500,11 @@ export class Validacion {
         }
 
       }
-      else
-      {
-        if(frm.value != hmtlValue && elmento?.localName != "igx-combo") frm.setValue(hmtlValue);
+      else {
+        if (frm.value != hmtlValue && elmento?.localName != "igx-combo") frm.setValue(hmtlValue);
       }
 
-     
+
 
       let r: string[] = this._Validar(f.Id, f, frm, retorno, errores);
       reglas[i].ErrorMensaje = "";
@@ -509,7 +537,18 @@ export class Validacion {
         elmento?.parentNode?.insertBefore(span, elmento);
         elmento?.parentElement?.classList.add("contenedor-info-validacion");
 
+      
+        elmento.querySelectorAll('.igx-input-group').forEach((key : HTMLElement) => {
+          key.classList.add('igx-input-group--invalid');
+        });
 
+      }
+      else
+      {
+        elmento.querySelectorAll('.igx-input-group--invalid').forEach((key : HTMLElement) => {
+          key.classList.remove('igx-input-group--invalid');
+        });
+    
       }
 
       i++;
@@ -545,6 +584,10 @@ export class Validacion {
       this.Errores = "<ul>" + this.Errores + "</ul>";
       return false;
     }
+
+    
+
+
 
     return true;
   }
