@@ -1388,6 +1388,30 @@ public customSettings: OverlaySettings = {
 
   ngDoCheck() {
 
+
+    
+    ///CAMBIO DE FOCO
+    this.val.addFocus("txtCliente", "txtNombre", undefined);
+    this.val.addFocus("txtNombre", "txtIdentificacion", undefined);
+    this.val.addFocus("txtIdentificacion", "txtContacto", undefined);
+    this.val.addFocus("txtContacto", "txtBodega", undefined);
+    this.val.addFocus("txtBodega", "txtVendedor", undefined);
+    this.val.addFocus("txtVendedor", "txtOC", undefined);
+    this.val.addFocus("txtOC", "btnSiguiente", "click");
+
+
+
+
+
+
+    //HABILITANDO CHECKBOK POR PROBLEMAS DE VIZUALIZACION
+    let lstcheckbox: any = document.querySelectorAll("input[type='checkbox']");
+    lstcheckbox.forEach((f: any) => {
+      if (f.id != "chkDelivery") {
+        f.bootstrapToggle();
+      }
+    });
+    
     this.overlaySettings = {};
 
     if (window.innerWidth <= 992) {
@@ -1418,31 +1442,5 @@ public customSettings: OverlaySettings = {
     );
   }
 
-  private ngAfterViewInit() {
 
-
-    
-
-    ///CAMBIO DE FOCO
-    this.val.addFocus("txtCliente", "txtNombre", undefined);
-    this.val.addFocus("txtNombre", "txtIdentificacion", undefined);
-    this.val.addFocus("txtIdentificacion", "txtContacto", undefined);
-    this.val.addFocus("txtContacto", "txtBodega", undefined);
-    this.val.addFocus("txtBodega", "txtVendedor", undefined);
-    this.val.addFocus("txtVendedor", "txtOC", undefined);
-    this.val.addFocus("txtOC", "btnSiguiente", "click");
-
-
-
-
-
-
-    //HABILITANDO CHECKBOK POR PROBLEMAS DE VIZUALIZACION
-    let lstcheckbox: any = document.querySelectorAll("input[type='checkbox']");
-    lstcheckbox.forEach((f: any) => {
-      if (f.id != "chkDelivery") {
-        f.bootstrapToggle();
-      }
-    });
-  }
 }
