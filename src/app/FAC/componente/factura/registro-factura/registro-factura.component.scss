@@ -15,7 +15,6 @@
 
     position: fixed;
     top: 0;
-    height: 120px;
     text-align: center;
     z-index: 1;
     background-color: var(--escan-fondo);
@@ -26,13 +25,6 @@
     }
 
 
-    @include Tamano_Menor(lg) {
-        height: 170px;
-    }
-
-    @include Tamano_Menor(lg) {
-        height: 170px;
-    }
 
 
 
@@ -52,12 +44,27 @@
 
 
 table{
-    margin-top: 60px;
     width: 100%;
 
-    @include Tamano_Menor(lg) {
-        margin-top: 110px;
+      
+    @include Tamano(xs) {
+        margin-top: 150px;
     }
+
+    @include Tamano(sm) {
+        margin-top: 210px;
+    }
+
+
+    @include Tamano(md) {
+        margin-top: 100px;
+    }
+
+    
+    @include Tamano(xl) {
+        margin-top: 50px;
+    }
+
 }
 
 .contenedor-pag {
