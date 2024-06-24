@@ -484,8 +484,8 @@ export class Validacion {
 
       frm.value = this.ValForm.get(f.Id)?.value;
       hmtlValue = elmento?.value
-      if(elmento.type == "checkbox") hmtlValue = frm.value;
-      if(elmento.localName == "igx-date-picker") hmtlValue = frm.value;
+      if(elmento?.type == "checkbox") hmtlValue = frm.value;
+      if(elmento?.localName == "igx-date-picker") hmtlValue = frm.value;
 
 
       if ((String(frm.value) == "undefined" || String(frm.value) == "")) {
@@ -537,14 +537,14 @@ export class Validacion {
         elmento?.parentElement?.classList.add("contenedor-info-validacion");
 
       
-        elmento.querySelectorAll('.igx-input-group').forEach((key : HTMLElement) => {
+        elmento?.querySelectorAll('.igx-input-group')?.forEach((key : HTMLElement) => {
           key.classList.add('igx-input-group--invalid');
         });
 
       }
       else
       {
-        elmento.querySelectorAll('.igx-input-group--invalid').forEach((key : HTMLElement) => {
+        elmento?.querySelectorAll('.igx-input-group--invalid')?.forEach((key : HTMLElement) => {
           key.classList.remove('igx-input-group--invalid');
         });
     
