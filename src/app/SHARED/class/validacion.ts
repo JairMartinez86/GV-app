@@ -477,8 +477,7 @@ export class Validacion {
       elmento?.parentElement?.classList.remove("contenedor-info-validacion");
 
   
-  
-    
+   
 
       let span = document.getElementById("info-validacion-" + f.Id);
       span?.remove();
@@ -581,7 +580,7 @@ export class Validacion {
 
 
     if (this.Errores != "") {
-      this.Errores = "<ul>" + this.Errores + "</ul>";
+      this.Errores = "<ul class='contenedor-validador'>" + this.Errores + "</ul>";
       return false;
     }
 
