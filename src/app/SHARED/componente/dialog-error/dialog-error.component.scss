@@ -5,12 +5,21 @@
     box-shadow: 3px 4px 14px 6px rgba(0, 0, 0, 0.76);
 }
 
+/*
 .msj{
 
     text-align: justify;
     text-justify: inter-word;
     word-wrap: break-word;
 
+}*/
+
+.msj{
+    float: right;
+    display: flex;
+    align-items: center;
+    word-break:break-all;
+    margin: 0 0 1em 1em;
 }
 
 .error,
