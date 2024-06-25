@@ -1,5 +1,12 @@
 <div class="escasan-dialog" if="dialog-confirmar">
 
+    <div class="btn-contenedor-cerrar">
+        <button  class="close-button custom-cerrar" (click)="V_Cerrar();" *ngIf="MostrarCerrar">
+          <mat-icon class="close-icon" color="warn">close</mat-icon>
+        </button>
+      </div>
+
+
     <div class="logo">
         <img   src="../assets/images/ISOLOGO.png">
       </div>
@@ -7,13 +14,14 @@
 
 
     <div mat-dialog-content>
-        <div class="msj" [innerHTML]="mensaje"></div>
+        <div class="msj" [innerHTML]="mensaje" id="msj-confirmar"></div>
     </div>
     
     <div mat-dialog-actions class="btn-contenedor">
-        <button type="button" class="btn btn-primario" (click)="v_Confirmar();">{{textBoton1}}</button>
-        <button type="button" class="btn btn-opcional" (click)="v_Cancelar();">{{textBoton2}}</button>
+        <button type="button" class="btn btn-primario" id="btn-confirmar-1-escasan-dialog" (click)="v_Confirmar();">{{textBoton1}}</button>
+        <button type="button" class="btn btn-opcional" id="btn-confirmar-2-escasan-dialog"  (click)="v_Cancelar();">{{textBoton2}}</button>
     </div>
+    
     
 </div>
 

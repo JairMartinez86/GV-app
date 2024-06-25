@@ -1,5 +1,6 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-dialogo-confirmar',
@@ -8,13 +9,16 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class DialogoConfirmarComponent {
 
+  @ViewChild("msj", { static: false })
+  public msj: HTMLElement;
+  
   public retorno: string="0";
-  public mensaje: string="";
-  public texto: string="";
+  public mensaje: any;
   public textBoton1 : string ="";
   public textBoton2 : string ="";
+  public MostrarCerrar : boolean = false;
 
-  constructor(public hostElement: ElementRef, public dialogRef: MatDialogRef<DialogoConfirmarComponent>) { }
+  constructor(private sanitizer: DomSanitizer, public hostElement: ElementRef, public dialogRef: MatDialogRef<DialogoConfirmarComponent>) { }
 
   public v_Confirmar(){
     this.dialogRef.close();
@@ -22,10 +26,36 @@ export class DialogoConfirmarComponent {
     
   }
 
+
+
   public v_Cancelar(){
     this.dialogRef.close();
     this.retorno="0";
 
+  }
+
+  public V_Cerrar(){
+    this.dialogRef.close();
+    this.retorno="-1";
+    
+  }
+  
+  public Set_StyleBtn1(style : string)
+  {
+    document.getElementById("btn-confirmar-1-escasan-dialog")?.setAttribute("style", style);
+  }
+
+  public Set_StyleBtn2(style : string)
+  {
+    document.getElementById("btn-confirmar-2-escasan-dialog")?.setAttribute("style", style);
+  }
+  
+  
+  public SetMensajeHtml(mensaje : string)
+  {
+
+    document.getElementById("msj-confirmar")?.removeAttribute("class");
+    this.mensaje = this.sanitizer.bypassSecurityTrustHtml(mensaje);
   }
 
 
