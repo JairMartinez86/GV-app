@@ -165,12 +165,13 @@ interface iFormat {
 
 const lstFocus: iFocus[] = [];
 const lstFormat: iFormat[] = [];
-let cmb: QueryList<IgxComboComponent>;
+let cmb: IgxComboComponent[] = [];
 
 export class Validacion {
 
 
   private overlaySettings: OverlaySettings = {};
+  private overlaySettings2: OverlaySettings = {};
   private fb = new FormBuilder();
   public Iniciar: boolean = false;
   public Errores: string = "";
@@ -197,19 +198,35 @@ export class Validacion {
 
   public ValForm = this.fb.nonNullable.group({});
 
-  public Combo(c: any) {
-    cmb = c;
+  public Combo(c: QueryList<IgxComboComponent>) {
 
-    cmb?.forEach( f => {
+    c?.filter(f=> {
+
+      let temp = cmb.find( w=> w.id == f.id);
+
+      if(temp == undefined) cmb.push(f);
+
+    });
+
+
+    
+  }
+
+
+  public ComboOverLay(c: QueryList<IgxComboComponent>, Permir_OutsideCLick_id : string[]) {
+
+    c?.forEach( f => {
       f.itemsWidth = (window.innerWidth <= this.sm ? String(window.innerWidth) : this.sm) + "px";
-      f.overlaySettings = this.overlaySettings
+      f.overlaySettings = this.overlaySettings;
+      if(Permir_OutsideCLick_id.includes(f.id)) f.overlaySettings = this.overlaySettings2;
 
     });
 
 
 
-    
     this.overlaySettings = {};
+    this.overlaySettings2 = {};
+
 
     if (window.innerWidth <= this.md) {
       this.overlaySettings = {
@@ -217,7 +234,16 @@ export class Validacion {
         modal: true,
         closeOnOutsideClick: false
       };
+
+      this.overlaySettings2 = {
+        positionStrategy: new GlobalPositionStrategy({ openAnimation: scaleInCenter, closeAnimation: scaleOutCenter }),
+        modal: true,
+        closeOnOutsideClick: true
+      };
     }
+
+
+
   
 
   }
