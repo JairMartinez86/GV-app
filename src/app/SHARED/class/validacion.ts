@@ -10,9 +10,10 @@ import {
 import { ErrorStateMatcher } from "@angular/material/core";
 
 import { formatDate, formatNumber } from "@angular/common";
-import { IgxComboComponent } from "igniteui-angular";
+import { GlobalPositionStrategy, IgxComboComponent, OverlaySettings } from "igniteui-angular";
 import { QueryList } from "@angular/core";
 import { IComboSelectionChangingEventArgs } from 'igniteui-angular';
+import { scaleInCenter, scaleOutCenter } from "igniteui-angular/animations";
 
 
 function getRectArea(elmento: HTMLElement) {
@@ -169,7 +170,7 @@ let cmb: QueryList<IgxComboComponent>;
 export class Validacion {
 
 
-
+  private overlaySettings: OverlaySettings = {};
   private fb = new FormBuilder();
   public Iniciar: boolean = false;
   public Errores: string = "";
@@ -178,6 +179,14 @@ export class Validacion {
 
   private lstReglas: ReglasValidacion[] = [];
   private lstFrm: I_Frm[] = [];
+
+
+  private xs : number = 0;
+  private sm : number = 576;
+  private md : number = 768;
+  private lg : number = 992;
+  private xl : number = 1200;
+  private xxl : number = 1400;
 
 
 
@@ -190,6 +199,27 @@ export class Validacion {
 
   public Combo(c: any) {
     cmb = c;
+
+    cmb?.forEach( f => {
+      f.itemsWidth = (window.innerWidth <= this.sm ? String(window.innerWidth) : this.sm) + "px";
+      f.overlaySettings = this.overlaySettings
+
+    });
+
+
+
+    
+    this.overlaySettings = {};
+
+    if (window.innerWidth <= this.md) {
+      this.overlaySettings = {
+        positionStrategy: new GlobalPositionStrategy({ openAnimation: scaleInCenter, closeAnimation: scaleOutCenter }),
+        modal: true,
+        closeOnOutsideClick: false
+      };
+    }
+  
+
   }
 
 
