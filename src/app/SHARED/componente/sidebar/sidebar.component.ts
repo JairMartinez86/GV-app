@@ -172,13 +172,13 @@ export class SidebarComponent {
 		   this.ErrorServidor = true;
 			
 			  
-			  if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
+			  /*if(this.cFunciones.DIALOG.getDialogById("error-servidor") == undefined) 
 			  {
 				this.cFunciones.DIALOG.open(DialogErrorComponent, {
 				  id : "error-servidor",
 				  data: "<b class='error'>" + err.message + "</b>",
 				});
-			  }
+			  }*/
        
        
    
