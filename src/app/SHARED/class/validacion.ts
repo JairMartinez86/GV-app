@@ -251,7 +251,7 @@ export class Validacion {
 
 
   
-  public ResetCssError()
+  public async ResetCssError()
   {
  
 
