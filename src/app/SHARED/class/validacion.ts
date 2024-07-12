@@ -254,9 +254,12 @@ export class Validacion {
   public async ResetCssError()
   {
  
-    document.querySelectorAll('.igx-input-group').forEach((key : any) => {
-      key.classList.remove('igx-input-group--invalid');
-    });
+
+    setTimeout(() => {
+      document.querySelectorAll('.igx-input-group').forEach((key : any) => {
+        key.classList.remove('igx-input-group--invalid');
+      });
+    }, 300);
 
 
     
