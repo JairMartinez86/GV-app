@@ -83,6 +83,7 @@ export class SidebarComponent {
 
    
     if(this.ErrorServidor && id != "aSalir"){
+      $("#btnMenu").trigger("click");
       this.cFunciones.DIALOG.closeAll();
       this.cFunciones.DIALOG.open(DialogErrorComponent, {
         data: "<b class='error'>" + "Obteniendo Información del servidor por favor espere." + "</b>",
@@ -92,6 +93,7 @@ export class SidebarComponent {
 
     if (id == "aNewFactura") {
       $("#btnMenu").trigger("click");
+      this.cFunciones.DIALOG.closeAll();
       this.DynamicFrom.viewContainerRef.clear();
 
       let Factura: ComponentRef<FacturaComponent> = this.DynamicFrom.viewContainerRef.createComponent(FacturaComponent);
@@ -100,18 +102,23 @@ export class SidebarComponent {
 
     if (id == "aNewPedido") {
       $("#btnMenu").trigger("click");
+      this.cFunciones.DIALOG.closeAll();
       this.DynamicFrom.viewContainerRef.clear();
       let Pedido: ComponentRef<FacturaComponent> = this.DynamicFrom.viewContainerRef.createComponent(FacturaComponent);
       Pedido.instance.TipoFactura = "Pedido";
     }
 
     if (id == "aRegistroFactura") {
+      $("#btnMenu").trigger("click");
+      this.cFunciones.DIALOG.closeAll();
       this.DynamicFrom.viewContainerRef.clear();
       let RegFactura: ComponentRef<RegistroFacturaComponent> = this.DynamicFrom.viewContainerRef.createComponent(RegistroFacturaComponent);
       RegFactura.instance.TipoDocumento = "Factura";
     }
 
     if (id == "aRegistroPedido") {
+      $("#btnMenu").trigger("click");
+      this.cFunciones.DIALOG.closeAll();
       this.DynamicFrom.viewContainerRef.clear();
       let RegPedido: ComponentRef<RegistroFacturaComponent> = this.DynamicFrom.viewContainerRef.createComponent(RegistroFacturaComponent);
       RegPedido.instance.TipoDocumento = "Pedido";
@@ -119,6 +126,8 @@ export class SidebarComponent {
 
 
     if (id == "aRegistroCola") {
+      $("#btnMenu").trigger("click");
+      this.cFunciones.DIALOG.closeAll();
       this.DynamicFrom.viewContainerRef.clear();
       let RegPedido: ComponentRef<RegistroFacturaComponent> = this.DynamicFrom.viewContainerRef.createComponent(RegistroFacturaComponent);
       RegPedido.instance.TipoDocumento = "Factura";
@@ -128,6 +137,8 @@ export class SidebarComponent {
 
 
     if (id == "aSalir") {
+      $("#btnMenu").trigger("click");
+      this.cFunciones.DIALOG.closeAll();
       this.ErrorServidor = true;
       this._SrvLogin.CerrarSession();
 
