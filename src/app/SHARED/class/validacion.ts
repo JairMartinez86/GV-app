@@ -289,6 +289,20 @@ export class Validacion {
     return FormControl.setValue(value);
   }
 
+  public GetValue(id: string): any {
+    let FormControl: FormControl = this.Get(id);
+
+    if(Array.isArray(FormControl.value))
+    {
+      return FormControl.value[0];
+    }
+    else
+    {
+      return FormControl.value;
+    }
+    
+  }
+
   public add(
     id: string,
     regla: string,
